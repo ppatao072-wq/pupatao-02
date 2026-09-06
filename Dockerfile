@@ -49,7 +49,7 @@ COPY --from=builder /app/build ./build
 COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/scripts ./scripts
 
-EXPOSE 5176
+EXPOSE 3000
 # DATABASE_URL and other secrets are injected at runtime (docker run -e ...),
 # NOT baked into the image.
 CMD ["npm", "run", "start"]

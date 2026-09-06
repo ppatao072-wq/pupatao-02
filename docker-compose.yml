@@ -1,5 +1,5 @@
 services:
-  pupatao-client:
+  pupatao02-client:
     build:
       context: .
       # Public client vars — baked into the browser bundle at build time so
@@ -21,10 +21,11 @@ services:
       - .env
     environment:
       - DATABASE_URL=${DATABASE_URL}
-    # Each replica is published to a host port from this range (5176, 5177);
+    # Each replica is published to a host port from this range (5178, 5179);
+    # NOTE: 5176-5177 belong to the original `pupatao` project on this host.
     # the host nginx `upstream` block below load-balances across both.
     ports:
-      - "5176-5177:3000"
+      - "5178-5179:3000"
     # If the event loop is blocked (e.g. a bcrypt/registration flood), this HTTP
     # probe times out → the container is marked unhealthy → autoheal restarts it.
     # The probe runs as its own node process, so a blocked server still fails it.
