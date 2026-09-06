@@ -84,7 +84,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-bold" style={{ color: '#fde68a' }}>{t('admin.dashboard.title')}</h1>
+      <h1 className="text-xl font-bold" style={{ color: '#c8102e' }}>{t('admin.dashboard.title')}</h1>
 
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <StatCard label={t('admin.dashboard.statCustomers')} value={`${d.activeCustomers}/${d.customers}`}
@@ -92,44 +92,44 @@ export default function AdminDashboard() {
         <StatCard label={t('admin.dashboard.statPendingDeposits')} value={d.pendingDeposits.toString()}
           hint={t('admin.dashboard.statPendingDepositsHint', { amount: d.depositSumPending.toLocaleString() })}
           to="/admin/transactions" Icon={Banknote}
-          accent={d.pendingDeposits > 0 ? '#facc15' : undefined} />
+          accent={d.pendingDeposits > 0 ? '#a16207' : undefined} />
         <StatCard label={t('admin.dashboard.statPendingWithdraws')} value={d.pendingWithdraws.toString()}
           hint={t('admin.dashboard.statPendingWithdrawsHint')} to="/admin/transactions?tab=withdraw" Icon={Banknote} />
         <StatCard label={t('admin.dashboard.statBets24h')} value={d.bets24h.toLocaleString()}
           hint={t('admin.dashboard.statBets24hHint')} to="/admin/play-history" Icon={Dices} />
         <StatCard label={t('admin.dashboard.statLiveRounds')} value={d.liveRounds.toString()}
           hint={t('admin.dashboard.statLiveRoundsHint')} to="/admin/live" Icon={Radio}
-          accent={d.liveRounds > 0 ? '#4ade80' : undefined} />
+          accent={d.liveRounds > 0 ? '#15803d' : undefined} />
       </div>
 
       {/* ── Sleep Mode — SUPERADMIN only ── */}
       {isSuperAdmin && <div
         className="rounded-xl p-4"
         style={{
-          background: d.sleepMode ? 'rgba(220,38,38,0.12)' : 'rgba(15,23,42,1)',
-          border: `1px solid ${d.sleepMode ? '#ef4444' : '#1e1b4b'}`,
+          background: d.sleepMode ? 'rgba(220,38,38,0.12)' : '#ffffff',
+          border: `1px solid ${d.sleepMode ? '#ef4444' : '#f2ccd2'}`,
         }}
       >
         <div className="flex items-center justify-between gap-4">
           <div className="flex items-start gap-3">
-            <Moon size={20} style={{ color: d.sleepMode ? '#f87171' : '#818cf8', marginTop: 2, flexShrink: 0 }} />
+            <Moon size={20} style={{ color: d.sleepMode ? '#dc2626' : '#9c1024', marginTop: 2, flexShrink: 0 }} />
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-sm font-bold" style={{ color: d.sleepMode ? '#f87171' : '#fde68a' }}>
+                <span className="text-sm font-bold" style={{ color: d.sleepMode ? '#dc2626' : '#c8102e' }}>
                   {t('admin.dashboard.sleepMode')}
                 </span>
                 <span
                   className="rounded-full px-2 py-0.5 text-[10px] font-bold"
                   style={{
                     background: d.sleepMode ? 'rgba(220,38,38,0.3)' : 'rgba(22,163,74,0.2)',
-                    color: d.sleepMode ? '#fca5a5' : '#4ade80',
+                    color: d.sleepMode ? '#dc2626' : '#15803d',
                     border: `1px solid ${d.sleepMode ? '#ef4444' : '#16a34a'}`,
                   }}
                 >
                   {d.sleepMode ? t('admin.dashboard.sleepModeOn') : t('admin.dashboard.sleepModeOff')}
                 </span>
               </div>
-              <p className="mt-1 text-xs" style={{ color: '#818cf8' }}>
+              <p className="mt-1 text-xs" style={{ color: '#9c1024' }}>
                 {d.sleepMode
                   ? t('admin.dashboard.sleepModeDescOn')
                   : t('admin.dashboard.sleepModeDescOff')}
@@ -156,7 +156,7 @@ export default function AdminDashboard() {
 
       <div
         className="rounded-xl p-4 text-xs"
-        style={{ background: '#0f172a', color: '#a5b4fc', border: '1px solid #1e1b4b' }}
+        style={{ background: '#fff5f6', color: '#6b4a4f', border: '1px solid #f2ccd2' }}
       >
         {t('admin.dashboard.sidebarHint')}
       </div>
@@ -170,17 +170,17 @@ export default function AdminDashboard() {
         >
           <div
             className="w-full max-w-sm rounded-2xl p-6"
-            style={{ background: '#1e0040', border: `2px solid ${d.sleepMode ? '#16a34a' : '#dc2626'}` }}
+            style={{ background: '#fff5f6', border: `2px solid ${d.sleepMode ? '#16a34a' : '#dc2626'}` }}
             onClick={e => e.stopPropagation()}
           >
             <div className="mb-1 flex items-center gap-2">
-              <Moon size={20} style={{ color: d.sleepMode ? '#4ade80' : '#f87171' }} />
-              <h2 className="text-base font-bold" style={{ color: d.sleepMode ? '#4ade80' : '#f87171' }}>
+              <Moon size={20} style={{ color: d.sleepMode ? '#15803d' : '#dc2626' }} />
+              <h2 className="text-base font-bold" style={{ color: d.sleepMode ? '#15803d' : '#dc2626' }}>
                 {d.sleepMode ? t('admin.dashboard.confirmDisableTitle') : t('admin.dashboard.confirmEnableTitle')}
               </h2>
             </div>
 
-            <p className="mt-3 text-sm" style={{ color: '#e9d5ff' }}>
+            <p className="mt-3 text-sm" style={{ color: '#2b0b10' }}>
               {d.sleepMode ? (
                 <>
                   {t('admin.dashboard.confirmDisableBody')} <strong>{t('admin.dashboard.confirmDisableBodyStrong')}</strong> {t('admin.dashboard.confirmDisableBodyEnd')}
@@ -192,7 +192,7 @@ export default function AdminDashboard() {
               )}
             </p>
 
-            <div className="mt-2 rounded-lg px-3 py-2 text-xs" style={{ background: 'rgba(255,255,255,0.06)', color: '#a78bfa' }}>
+            <div className="mt-2 rounded-lg px-3 py-2 text-xs" style={{ background: 'rgba(200,16,46,0.07)', color: '#9c1024' }}>
               {t('admin.dashboard.takesEffectNote')}
             </div>
 
@@ -201,7 +201,7 @@ export default function AdminDashboard() {
                 type="button"
                 onClick={() => setShowConfirm(false)}
                 className="flex-1 rounded-xl py-2.5 text-sm font-bold"
-                style={{ background: '#2d1b4e', color: '#a78bfa', border: '1px solid #4c1d95' }}
+                style={{ background: '#fff0f2', color: '#9c1024', border: '1px solid #f2ccd2' }}
               >
                 {t('admin.dashboard.cancel')}
               </button>
@@ -239,14 +239,14 @@ function StatCard({
   return (
     <Link to={to}
       className="block rounded-xl p-4 transition-opacity hover:opacity-90"
-      style={{ background: 'linear-gradient(135deg, #1e1b4b, #0f172a)', border: `1px solid ${accent ?? '#4338ca'}` }}
+      style={{ background: 'linear-gradient(135deg, #ffffff, #fff5f6)', border: `1px solid ${accent ?? '#f2ccd2'}` }}
     >
-      <div className="mb-2 flex items-center gap-2 text-[10px] font-bold" style={{ color: '#a5b4fc' }}>
+      <div className="mb-2 flex items-center gap-2 text-[10px] font-bold" style={{ color: '#6b4a4f' }}>
         <Icon size={12} />
         {label.toUpperCase()}
       </div>
-      <div className="text-2xl font-bold" style={{ color: accent ?? '#fde68a' }}>{value}</div>
-      <div className="mt-0.5 text-[10px]" style={{ color: '#818cf8' }}>{hint}</div>
+      <div className="text-2xl font-bold" style={{ color: accent ?? '#c8102e' }}>{value}</div>
+      <div className="mt-0.5 text-[10px]" style={{ color: '#9c1024' }}>{hint}</div>
     </Link>
   )
 }

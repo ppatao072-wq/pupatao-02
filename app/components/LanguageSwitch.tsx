@@ -32,7 +32,7 @@ export function LanguageSwitch({ variant = 'inline' }: Props) {
         onClick={() => pick(next)}
         title={`Switch to ${LOCALE_LABEL[next]}`}
         className="flex items-center gap-1 rounded-full px-2.5 py-1 text-[10px] font-bold  transition-opacity hover:opacity-90"
-        style={{ background: '#4c1d95', color: '#fde68a', border: '1px solid #7c3aed' }}
+        style={{ background: '#ffe4e6', color: '#c8102e', border: '1px solid #e8949e' }}
       >
         <Globe size={11} />
         <span aria-hidden>{LOCALE_FLAG[next]}</span>
@@ -52,9 +52,9 @@ export function LanguageSwitch({ variant = 'inline' }: Props) {
             onClick={() => pick(l)}
             className="flex flex-1 items-center justify-center gap-1.5 rounded-lg px-4 py-2 text-sm font-bold  transition-opacity hover:opacity-90"
             style={{
-              background: active ? '#7c3aed' : '#2d1b4e',
-              color: active ? '#fff' : '#c4b5fd',
-              border: `1.5px solid ${active ? '#fde68a' : '#4c1d95'}`,
+              background: active ? '#c8102e' : '#fff0f2',
+              color: active ? '#fff' : '#6b4a4f',
+              border: `1.5px solid ${active ? '#fde68a' : '#f2ccd2'}`,
             }}
           >
             <span aria-hidden className="text-base leading-none">{LOCALE_FLAG[l]}</span>

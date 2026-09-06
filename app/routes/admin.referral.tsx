@@ -115,14 +115,14 @@ export default function AdminReferral() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between flex-wrap gap-2">
-        <h1 className="flex items-center gap-2 text-xl font-bold" style={{ color: '#fbbf24' }}>
+        <h1 className="flex items-center gap-2 text-xl font-bold" style={{ color: '#b45309' }}>
           <Gift size={20} /> {t('admin.referral.title')}
         </h1>
         <span className="rounded-full px-3 py-1 text-[10px] font-bold"
           style={{
             background: isEnabled ? 'rgba(22,163,74,0.2)' : 'rgba(100,116,139,0.2)',
-            color: isEnabled ? '#4ade80' : '#94a3b8',
-            border: `1px solid ${isEnabled ? '#16a34a' : '#334155'}`,
+            color: isEnabled ? '#15803d' : '#8a6d71',
+            border: `1px solid ${isEnabled ? '#16a34a' : '#e7dcdd'}`,
           }}>
           {isEnabled ? t('admin.referral.status.on') : t('admin.referral.status.off')}
         </span>
@@ -130,36 +130,36 @@ export default function AdminReferral() {
 
       {/* ── Stats ── */}
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-        <div className="rounded-xl p-4" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
-          <div className="flex items-center gap-2 text-[10px] font-bold" style={{ color: '#a5b4fc' }}>
+        <div className="rounded-xl p-4" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
+          <div className="flex items-center gap-2 text-[10px] font-bold" style={{ color: '#6b4a4f' }}>
             <Wallet size={12} /> {t('admin.referral.stats.totalPaid')}
           </div>
-          <div className="mt-1 text-lg font-bold" style={{ color: '#4ade80' }}>{fmt(totalPaid)} ₭</div>
+          <div className="mt-1 text-lg font-bold" style={{ color: '#15803d' }}>{fmt(totalPaid)} ₭</div>
         </div>
-        <div className="rounded-xl p-4" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
-          <div className="flex items-center gap-2 text-[10px] font-bold" style={{ color: '#a5b4fc' }}>
+        <div className="rounded-xl p-4" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
+          <div className="flex items-center gap-2 text-[10px] font-bold" style={{ color: '#6b4a4f' }}>
             <Users size={12} /> {t('admin.referral.stats.totalReferred')}
           </div>
-          <div className="mt-1 text-lg font-bold" style={{ color: '#fde68a' }}>{fmt(totalReferredUsers)}</div>
+          <div className="mt-1 text-lg font-bold" style={{ color: '#c8102e' }}>{fmt(totalReferredUsers)}</div>
         </div>
-        <div className="rounded-xl p-4" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
-          <div className="flex items-center gap-2 text-[10px] font-bold" style={{ color: '#a5b4fc' }}>
+        <div className="rounded-xl p-4" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
+          <div className="flex items-center gap-2 text-[10px] font-bold" style={{ color: '#6b4a4f' }}>
             <Gift size={12} /> {t('admin.referral.stats.activeReferrers')}
           </div>
-          <div className="mt-1 text-lg font-bold" style={{ color: '#fde68a' }}>{fmt(activeReferrers)}</div>
+          <div className="mt-1 text-lg font-bold" style={{ color: '#c8102e' }}>{fmt(activeReferrers)}</div>
         </div>
       </div>
 
       {/* ── Campaign settings ── */}
       <div className="rounded-xl p-4"
         style={{
-          background: isEnabled ? 'rgba(22,163,74,0.08)' : '#0f172a',
-          border: `1px solid ${isEnabled ? '#16a34a' : '#1e1b4b'}`,
+          background: isEnabled ? 'rgba(22,163,74,0.08)' : '#fff5f6',
+          border: `1px solid ${isEnabled ? '#16a34a' : '#f2ccd2'}`,
         }}>
-        <div className="mb-3 text-sm font-bold" style={{ color: '#fde68a' }}>
+        <div className="mb-3 text-sm font-bold" style={{ color: '#c8102e' }}>
           {t('admin.referral.panel.heading')}
         </div>
-        <p className="mb-4 text-xs" style={{ color: '#a5b4fc' }}>
+        <p className="mb-4 text-xs" style={{ color: '#6b4a4f' }}>
           {isEnabled
             ? t('admin.referral.panel.descOn', { percent: config.percent })
             : t('admin.referral.panel.descOff')}
@@ -169,7 +169,7 @@ export default function AdminReferral() {
           <percentFetcher.Form method="post" className="flex items-end gap-2">
             <input type="hidden" name="op" value="savePercent" />
             <div className="flex flex-col gap-1">
-              <label className="text-[10px] font-bold" style={{ color: '#a5b4fc' }}>
+              <label className="text-[10px] font-bold" style={{ color: '#6b4a4f' }}>
                 {t('admin.referral.form.percentLabel')}
               </label>
               <div className="flex items-center gap-1.5">
@@ -182,14 +182,14 @@ export default function AdminReferral() {
                   value={percentInput}
                   onChange={e => setPercentInput(e.target.value)}
                   className="w-20 rounded-lg px-3 py-2 text-sm font-bold outline-none"
-                  style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}
+                  style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}
                 />
-                <span className="text-xs font-bold" style={{ color: '#a5b4fc' }}>%</span>
+                <span className="text-xs font-bold" style={{ color: '#6b4a4f' }}>%</span>
               </div>
             </div>
             <button type="submit" disabled={percentFetcher.state !== 'idle'}
               className="inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-xs font-bold disabled:opacity-50"
-              style={{ background: 'linear-gradient(135deg,#4338ca,#312e81)', color: '#fff', border: '1px solid #818cf8' }}>
+              style={{ background: 'linear-gradient(135deg,#c8102e,#a50d26)', color: '#fff', border: '1px solid #e8949e' }}>
               {percentFetcher.state !== 'idle' ? <Loader size={12} className="animate-spin" /> : <Check size={12} />}
               {percentFetcher.state !== 'idle' ? t('admin.referral.form.saving') : t('admin.referral.form.save')}
             </button>
@@ -205,24 +205,24 @@ export default function AdminReferral() {
           </button>
         </div>
         {percentFetcher.data?.error && (
-          <p className="mt-2 text-xs font-semibold" style={{ color: '#f87171' }}>{percentFetcher.data.error}</p>
+          <p className="mt-2 text-xs font-semibold" style={{ color: '#dc2626' }}>{percentFetcher.data.error}</p>
         )}
       </div>
 
       {/* ── Leaderboard ── */}
-      <div className="overflow-hidden rounded-xl" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
-        <div className="px-4 py-3 text-[10px] font-bold" style={{ background: '#1e1b4b', color: '#a5b4fc' }}>
+      <div className="overflow-hidden rounded-xl" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
+        <div className="px-4 py-3 text-[10px] font-bold" style={{ background: '#ffffff', color: '#6b4a4f' }}>
           {t('admin.referral.leaderboard.heading')}
         </div>
         {leaderboard.length === 0 ? (
-          <div className="px-4 py-8 text-center text-xs" style={{ color: '#64748b' }}>
+          <div className="px-4 py-8 text-center text-xs" style={{ color: '#8a6d71' }}>
             {t('admin.referral.leaderboard.empty')}
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="text-[10px] font-bold" style={{ color: '#64748b' }}>
+                <tr className="text-[10px] font-bold" style={{ color: '#8a6d71' }}>
                   <th className="w-8 px-3 py-2 text-right">#</th>
                   <th className="px-3 py-2">{t('admin.referral.leaderboard.col.player')}</th>
                   <th className="px-3 py-2 text-right">{t('admin.referral.leaderboard.col.referrals')}</th>
@@ -232,15 +232,15 @@ export default function AdminReferral() {
               </thead>
               <tbody>
                 {leaderboard.map((r, i) => (
-                  <tr key={r.userId} style={{ borderTop: '1px solid #1e1b4b', color: '#e9d5ff' }}>
-                    <td className="px-3 py-2.5 text-right" style={{ color: '#64748b' }}>{i + 1}</td>
+                  <tr key={r.userId} style={{ borderTop: '1px solid #f2ccd2', color: '#2b0b10' }}>
+                    <td className="px-3 py-2.5 text-right" style={{ color: '#8a6d71' }}>{i + 1}</td>
                     <td className="px-3 py-2.5">
-                      <div className="text-xs font-semibold" style={{ color: '#fde68a' }}>{r.name ?? '—'}</div>
-                      <div className="text-[10px]" style={{ color: '#818cf8' }}>{r.tel}</div>
+                      <div className="text-xs font-semibold" style={{ color: '#c8102e' }}>{r.name ?? '—'}</div>
+                      <div className="text-[10px]" style={{ color: '#9c1024' }}>{r.tel}</div>
                     </td>
-                    <td className="px-3 py-2.5 text-right text-xs" style={{ color: '#a5b4fc' }}>{r.referralCount}</td>
-                    <td className="px-3 py-2.5 text-right text-xs" style={{ color: '#a5b4fc' }}>{r.payoutCount}</td>
-                    <td className="px-3 py-2.5 text-right font-bold" style={{ color: '#4ade80' }}>{fmt(r.totalEarned)} ₭</td>
+                    <td className="px-3 py-2.5 text-right text-xs" style={{ color: '#6b4a4f' }}>{r.referralCount}</td>
+                    <td className="px-3 py-2.5 text-right text-xs" style={{ color: '#6b4a4f' }}>{r.payoutCount}</td>
+                    <td className="px-3 py-2.5 text-right font-bold" style={{ color: '#15803d' }}>{fmt(r.totalEarned)} ₭</td>
                   </tr>
                 ))}
               </tbody>
@@ -254,12 +254,12 @@ export default function AdminReferral() {
         <div className="fixed inset-0 z-[200] flex items-center justify-center p-6"
           style={{ background: 'rgba(0,0,0,0.8)' }} onClick={() => setShowConfirm(false)}>
           <div className="w-full max-w-sm rounded-2xl p-6"
-            style={{ background: '#1e0040', border: `2px solid ${isEnabled ? '#ef4444' : '#16a34a'}` }}
+            style={{ background: '#fff5f6', border: `2px solid ${isEnabled ? '#ef4444' : '#16a34a'}` }}
             onClick={e => e.stopPropagation()}>
-            <h2 className="mb-1 flex items-center gap-2 text-base font-bold" style={{ color: isEnabled ? '#f87171' : '#4ade80' }}>
+            <h2 className="mb-1 flex items-center gap-2 text-base font-bold" style={{ color: isEnabled ? '#dc2626' : '#15803d' }}>
               <Gift size={16} /> {isEnabled ? t('admin.referral.confirmDisable.title') : t('admin.referral.confirmEnable.title')}
             </h2>
-            <p className="mt-3 text-sm" style={{ color: '#e9d5ff' }}>
+            <p className="mt-3 text-sm" style={{ color: '#2b0b10' }}>
               {isEnabled
                 ? t('admin.referral.confirmDisable.body')
                 : t('admin.referral.confirmEnable.body', { percent: percentInput })}
@@ -267,7 +267,7 @@ export default function AdminReferral() {
             <div className="mt-5 flex gap-3">
               <button type="button" onClick={() => setShowConfirm(false)}
                 className="flex-1 rounded-xl py-2.5 text-sm font-bold"
-                style={{ background: '#2d1b4e', color: '#a78bfa', border: '1px solid #4c1d95' }}>
+                style={{ background: '#fff0f2', color: '#9c1024', border: '1px solid #f2ccd2' }}>
                 <X size={12} className="inline mr-1" />{t('admin.referral.confirm.cancel')}
               </button>
               <toggleFetcher.Form method="post" className="flex-1">

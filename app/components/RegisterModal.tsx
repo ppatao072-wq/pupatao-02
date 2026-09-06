@@ -55,7 +55,7 @@ export function RegisterModal({ open, onClose, next, hint, onSwitchToLogin }: Re
           'md:h-auto md:max-h-[90vh] md:w-full md:max-w-md md:rounded-2xl md:pb-6 md:animate-in md:fade-in md:zoom-in-95 md:duration-200',
         ].join(' ')}
         style={{
-          background: 'linear-gradient(135deg, #4c1d95, #1e0040)',
+          background: 'linear-gradient(135deg, #ffffff, #fff5f6)',
           boxShadow: '0 10px 60px rgba(0,0,0,0.7)',
         }}
       >
@@ -63,7 +63,7 @@ export function RegisterModal({ open, onClose, next, hint, onSwitchToLogin }: Re
         <div
           aria-hidden
           className="mx-auto mb-3 h-1 w-10 rounded-full md:hidden"
-          style={{ background: '#7c3aed' }}
+          style={{ background: '#c8102e' }}
         />
 
         {/* Close button — top-right on all breakpoints */}
@@ -71,26 +71,26 @@ export function RegisterModal({ open, onClose, next, hint, onSwitchToLogin }: Re
           onClick={onClose}
           type="button"
           className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-          style={{ background: '#4c1d95', border: '1px solid #7c3aed', color: '#e9d5ff' }}
+          style={{ background: '#ffe4e6', border: '1px solid #e8949e', color: '#2b0b10' }}
           aria-label={t('common.close')}
         >
           <X size={18} />
         </button>
 
-        <div className="mb-1 text-center text-xs font-bold " style={{ color: '#a78bfa' }}>
+        <div className="mb-1 text-center text-xs font-bold " style={{ color: '#9c1024' }}>
           {t('auth.titleRegister')}
         </div>
-        <h2 className="mb-1 text-center text-2xl font-bold" style={{ color: '#fde68a' }}>
+        <h2 className="mb-1 text-center text-2xl font-bold" style={{ color: '#c8102e' }}>
           {t('auth.createAccount')}
         </h2>
-        <p className="mb-4 text-center text-[11px]" style={{ color: '#c4b5fd' }}>
+        <p className="mb-4 text-center text-[11px]" style={{ color: '#6b4a4f' }}>
           {hint ?? t('auth.registerHint')}
         </p>
 
         <fetcher.Form method="post" action="/register" className="flex flex-col gap-3">
           <input type="hidden" name="next" value={nextPath} />
 
-          <label className="flex gap-1 text-xs font-semibold" style={{ color: '#c4b5fd' }}>
+          <label className="flex gap-1 text-xs font-semibold" style={{ color: '#6b4a4f' }}>
             {t('auth.phone')} <span className='text-rose-500'>*</span>
           </label>
           <input
@@ -100,15 +100,15 @@ export function RegisterModal({ open, onClose, next, hint, onSwitchToLogin }: Re
             required
             placeholder="+85620xxxxxxxx"
             className="rounded-lg px-3 py-2.5 text-sm font-semibold outline-none"
-            style={{ background: '#2d1b4e', color: '#fde68a', border: '2px solid #7c3aed' }}
+            style={{ background: '#fff0f2', color: '#c8102e', border: '2px solid #e8949e' }}
           />
 
-          <label className="flex gap-1 text-xs font-semibold" style={{ color: '#c4b5fd' }}>
+          <label className="flex gap-1 text-xs font-semibold" style={{ color: '#6b4a4f' }}>
             {t('auth.password')} <span className='text-rose-500'>*</span>
           </label>
           <PasswordInput name="password" autoComplete="new-password" required minLength={6} />
 
-          <label className="flex gap-1 text-xs font-semibold" style={{ color: '#c4b5fd' }}>
+          <label className="flex gap-1 text-xs font-semibold" style={{ color: '#6b4a4f' }}>
             {t('auth.referralCode')}
           </label>
           {/* Optional — pre-filled from ?ref=CODE when arriving via a share
@@ -121,13 +121,13 @@ export function RegisterModal({ open, onClose, next, hint, onSwitchToLogin }: Re
             placeholder={t('auth.referralCodePlaceholder')}
             defaultValue={typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('ref') ?? '' : ''}
             className="rounded-lg px-3 py-2.5 text-sm font-semibold uppercase outline-none placeholder:normal-case"
-            style={{ background: '#2d1b4e', color: '#fde68a', border: '2px solid #7c3aed' }}
+            style={{ background: '#fff0f2', color: '#c8102e', border: '2px solid #e8949e' }}
           />
 
           {fetcher.data?.error && (
             <div
               className="rounded-lg px-3 py-2 text-xs font-semibold"
-              style={{ background: 'rgba(220,38,38,0.2)', color: '#f87171', border: '1px solid #f87171' }}
+              style={{ background: 'rgba(220,38,38,0.2)', color: '#dc2626', border: '1px solid #f87171' }}
             >
               {fetcher.data.error}
             </div>
@@ -143,8 +143,8 @@ export function RegisterModal({ open, onClose, next, hint, onSwitchToLogin }: Re
               aria-label={t('auth.agreeRulesLink')}
               className="flex h-5 w-5 shrink-0 items-center justify-center rounded transition-colors"
               style={{
-                background: agreed ? '#16a34a' : '#2d1b4e',
-                border: `2px solid ${agreed ? '#4ade80' : '#7c3aed'}`,
+                background: agreed ? '#16a34a' : '#fff0f2',
+                border: `2px solid ${agreed ? '#4ade80' : '#e8949e'}`,
               }}
             >
               {agreed && <Check size={12} className="text-white" strokeWidth={3} />}
@@ -152,7 +152,7 @@ export function RegisterModal({ open, onClose, next, hint, onSwitchToLogin }: Re
             <span
               onClick={() => setAgreed(v => !v)}
               className="text-[11px] leading-snug"
-              style={{ color: '#c4b5fd' }}
+              style={{ color: '#6b4a4f' }}
             >
               {t('auth.agreeRulesPrefix')}{' '}
               <a
@@ -161,7 +161,7 @@ export function RegisterModal({ open, onClose, next, hint, onSwitchToLogin }: Re
                 rel="noopener noreferrer"
                 onClick={e => e.stopPropagation()}
                 className="font-bold underline-offset-2 hover:underline"
-                style={{ color: '#fde68a' }}
+                style={{ color: '#c8102e' }}
               >
                 {t('auth.agreeRulesLink')}
               </a>
@@ -177,7 +177,7 @@ export function RegisterModal({ open, onClose, next, hint, onSwitchToLogin }: Re
                 type="button"
                 onClick={onSwitchToLogin}
                 className="flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold"
-                style={{ background: 'linear-gradient(135deg, #7c3aed, #4c1d95)', color: '#fff', border: '2px solid #a78bfa' }}
+                style={{ background: 'linear-gradient(135deg, #c8102e, #a50d26)', color: '#fff', border: '2px solid #e8949e' }}
               >
                 <LogIn size={16} />
                 {t('auth.signIn')}
@@ -186,7 +186,7 @@ export function RegisterModal({ open, onClose, next, hint, onSwitchToLogin }: Re
               <a
                 href="/login"
                 className="flex flex-1 items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold"
-                style={{ background: 'linear-gradient(135deg, #7c3aed, #4c1d95)', color: '#fff', border: '2px solid #a78bfa' }}
+                style={{ background: 'linear-gradient(135deg, #c8102e, #a50d26)', color: '#fff', border: '2px solid #e8949e' }}
               >
                 <LogIn size={16} />
                 {t('auth.signIn')}

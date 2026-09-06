@@ -65,8 +65,8 @@ export default function AdminCompetitionDetail() {
   const typeLabel = record.type === 'DEMO_LIVE' ? t('admin.competition.type.demoLive.label')
     : record.type === 'REAL_LIVE' ? t('admin.competition.type.realLive.label')
     : t('admin.competition.type.realAll.label')
-  const typeColor = record.type === 'DEMO_LIVE' ? '#a5b4fc' : '#fbbf24'
-  const rankColor = (r: number) => r === 1 ? '#fbbf24' : r === 2 ? '#94a3b8' : r === 3 ? '#fb923c' : '#a5b4fc'
+  const typeColor = record.type === 'DEMO_LIVE' ? '#6b4a4f' : '#b45309'
+  const rankColor = (r: number) => r === 1 ? '#b45309' : r === 2 ? '#8a6d71' : r === 3 ? '#c2410c' : '#6b4a4f'
   const medals = ['🥇', '🥈', '🥉']
   const sorted = [...record.winners].sort((a, b) => a.rank - b.rank)
 
@@ -75,68 +75,68 @@ export default function AdminCompetitionDetail() {
       <div className="flex items-center gap-3">
         <a href="/admin/competition"
           className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-bold"
-          style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}>
+          style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}>
           <ArrowLeft size={12} /> {t('admin.competition.detail.back')}
         </a>
-        <h1 className="flex items-center gap-2 text-xl font-bold" style={{ color: '#fbbf24' }}>
+        <h1 className="flex items-center gap-2 text-xl font-bold" style={{ color: '#b45309' }}>
           <Trophy size={20} /> {t('admin.competition.detail.title')}
         </h1>
       </div>
 
       {/* Meta */}
-      <div className="rounded-xl p-4" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+      <div className="rounded-xl p-4" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           <div>
-            <div className="text-[10px] font-bold" style={{ color: '#a5b4fc' }}>{t('admin.competition.history.col.type')}</div>
+            <div className="text-[10px] font-bold" style={{ color: '#6b4a4f' }}>{t('admin.competition.history.col.type')}</div>
             <div className="mt-0.5 text-xs font-bold" style={{ color: typeColor }}>{typeLabel}</div>
           </div>
           <div>
-            <div className="text-[10px] font-bold" style={{ color: '#a5b4fc' }}>{t('admin.competition.detail.meta.start')}</div>
-            <div className="mt-0.5 text-xs" style={{ color: '#fde68a' }}>{record.startDate ? fmtGMT7(record.startDate) : '—'}</div>
+            <div className="text-[10px] font-bold" style={{ color: '#6b4a4f' }}>{t('admin.competition.detail.meta.start')}</div>
+            <div className="mt-0.5 text-xs" style={{ color: '#c8102e' }}>{record.startDate ? fmtGMT7(record.startDate) : '—'}</div>
           </div>
           <div>
-            <div className="text-[10px] font-bold" style={{ color: '#a5b4fc' }}>{t('admin.competition.detail.meta.end')}</div>
-            <div className="mt-0.5 text-xs" style={{ color: '#fde68a' }}>{fmtGMT7(record.endDate)}</div>
+            <div className="text-[10px] font-bold" style={{ color: '#6b4a4f' }}>{t('admin.competition.detail.meta.end')}</div>
+            <div className="mt-0.5 text-xs" style={{ color: '#c8102e' }}>{fmtGMT7(record.endDate)}</div>
           </div>
           <div>
-            <div className="text-[10px] font-bold" style={{ color: '#a5b4fc' }}>{t('admin.competition.detail.meta.totalParticipants')}</div>
-            <div className="mt-0.5 text-sm font-bold" style={{ color: '#4ade80' }}>{record.totalParticipants.toLocaleString()}</div>
+            <div className="text-[10px] font-bold" style={{ color: '#6b4a4f' }}>{t('admin.competition.detail.meta.totalParticipants')}</div>
+            <div className="mt-0.5 text-sm font-bold" style={{ color: '#15803d' }}>{record.totalParticipants.toLocaleString()}</div>
           </div>
         </div>
         {record.rules && (
-          <div className="mt-4 rounded-lg px-3 py-2.5 text-xs" style={{ background: '#1e1b4b', color: '#c4b5fd' }}>
+          <div className="mt-4 rounded-lg px-3 py-2.5 text-xs" style={{ background: '#ffffff', color: '#6b4a4f' }}>
             {record.rules}
           </div>
         )}
         <div className="mt-3 flex items-center gap-2">
           <span className="rounded-full px-2 py-0.5 text-[9px] font-bold"
-            style={{ background: 'rgba(22,163,74,0.15)', color: '#4ade80', border: '1px solid #16a34a' }}>
+            style={{ background: 'rgba(22,163,74,0.15)', color: '#15803d', border: '1px solid #16a34a' }}>
             {t('admin.competition.history.completed')}
           </span>
-          <span className="text-[10px]" style={{ color: '#64748b' }}>
+          <span className="text-[10px]" style={{ color: '#8a6d71' }}>
             {t('admin.competition.detail.archivedOn', { date: fmtGMT7(record.createdAt) })}
           </span>
         </div>
 
         {/* Admin trail */}
         {(record.configuredBy || record.startedBy || record.endedBy) && (
-          <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 border-t pt-3" style={{ borderColor: '#1e1b4b' }}>
+          <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 border-t pt-3" style={{ borderColor: '#f2ccd2' }}>
             {record.configuredBy && (
               <div>
-                <div className="text-[10px] font-bold" style={{ color: '#a5b4fc' }}>{t('admin.competition.detail.trail.configuredBy')}</div>
-                <div className="mt-0.5 text-xs font-semibold" style={{ color: '#fde68a' }}>{record.configuredBy}</div>
+                <div className="text-[10px] font-bold" style={{ color: '#6b4a4f' }}>{t('admin.competition.detail.trail.configuredBy')}</div>
+                <div className="mt-0.5 text-xs font-semibold" style={{ color: '#c8102e' }}>{record.configuredBy}</div>
               </div>
             )}
             {record.startedBy && (
               <div>
-                <div className="text-[10px] font-bold" style={{ color: '#a5b4fc' }}>{t('admin.competition.detail.trail.startedBy')}</div>
-                <div className="mt-0.5 text-xs font-semibold" style={{ color: '#4ade80' }}>{record.startedBy}</div>
+                <div className="text-[10px] font-bold" style={{ color: '#6b4a4f' }}>{t('admin.competition.detail.trail.startedBy')}</div>
+                <div className="mt-0.5 text-xs font-semibold" style={{ color: '#15803d' }}>{record.startedBy}</div>
               </div>
             )}
             {record.endedBy && (
               <div>
-                <div className="text-[10px] font-bold" style={{ color: '#a5b4fc' }}>{t('admin.competition.detail.trail.endedBy')}</div>
-                <div className="mt-0.5 text-xs font-semibold" style={{ color: '#f87171' }}>{record.endedBy}</div>
+                <div className="text-[10px] font-bold" style={{ color: '#6b4a4f' }}>{t('admin.competition.detail.trail.endedBy')}</div>
+                <div className="mt-0.5 text-xs font-semibold" style={{ color: '#dc2626' }}>{record.endedBy}</div>
               </div>
             )}
           </div>
@@ -146,7 +146,7 @@ export default function AdminCompetitionDetail() {
       {/* Winners podium */}
       {sorted.length > 0 ? (
         <div className="flex flex-col gap-3">
-          <div className="text-xs font-bold" style={{ color: '#a5b4fc' }}>{t('admin.competition.detail.winners.heading')}</div>
+          <div className="text-xs font-bold" style={{ color: '#6b4a4f' }}>{t('admin.competition.detail.winners.heading')}</div>
 
           {/* Podium */}
           <div className="flex items-end justify-center gap-4">
@@ -161,7 +161,7 @@ export default function AdminCompetitionDetail() {
                     <div className="text-xs font-bold truncate" style={{ color: rankColor(w.rank) }}>
                       {w.name ?? w.tel}
                     </div>
-                    <div className="text-[10px]" style={{ color: '#818cf8' }}>{w.tel}</div>
+                    <div className="text-[10px]" style={{ color: '#9c1024' }}>{w.tel}</div>
                     <div className="mt-0.5 font-bold" style={{ color: rankColor(w.rank) }}>
                       {fmt(w.demoBalance)} ₭
                     </div>
@@ -176,26 +176,26 @@ export default function AdminCompetitionDetail() {
           </div>
 
           {/* List */}
-          <div className="rounded-xl overflow-hidden" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+          <div className="rounded-xl overflow-hidden" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
             {sorted.map(w => (
               <div key={w.userId} className="flex items-center gap-3 px-4 py-3"
-                style={{ borderTop: w.rank > 1 ? '1px solid #1e1b4b' : 'none' }}>
+                style={{ borderTop: w.rank > 1 ? '1px solid #f2ccd2' : 'none' }}>
                 <span style={{ fontSize: 20, minWidth: 28, textAlign: 'center' }}>{medals[w.rank - 1]}</span>
                 <WinnerAvatar name={w.name ?? w.tel} src={w.profile} size={36} />
                 <div className="min-w-0 flex-1">
-                  <div className="text-sm font-semibold" style={{ color: '#fde68a' }}>{w.name ?? '—'}</div>
-                  <div className="text-[10px]" style={{ color: '#818cf8' }}>{w.tel}</div>
+                  <div className="text-sm font-semibold" style={{ color: '#c8102e' }}>{w.name ?? '—'}</div>
+                  <div className="text-[10px]" style={{ color: '#9c1024' }}>{w.tel}</div>
                 </div>
                 <div className="text-right">
                   <div className="font-bold" style={{ color: rankColor(w.rank) }}>{fmt(w.demoBalance)} ₭</div>
-                  <div className="text-[10px]" style={{ color: '#64748b' }}>{t('admin.competition.detail.winners.rank', { n: w.rank })}</div>
+                  <div className="text-[10px]" style={{ color: '#8a6d71' }}>{t('admin.competition.detail.winners.rank', { n: w.rank })}</div>
                 </div>
               </div>
             ))}
           </div>
         </div>
       ) : (
-        <div className="rounded-xl p-6 text-center text-xs" style={{ background: '#0f172a', color: '#64748b', border: '1px solid #1e1b4b' }}>
+        <div className="rounded-xl p-6 text-center text-xs" style={{ background: '#fff5f6', color: '#8a6d71', border: '1px solid #f2ccd2' }}>
           {t('admin.competition.detail.winners.empty')}
         </div>
       )}
@@ -212,7 +212,7 @@ function WinnerAvatar({ name, src, size }: { name: string; src: string | null; s
   }
   return (
     <div className="flex shrink-0 items-center justify-center rounded-full text-xs font-bold"
-      style={{ width: size, height: size, background: 'linear-gradient(135deg,#4338ca,#7c3aed)', color: '#fde68a' }}>
+      style={{ width: size, height: size, background: 'linear-gradient(135deg,#c8102e,#a50d26)', color: '#fde68a' }}>
       {initials}
     </div>
   )

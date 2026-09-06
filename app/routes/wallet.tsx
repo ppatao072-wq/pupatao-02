@@ -820,17 +820,17 @@ export default function WalletPage() {
   }
 
   return (
-    <div className="min-h-screen font-sans" style={{ background: '#7c3aed' }}>
-      <header className="flex items-center gap-3 px-4 py-3" style={{ background: '#1e0040', borderBottom: '1px solid #a78bfa' }}>
+    <div className="min-h-screen font-sans" style={{ background: 'linear-gradient(160deg, #fff1f2 0%, #ffe4e6 50%, #ffd9de 100%)' }}>
+      <header className="flex items-center gap-3 px-4 py-3" style={{ background: '#ffffff', borderBottom: '1px solid #e8949e' }}>
         <button
           onClick={() => { playClick(); navigate('/') }}
           className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold transition-opacity hover:opacity-80"
-          style={{ background: '#4c1d95', color: '#e9d5ff', border: '1px solid #7c3aed' }}
+          style={{ background: '#ffe4e6', color: '#2b0b10', border: '1px solid #e8949e' }}
         >
           <ArrowLeft size={16} />
           {t('common.back')}
         </button>
-        <h1 className="flex items-center gap-2 text-xl font-bold" style={{ color: '#fde68a' }}>
+        <h1 className="flex items-center gap-2 text-xl font-bold" style={{ color: '#c8102e' }}>
           <WalletIcon size={20} /> {t('wallet.title')}
         </h1>
       </header>
@@ -839,36 +839,36 @@ export default function WalletPage() {
         {/* ─── Balance + totals card ────────────────────────────────────── */}
         <div
           className="relative rounded-2xl p-6"
-          style={{ background: 'linear-gradient(135deg, #4c1d95, #1e0040)', border: '1px solid #a78bfa' }}
+          style={{ background: 'linear-gradient(135deg, #ffffff, #fff5f6)', border: '1px solid #e8949e' }}
         >
           <button
             onClick={() => { playClick(); toggleBalanceHidden() }}
             className="absolute right-3 top-3 flex h-9 w-9 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-            style={{ background: '#4c1d95', border: '1px solid #7c3aed' }}
+            style={{ background: '#ffe4e6', border: '1px solid #e8949e' }}
             title={balanceHidden ? t('wallet.showBalance') : t('wallet.hideBalance')}
             aria-label={balanceHidden ? t('wallet.showBalance') : t('wallet.hideBalance')}
           >
-            {balanceHidden ? <EyeOff size={16} className="text-purple-300" /> : <Eye size={16} className="text-purple-300" />}
+            {balanceHidden ? <EyeOff size={16} className="text-[#c8102e]" /> : <Eye size={16} className="text-[#c8102e]" />}
           </button>
 
-          <div className="mb-1 text-center text-xs font-bold " style={{ color: '#c4b5fd' }}>
+          <div className="mb-1 text-center text-xs font-bold " style={{ color: '#6b4a4f' }}>
             {t('wallet.totalAvailable')}
           </div>
-          <div className="mb-1 text-center text-4xl font-bold" style={{ color: '#fde68a' }}>
+          <div className="mb-1 text-center text-4xl font-bold" style={{ color: '#c8102e' }}>
             {balanceHidden ? HIDDEN : loaderData.balance.toLocaleString()}
           </div>
-          <div className="mb-4 text-center text-xs" style={{ color: '#a78bfa' }}>₭ ({t('wallet.realWallet')})</div>
+          <div className="mb-4 text-center text-xs" style={{ color: '#9c1024' }}>₭ ({t('wallet.realWallet')})</div>
 
-          <div className="grid grid-cols-2 gap-3 border-t pt-4" style={{ borderColor: '#6d28d9' }}>
+          <div className="grid grid-cols-2 gap-3 border-t pt-4" style={{ borderColor: '#e8949e' }}>
             <div className="text-center">
-              <div className="text-[10px] font-bold " style={{ color: '#a78bfa' }}>{t('wallet.totalDeposit')}</div>
-              <div className="mt-1 text-lg font-bold" style={{ color: '#4ade80' }}>
+              <div className="text-[10px] font-bold " style={{ color: '#9c1024' }}>{t('wallet.totalDeposit')}</div>
+              <div className="mt-1 text-lg font-bold" style={{ color: '#15803d' }}>
                 {balanceHidden ? HIDDEN : `+${loaderData.totalDeposit.toLocaleString()}`}
               </div>
             </div>
             <div className="text-center">
-              <div className="text-[10px] font-bold " style={{ color: '#a78bfa' }}>{t('wallet.totalWithdraw')}</div>
-              <div className="mt-1 text-lg font-bold" style={{ color: '#f87171' }}>
+              <div className="text-[10px] font-bold " style={{ color: '#9c1024' }}>{t('wallet.totalWithdraw')}</div>
+              <div className="mt-1 text-lg font-bold" style={{ color: '#dc2626' }}>
                 {balanceHidden ? HIDDEN : `-${loaderData.totalWithdraw.toLocaleString()}`}
               </div>
             </div>
@@ -883,10 +883,10 @@ export default function WalletPage() {
               style={{ background: 'rgba(245,158,11,0.1)', border: '1px dashed #f59e0b' }}
             >
               <div className="flex flex-col">
-                <span className="text-[10px] font-bold " style={{ color: '#fcd34d' }}>{t('wallet.promoWallet')}</span>
-                <span className="text-[10px]" style={{ color: '#c4b5fd' }}>{t('wallet.promoNote')}</span>
+                <span className="text-[10px] font-bold " style={{ color: '#b45309' }}>{t('wallet.promoWallet')}</span>
+                <span className="text-[10px]" style={{ color: '#6b4a4f' }}>{t('wallet.promoNote')}</span>
               </div>
-              <span className="text-base font-bold" style={{ color: '#fde68a' }}>
+              <span className="text-base font-bold" style={{ color: '#c8102e' }}>
                 {balanceHidden ? HIDDEN : `${loaderData.promoBalance.toLocaleString()} ₭`}
               </span>
             </div>
@@ -894,15 +894,15 @@ export default function WalletPage() {
         </div>
 
         {/* ─── Tabs ────────────────────────────────────────────────────── */}
-        <div className="flex rounded-xl overflow-hidden" style={{ border: '1px solid #6d28d9' }}>
+        <div className="flex rounded-xl overflow-hidden" style={{ border: '1px solid #e8949e' }}>
           {(['deposit', 'withdraw', 'transfer', 'reward'] as Tab[]).map(tabKey => (
             <button
               key={tabKey}
               onClick={() => { playClick(); setTab(tabKey); setAmount('') }}
               className="flex-1 py-2.5 text-sm font-bold capitalize transition-all"
               style={{
-                background: tab === tabKey ? '#7c3aed' : '#1e0040',
-                color: tab === tabKey ? '#fff' : '#a78bfa',
+                background: tab === tabKey ? '#c8102e' : '#ffffff',
+                color: tab === tabKey ? '#fff' : '#9c1024',
               }}
             >
               {tabKey === 'deposit' ? t('wallet.tab.deposit')
@@ -917,7 +917,7 @@ export default function WalletPage() {
         {tab === 'deposit' && (
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm"
-              style={{ background: 'rgba(180,83,9,0.15)', border: '1px solid rgba(252,211,77,0.4)', color: '#fcd34d' }}>
+              style={{ background: 'rgba(180,83,9,0.15)', border: '1px solid rgba(252,211,77,0.4)', color: '#b45309' }}>
               <span className="text-base">⚠️</span>
               <span>ຍອດຝາກຂັ້ນຕ່ຳ <strong>{MIN_DEPOSIT.toLocaleString()} ₭</strong></span>
             </div>
@@ -943,7 +943,7 @@ export default function WalletPage() {
         {tab === 'withdraw' && (
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm"
-              style={{ background: 'rgba(180,83,9,0.15)', border: '1px solid rgba(252,211,77,0.4)', color: '#fcd34d' }}>
+              style={{ background: 'rgba(180,83,9,0.15)', border: '1px solid rgba(252,211,77,0.4)', color: '#b45309' }}>
               <span className="text-base">⚠️</span>
               <span>ຍອດຖອນຂັ້ນຕ່ຳ <strong>{MIN_WITHDRAW.toLocaleString()} ₭</strong> — ຍອດເງິນໃນກະເປົ໋າຕ້ອງມີຢ່າງໜ້ອຍ {MIN_WITHDRAW.toLocaleString()} ₭ ຈຶ່ງຈະສາມາດຖອນໄດ້.</span>
             </div>
@@ -986,11 +986,11 @@ export default function WalletPage() {
 
             {/* Pending — to receive (locked transfers waiting for this user) */}
             <section className="mt-2">
-              <div className="mb-2 text-sm font-bold " style={{ color: '#a78bfa' }}>
+              <div className="mb-2 text-sm font-bold " style={{ color: '#9c1024' }}>
                 {t('transfer.pendingReceived')}
               </div>
               {loaderData.pendingReceived.length === 0 ? (
-                <p className="rounded-xl py-6 text-center text-xs" style={{ background: '#1e0040', color: '#7c3aed', border: '1px solid #4c1d95' }}>
+                <p className="rounded-xl py-6 text-center text-xs" style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}>
                   {t('transfer.noPendingReceived')}
                 </p>
               ) : (
@@ -1005,7 +1005,7 @@ export default function WalletPage() {
             {/* Pending — sent (locked transfers waiting for the receiver) */}
             {loaderData.pendingSent.length > 0 && (
               <section>
-                <div className="mb-2 text-sm font-bold " style={{ color: '#a78bfa' }}>
+                <div className="mb-2 text-sm font-bold " style={{ color: '#9c1024' }}>
                   {t('transfer.pendingSent')}
                 </div>
                 <div className="flex flex-col gap-2">
@@ -1021,18 +1021,18 @@ export default function WalletPage() {
         {/* ─── Per-tab history ─────────────────────────────────────────── */}
         <section>
           <div className="mb-2 flex items-center justify-between">
-            <div className="text-sm font-bold " style={{ color: '#a78bfa' }}>
+            <div className="text-sm font-bold " style={{ color: '#9c1024' }}>
               {tab === 'deposit' ? t('wallet.history.deposit')
                 : tab === 'withdraw' ? t('wallet.history.withdraw')
                 : tab === 'reward' ? t('wallet.history.reward')
                 : t('wallet.history.transfer')}
             </div>
-            {isRevalidating && <Loader size={14} className="animate-spin" style={{ color: '#c4b5fd' }} />}
+            {isRevalidating && <Loader size={14} className="animate-spin" style={{ color: '#6b4a4f' }} />}
           </div>
 
           <div className="flex flex-col gap-2">
             {tabTxs.length === 0 && (
-              <p className="rounded-xl py-8 text-center text-sm" style={{ background: '#1e0040', color: '#a78bfa', border: '1px solid #4c1d95' }}>
+              <p className="rounded-xl py-8 text-center text-sm" style={{ background: '#ffffff', color: '#9c1024', border: '1px solid #f2ccd2' }}>
                 {tab === 'deposit' ? t('wallet.noTx.deposit')
                   : tab === 'withdraw' ? t('wallet.noTx.withdraw')
                   : tab === 'reward' ? t('wallet.noTx.reward')
@@ -1047,7 +1047,7 @@ export default function WalletPage() {
                 type="button"
                 onClick={loadMoreTab}
                 className="rounded-xl py-3 text-sm font-bold  transition-opacity hover:opacity-90"
-                style={{ background: '#4c1d95', color: '#e9d5ff', border: '2px dashed #7c3aed' }}
+                style={{ background: '#ffe4e6', color: '#2b0b10', border: '2px dashed #e8949e' }}
               >
                 {t('common.loadMoreCount', { n: Math.min(VISIBLE_STEP, tabRemaining) })}
               </button>
@@ -1112,26 +1112,26 @@ function PendingReceivedRow({ p, onClaim }: { p: PendingReceived; onClaim: () =>
   return (
     <div
       className="flex items-center gap-3 rounded-xl px-3 py-3"
-      style={{ background: '#1e0040', border: `1px solid ${isLocked ? '#f87171' : '#4c1d95'}` }}
+      style={{ background: '#ffffff', border: `1px solid ${isLocked ? '#f87171' : '#f2ccd2'}` }}
     >
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold" style={{ background: 'linear-gradient(135deg, #f59e0b, #b45309)', color: '#1e0040' }}>
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold" style={{ background: 'linear-gradient(135deg, #f59e0b, #b45309)', color: '#3d040f' }}>
         {(p.sender.name?.split(' ').map(s => s[0]).join('').slice(0, 2) || p.sender.tel.slice(-2)).toUpperCase()}
       </div>
       <div className="min-w-0 flex-1">
-        <div className="truncate text-sm font-bold" style={{ color: '#fde68a' }}>
+        <div className="truncate text-sm font-bold" style={{ color: '#c8102e' }}>
           {p.sender.name ?? p.sender.tel}
         </div>
-        <div className="text-[10px]" style={{ color: '#a78bfa' }}>
+        <div className="text-[10px]" style={{ color: '#9c1024' }}>
           {p.sender.tel} · {new Date(p.createdAt).toLocaleString()}
         </div>
         {isLocked && (
-          <div className="mt-0.5 text-[10px] font-bold" style={{ color: '#f87171' }}>
+          <div className="mt-0.5 text-[10px] font-bold" style={{ color: '#dc2626' }}>
             {t('transfer.locked')}
           </div>
         )}
       </div>
       <div className="flex flex-col items-end gap-1">
-        <span className="text-sm font-bold" style={{ color: '#4ade80' }}>+{p.amount.toLocaleString()}</span>
+        <span className="text-sm font-bold" style={{ color: '#15803d' }}>+{p.amount.toLocaleString()}</span>
         <button
           type="button"
           onClick={onClaim}
@@ -1152,26 +1152,26 @@ function PendingSentRow({ p, onCancel }: { p: PendingSent; onCancel: () => void 
   return (
     <div
       className="flex items-center gap-3 rounded-xl px-3 py-3"
-      style={{ background: '#1e0040', border: `1px solid ${isLocked ? '#f87171' : '#4c1d95'}` }}
+      style={{ background: '#ffffff', border: `1px solid ${isLocked ? '#f87171' : '#f2ccd2'}` }}
     >
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold" style={{ background: '#4c1d95', color: '#fde68a', border: '1px solid #7c3aed' }}>
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-xs font-bold" style={{ background: '#ffe4e6', color: '#c8102e', border: '1px solid #e8949e' }}>
         {(p.receiver.name?.split(' ').map(s => s[0]).join('').slice(0, 2) || p.receiver.tel.slice(-2)).toUpperCase()}
       </div>
       <div className="min-w-0 flex-1">
-        <div className="truncate text-sm font-bold" style={{ color: '#e9d5ff' }}>
+        <div className="truncate text-sm font-bold" style={{ color: '#2b0b10' }}>
           {p.receiver.name ?? p.receiver.tel}
         </div>
-        <div className="text-[10px]" style={{ color: '#a78bfa' }}>
+        <div className="text-[10px]" style={{ color: '#9c1024' }}>
           {p.receiver.tel} · {new Date(p.createdAt).toLocaleString()}
         </div>
         {isLocked && (
-          <div className="mt-0.5 text-[10px] font-bold" style={{ color: '#f87171' }}>
+          <div className="mt-0.5 text-[10px] font-bold" style={{ color: '#dc2626' }}>
             {t('transfer.locked')}
           </div>
         )}
       </div>
       <div className="flex flex-col items-end gap-1">
-        <span className="text-sm font-bold" style={{ color: '#f87171' }}>-{p.amount.toLocaleString()}</span>
+        <span className="text-sm font-bold" style={{ color: '#dc2626' }}>-{p.amount.toLocaleString()}</span>
         <button
           type="button"
           onClick={onCancel}
@@ -1196,9 +1196,9 @@ function QuickAmounts({ amounts, value, onSelect }: { amounts: number[]; value: 
           onClick={() => { playClick(); onSelect(q.toString()) }}
           className="rounded-xl py-2.5 text-sm font-bold transition-all hover:opacity-90"
           style={{
-            background: value === q.toString() ? '#7c3aed' : '#4c1d95',
-            color: value === q.toString() ? '#fff' : '#c4b5fd',
-            border: `1.5px solid ${value === q.toString() ? '#a78bfa' : '#6d28d9'}`,
+            background: value === q.toString() ? '#c8102e' : '#ffe4e6',
+            color: value === q.toString() ? '#fff' : '#6b4a4f',
+            border: `1.5px solid ${value === q.toString() ? '#e8949e' : '#e8949e'}`,
           }}
         >
           {formatAmount(q)}
@@ -1216,7 +1216,7 @@ function CustomAmountInput({ value, onChange }: { value: string; onChange: (v: s
   const display = value ? Number(value).toLocaleString() : ''
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="text-xs font-semibold" style={{ color: '#c4b5fd' }}>{t('wallet.customAmount')}</label>
+      <label className="text-xs font-semibold" style={{ color: '#6b4a4f' }}>{t('wallet.customAmount')}</label>
       <input
         type="text"
         inputMode="numeric"
@@ -1224,7 +1224,7 @@ function CustomAmountInput({ value, onChange }: { value: string; onChange: (v: s
         onChange={e => onChange(e.target.value.replace(/\D/g, ''))}
         placeholder={t('wallet.enterAmount')}
         className="rounded-xl px-4 py-3 text-base font-semibold outline-none"
-        style={{ background: '#1e0040', color: '#fde68a', border: '1.5px solid #6d28d9' }}
+        style={{ background: '#ffffff', color: '#c8102e', border: '1.5px solid #e8949e' }}
       />
     </div>
   )
@@ -1252,10 +1252,10 @@ function TxRow({ tx }: { tx: TxRowTx }) {
 
   const statusStyle =
     tx.status === 'COMPLETED'
-      ? { bg: 'rgba(22,163,74,0.2)', color: '#4ade80' }
+      ? { bg: 'rgba(22,163,74,0.2)', color: '#15803d' }
       : tx.status === 'PENDING'
-        ? { bg: 'rgba(234,179,8,0.2)', color: '#fde68a' }
-        : { bg: 'rgba(220,38,38,0.2)', color: '#f87171' }
+        ? { bg: 'rgba(234,179,8,0.2)', color: '#b45309' }
+        : { bg: 'rgba(220,38,38,0.2)', color: '#dc2626' }
 
   const statusLabel =
     tx.status === 'COMPLETED' ? t('common.status.completed')
@@ -1268,15 +1268,15 @@ function TxRow({ tx }: { tx: TxRowTx }) {
   return (
     <div
       className="flex items-center justify-between rounded-xl px-4 py-3"
-      style={{ background: '#1e0040', border: '1px solid #4c1d95' }}
+      style={{ background: '#ffffff', border: '1px solid #f2ccd2' }}
     >
       <div className="flex min-w-0 flex-col gap-0.5">
-        <span className="truncate text-sm font-semibold capitalize" style={{ color: '#e9d5ff' }}>
+        <span className="truncate text-sm font-semibold capitalize" style={{ color: '#2b0b10' }}>
           {tx.note ?? tx.type.replace('_', ' ').toLowerCase()}
         </span>
-        <span className="text-xs" style={{ color: '#7c3aed' }}>{formatDate(tx.createdAt)}</span>
+        <span className="text-xs" style={{ color: '#c8102e' }}>{formatDate(tx.createdAt)}</span>
         {reasonText && (
-          <span className="text-xs font-semibold" style={{ color: '#f87171' }}>{reasonText}</span>
+          <span className="text-xs font-semibold" style={{ color: '#dc2626' }}>{reasonText}</span>
         )}
         {tx.slipUrl && (
           <a
@@ -1284,7 +1284,7 @@ function TxRow({ tx }: { tx: TxRowTx }) {
             target="_blank"
             rel="noreferrer"
             className="text-[10px] font-semibold underline"
-            style={{ color: '#a78bfa' }}
+            style={{ color: '#9c1024' }}
           >
             {t('wallet.viewSlip')}
           </a>

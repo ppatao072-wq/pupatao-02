@@ -286,18 +286,18 @@ export default function ProfilePage() {
   })
 
   return (
-    <div className="min-h-screen font-sans" style={{ background: '#7c3aed' }}>
+    <div className="min-h-screen font-sans" style={{ background: 'linear-gradient(160deg, #fff1f2 0%, #ffe4e6 50%, #ffd9de 100%)' }}>
       {/* Header */}
-      <header className="flex items-center gap-3 px-4 py-3" style={{ background: '#1e0040', borderBottom: '1px solid #a78bfa' }}>
+      <header className="flex items-center gap-3 px-4 py-3" style={{ background: '#ffffff', borderBottom: '1px solid #e8949e' }}>
         <button
           onClick={() => { playClick(); navigate('/') }}
           className="flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-bold transition-opacity hover:opacity-80"
-          style={{ background: '#4c1d95', color: '#e9d5ff', border: '1px solid #7c3aed' }}
+          style={{ background: '#ffe4e6', color: '#2b0b10', border: '1px solid #e8949e' }}
         >
           <ArrowLeft size={16} />
           {t('common.back')}
         </button>
-        <h1 className="text-xl font-bold" style={{ color: '#fde68a' }}>{t('profile.title')}</h1>
+        <h1 className="text-xl font-bold" style={{ color: '#c8102e' }}>{t('profile.title')}</h1>
       </header>
 
       <div className="mx-auto flex max-w-xl flex-col gap-5 px-4 py-6">
@@ -309,7 +309,7 @@ export default function ProfilePage() {
         {actionData && 'error' in actionData && actionData.error && (
           <div
             className="rounded-xl px-4 py-3 text-sm font-semibold text-center"
-            style={{ background: 'rgba(220,38,38,0.2)', color: '#f87171', border: '1px solid #f87171' }}
+            style={{ background: 'rgba(220,38,38,0.2)', color: '#dc2626', border: '1px solid #f87171' }}
           >
             {actionData.error}
           </div>
@@ -322,7 +322,7 @@ export default function ProfilePage() {
 
           <section
             className="relative flex flex-col gap-5 rounded-2xl px-5 py-6 sm:px-6"
-            style={{ background: 'linear-gradient(135deg, #4c1d95, #1e0040)', border: '1px solid #a78bfa' }}
+            style={{ background: 'linear-gradient(135deg, #ffffff, #fff5f6)', border: '1px solid #e8949e' }}
           >
             {/* Top-right referral button — opens a modal with the share link
                 + QR. Type=button so it doesn't submit the surrounding profile
@@ -331,7 +331,7 @@ export default function ProfilePage() {
               type="button"
               onClick={() => { playClick(); setReferralOpen(true) }}
               className="absolute right-3 top-3 flex items-center gap-1 rounded-full px-3 py-1.5 text-[10px] font-bold  transition-opacity hover:opacity-90"
-              style={{ background: 'linear-gradient(135deg, #f59e0b, #b45309)', color: '#1e0040', border: '1.5px solid #fcd34d' }}
+              style={{ background: 'linear-gradient(135deg, #f59e0b, #b45309)', color: '#3d040f', border: '1.5px solid #fcd34d' }}
               aria-label={t('referral.title')}
               title={t('referral.title')}
             >
@@ -345,7 +345,7 @@ export default function ProfilePage() {
                 <div
                   className="relative flex h-28 w-28 items-center justify-center overflow-hidden rounded-full text-3xl font-bold shadow-lg"
                   style={{
-                    background: 'linear-gradient(135deg, #7c3aed, #4c1d95)',
+                    background: 'linear-gradient(135deg, #c8102e, #a50d26)',
                     color: '#fde68a',
                     border: '3px solid #f59e0b',
                   }}
@@ -393,17 +393,17 @@ export default function ProfilePage() {
               </div>
 
               <div className="text-center">
-                <div className="text-lg font-bold" style={{ color: '#fde68a' }}>
+                <div className="text-lg font-bold" style={{ color: '#c8102e' }}>
                   {[user.firstName, user.lastName].filter(Boolean).join(' ') || t('profile.unnamed')}
                 </div>
-                <div className="text-sm text-white">{user.tel}</div>
-                <div className="mt-1 text-xs text-white">{t('profile.memberSince', { date: joinDate })}</div>
+                <div className="text-sm text-[#6b4a4f]">{user.tel}</div>
+                <div className="mt-1 text-xs text-[#8a6d71]">{t('profile.memberSince', { date: joinDate })}</div>
               </div>
 
               {uploadError && (
                 <div
                   className="w-full rounded-lg px-3 py-2 text-xs font-semibold"
-                  style={{ background: 'rgba(220,38,38,0.2)', color: '#f87171', border: '1px solid #f87171' }}
+                  style={{ background: 'rgba(220,38,38,0.2)', color: '#dc2626', border: '1px solid #f87171' }}
                 >
                   {uploadError}
                 </div>
@@ -411,15 +411,15 @@ export default function ProfilePage() {
             </div>
 
             {/* Divider */}
-            <div className="h-px w-full" style={{ background: 'rgba(167,139,250,0.3)' }} />
+            <div className="h-px w-full" style={{ background: 'rgba(200,16,46,0.3)' }} />
 
             {/* Personal information */}
-            <div className="text-sm font-bold" style={{ color: '#e9d5ff' }}>{t('profile.personalInfo')}</div>
+            <div className="text-sm font-bold" style={{ color: '#2b0b10' }}>{t('profile.personalInfo')}</div>
 
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <Field label={t('profile.firstName')} htmlFor="firstName">
                 <div className="relative">
-                  <UserRound size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#a78bfa' }} />
+                  <UserRound size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#9c1024' }} />
                   <input
                     id="firstName"
                     name="firstName"
@@ -428,14 +428,14 @@ export default function ProfilePage() {
                     placeholder={t('profile.firstName')}
                     required
                     className="w-full rounded-lg py-2.5 pl-9 pr-3 text-sm font-semibold outline-none"
-                    style={{ background: '#2d1b4e', color: '#fde68a', border: '2px solid #7c3aed' }}
+                    style={{ background: '#fff0f2', color: '#c8102e', border: '2px solid #e8949e' }}
                   />
                 </div>
               </Field>
 
               <Field label={t('profile.lastName')} htmlFor="lastName">
                 <div className="relative">
-                  <UserRound size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#a78bfa' }} />
+                  <UserRound size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#9c1024' }} />
                   <input
                     id="lastName"
                     name="lastName"
@@ -444,7 +444,7 @@ export default function ProfilePage() {
                     placeholder={t('profile.lastName')}
                     required
                     className="w-full rounded-lg py-2.5 pl-9 pr-3 text-sm font-semibold outline-none"
-                    style={{ background: '#2d1b4e', color: '#fde68a', border: '2px solid #7c3aed' }}
+                    style={{ background: '#fff0f2', color: '#c8102e', border: '2px solid #e8949e' }}
                   />
                 </div>
               </Field>
@@ -464,9 +464,9 @@ export default function ProfilePage() {
                 // min-height prevents iOS's native picker from collapsing.
                 className="block w-full rounded-lg px-3 py-2.5 text-sm font-semibold outline-none"
                 style={{
-                  background: '#2d1b4e',
-                  color: '#fde68a',
-                  border: '2px solid #7c3aed',
+                  background: '#fff0f2',
+                  color: '#c8102e',
+                  border: '2px solid #e8949e',
                   colorScheme: 'dark',
                   minHeight: 44,
                   appearance: 'none',
@@ -477,14 +477,14 @@ export default function ProfilePage() {
 
             <Field label={t('profile.phoneReadonly')} htmlFor="tel">
               <div className="relative">
-                <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#6d28d9' }} />
+                <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#a50d26' }} />
                 <input
                   id="tel"
                   name="tel"
                   value={user.tel}
                   readOnly
                   className="w-full rounded-lg py-2.5 pl-9 pr-3 text-sm font-semibold outline-none opacity-70"
-                  style={{ background: '#1a0630', color: '#a78bfa', border: '2px solid #4c1d95', cursor: 'not-allowed' }}
+                  style={{ background: '#fff7f8', color: '#9c1024', border: '2px solid #f2ccd2', cursor: 'not-allowed' }}
                 />
               </div>
             </Field>
@@ -511,28 +511,28 @@ export default function ProfilePage() {
             here or from the withdraw modal; both POST to /api/bank-qr. */}
         <section
           className="flex flex-col gap-4 rounded-2xl px-5 py-6 sm:px-6"
-          style={{ background: 'linear-gradient(135deg, #4c1d95, #1e0040)', border: '1px solid #a78bfa' }}
+          style={{ background: 'linear-gradient(135deg, #ffffff, #fff5f6)', border: '1px solid #e8949e' }}
         >
           <div className="flex items-center justify-between">
-            <div className="text-sm font-bold" style={{ color: '#e9d5ff' }}>{t('profile.bankQr')}</div>
-            <span className="text-[10px] font-bold " style={{ color: '#a78bfa' }}>
+            <div className="text-sm font-bold" style={{ color: '#2b0b10' }}>{t('profile.bankQr')}</div>
+            <span className="text-[10px] font-bold " style={{ color: '#9c1024' }}>
               {currentBankQr ? t('profile.current') : t('profile.notSet')}
             </span>
           </div>
-          <p className="text-xs" style={{ color: '#c4b5fd' }}>
+          <p className="text-xs" style={{ color: '#6b4a4f' }}>
             {t('profile.bankQrDesc')}
           </p>
 
           <div
             className="flex flex-col items-center gap-3 rounded-xl px-4 py-5"
-            style={{ background: '#1e0040', border: `1.5px ${displayedBankQr ? 'solid' : 'dashed'} #7c3aed` }}
+            style={{ background: '#ffffff', border: `1.5px ${displayedBankQr ? 'solid' : 'dashed'} #e8949e` }}
           >
             {displayedBankQr ? (
               <button
                 type="button"
                 onClick={() => setBankLightbox(displayedBankQr)}
                 className="relative block w-full max-w-[240px] overflow-hidden rounded-lg transition-opacity hover:opacity-90"
-                style={{ border: '2px solid #a78bfa' }}
+                style={{ border: '2px solid #e8949e' }}
                 aria-label={t('withdraw.aria.viewQr')}
               >
                 <img src={displayedBankQr} alt="Bank QR" className="block h-auto w-full object-contain" />
@@ -544,9 +544,9 @@ export default function ProfilePage() {
               </button>
             ) : (
               <div className="flex flex-col items-center gap-1 py-4 text-center">
-                <Camera size={32} style={{ color: '#a78bfa' }} />
-                <div className="text-sm font-semibold" style={{ color: '#c4b5fd' }}>{t('profile.noBankYet')}</div>
-                <div className="text-[10px]" style={{ color: '#7c3aed' }}>{t('withdraw.fileTypes')}</div>
+                <Camera size={32} style={{ color: '#9c1024' }} />
+                <div className="text-sm font-semibold" style={{ color: '#6b4a4f' }}>{t('profile.noBankYet')}</div>
+                <div className="text-[10px]" style={{ color: '#c8102e' }}>{t('withdraw.fileTypes')}</div>
               </div>
             )}
 
@@ -562,7 +562,7 @@ export default function ProfilePage() {
               onClick={() => bankFileInputRef.current?.click()}
               disabled={bankUploading}
               className="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-bold  transition-opacity hover:opacity-90 disabled:opacity-50"
-              style={{ background: '#4c1d95', color: '#fde68a', border: '1.5px solid #7c3aed' }}
+              style={{ background: '#ffe4e6', color: '#c8102e', border: '1.5px solid #e8949e' }}
             >
               <Upload size={14} />
               {currentBankQr ? t('profile.replaceQr') : t('profile.uploadQr')}
@@ -572,7 +572,7 @@ export default function ProfilePage() {
           {bankUploadError && (
             <div
               className="rounded-lg px-3 py-2 text-xs font-semibold"
-              style={{ background: 'rgba(220,38,38,0.2)', color: '#f87171', border: '1px solid #f87171' }}
+              style={{ background: 'rgba(220,38,38,0.2)', color: '#dc2626', border: '1px solid #f87171' }}
             >
               {bankUploadError}
             </div>
@@ -584,21 +584,21 @@ export default function ProfilePage() {
             modal. */}
         <section
           className="flex flex-col gap-4 rounded-2xl px-5 py-6 sm:px-6"
-          style={{ background: 'linear-gradient(135deg, #4c1d95, #1e0040)', border: '1px solid #a78bfa' }}
+          style={{ background: 'linear-gradient(135deg, #ffffff, #fff5f6)', border: '1px solid #e8949e' }}
         >
           <div className="flex items-center justify-between">
-            <div className="text-sm font-bold" style={{ color: '#e9d5ff' }}>{t('referral.title')}</div>
+            <div className="text-sm font-bold" style={{ color: '#2b0b10' }}>{t('referral.title')}</div>
             <button
               type="button"
               onClick={() => { playClick(); setReferralOpen(true) }}
               className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] font-bold  transition-opacity hover:opacity-90"
-              style={{ background: '#7c3aed', color: '#fff', border: '1px solid #a78bfa' }}
+              style={{ background: '#c8102e', color: '#fff', border: '1px solid #e8949e' }}
             >
               <Gift size={12} />
               {t('referral.invite')}
             </button>
           </div>
-          <p className="text-xs" style={{ color: '#c4b5fd' }}>
+          <p className="text-xs" style={{ color: '#6b4a4f' }}>
             {t('referral.description')}
           </p>
           <ReferralsList referrals={referrals} />
@@ -627,7 +627,7 @@ export default function ProfilePage() {
             type="button"
             onClick={e => { e.stopPropagation(); setBankLightbox(null) }}
             className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-            style={{ background: '#4c1d95', border: '1px solid #7c3aed', color: '#e9d5ff' }}
+            style={{ background: '#ffe4e6', border: '1px solid #e8949e', color: '#2b0b10' }}
             aria-label="Close preview"
           >
             <X size={20} />
@@ -642,7 +642,7 @@ export default function ProfilePage() {
 function Field({ label, htmlFor, children }: { label: string; htmlFor: string; children: React.ReactNode }) {
   return (
     <label htmlFor={htmlFor} className="flex flex-col gap-1.5">
-      <span className="text-xs font-semibold" style={{ color: '#a78bfa' }}>{label}</span>
+      <span className="text-xs font-semibold" style={{ color: '#9c1024' }}>{label}</span>
       {children}
     </label>
   )

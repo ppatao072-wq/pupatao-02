@@ -143,10 +143,10 @@ export const links: Route.LinksFunction = () => [
 export const meta: Route.MetaFunction = () => [
   { title: "Fish Prawn Crab Game" },
   { name: "description", content: "Traditional Asian dice betting game" },
-  { name: "theme-color", content: "#1e0040" },
+  { name: "theme-color", content: "#fff5f6" },
   { name: "mobile-web-app-capable", content: "yes" },
   { name: "apple-mobile-web-app-capable", content: "yes" },
-  { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+  { name: "apple-mobile-web-app-status-bar-style", content: "default" },
   { name: "apple-mobile-web-app-title", content: "Pupatao" },
 ]
 
@@ -166,7 +166,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         {children}
         <Toaster
           position="bottom-center"
-          theme="dark"
+          theme="light"
           richColors
           closeButton
           toastOptions={{
@@ -225,7 +225,7 @@ function CompetitionBanner() {
   return (
     <div className="fixed bottom-4 left-1/2 z-[300] w-[calc(100%-2rem)] max-w-sm -translate-x-1/2"
       style={{
-        background: 'linear-gradient(135deg,#1e0040,#3b0764)',
+        background: 'linear-gradient(135deg,#ffffff,#fff1f2)',
         border: '2px solid #fbbf24',
         borderRadius: 16,
         boxShadow: '0 8px 32px rgba(251,191,36,0.25)',
@@ -233,8 +233,8 @@ function CompetitionBanner() {
       <div className="flex items-start gap-3 p-4">
         <span className="text-2xl shrink-0">🏆</span>
         <div className="min-w-0 flex-1">
-          <div className="text-sm font-bold" style={{ color: '#fbbf24' }}>ການແຂ່ງຂັນ Demo!</div>
-          <div className="mt-0.5 text-xs" style={{ color: '#c4b5fd' }}>
+          <div className="text-sm font-bold" style={{ color: '#b45309' }}>ການແຂ່ງຂັນ Demo!</div>
+          <div className="mt-0.5 text-xs" style={{ color: '#6b4a4f' }}>
             ລະບົບມີການແຂ່ງຂັນ Demo Play ຢູ່ ຜູ້ທີ່ມີ Demo Balance ສູງສຸດຊະນະ!
           </div>
           <div className="mt-2 flex gap-2">
@@ -247,13 +247,13 @@ function CompetitionBanner() {
             </a>
             <button type="button" onClick={dismiss}
               className="rounded-lg px-3 py-1.5 text-xs font-bold"
-              style={{ background: 'rgba(255,255,255,0.08)', color: '#a5b4fc', border: '1px solid #4c1d95' }}>
+              style={{ background: 'rgba(200,16,46,0.07)', color: '#6b4a4f', border: '1px solid #f2ccd2' }}>
               ປິດ
             </button>
           </div>
         </div>
         <button type="button" onClick={dismiss}
-          className="shrink-0 rounded-full p-0.5" style={{ color: '#818cf8' }}>
+          className="shrink-0 rounded-full p-0.5" style={{ color: '#9c1024' }}>
           <X size={14} />
         </button>
       </div>
@@ -306,7 +306,7 @@ function CampaignModal({ sessionId, percent, locale }: { sessionId: string; perc
       {visible && (
         <div
           className="fixed inset-0 z-[500] flex items-center justify-center p-4"
-          style={{ background: 'rgba(15,0,32,0.85)' }}
+          style={{ background: 'rgba(43,11,16,0.55)' }}
           onClick={dismiss}
           role="dialog"
           aria-modal="true"
@@ -315,7 +315,7 @@ function CampaignModal({ sessionId, percent, locale }: { sessionId: string; perc
             onClick={e => e.stopPropagation()}
             className="relative w-full max-w-sm rounded-2xl p-6 text-center animate-in fade-in zoom-in-95 duration-200"
             style={{
-              background: 'linear-gradient(135deg, #3b0764, #1e0040)',
+              background: 'linear-gradient(135deg, #fff1f2, #ffffff)',
               border: '2px solid #fbbf24',
               boxShadow: '0 10px 40px rgba(251,191,36,0.35)',
             }}
@@ -324,7 +324,7 @@ function CampaignModal({ sessionId, percent, locale }: { sessionId: string; perc
               type="button"
               onClick={dismiss}
               className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-              style={{ background: '#4c1d95', color: '#e9d5ff', border: '1px solid #7c3aed' }}
+              style={{ background: '#ffe4e6', color: '#2b0b10', border: '1px solid #e8949e' }}
               aria-label={translate(locale, 'common.close')}
             >
               <X size={16} />
@@ -336,10 +336,10 @@ function CampaignModal({ sessionId, percent, locale }: { sessionId: string; perc
             >
               🎁
             </div>
-            <h2 className="mb-2 text-lg font-bold" style={{ color: '#fde68a' }}>
+            <h2 className="mb-2 text-lg font-bold" style={{ color: '#c8102e' }}>
               {translate(locale, 'campaign.modal.title')}
             </h2>
-            <p className="mb-5 text-sm" style={{ color: '#e9d5ff' }}>
+            <p className="mb-5 text-sm" style={{ color: '#2b0b10' }}>
               {translate(locale, 'campaign.modal.body', { percent })}
             </p>
             <button
@@ -460,26 +460,26 @@ function PWAInstallPrompt() {
   return (
     <div
       className="fixed bottom-4 left-1/2 z-[400] w-[calc(100%-2rem)] max-w-sm -translate-x-1/2"
-      style={{ filter: 'drop-shadow(0 8px 32px rgba(124,58,237,0.4))' }}
+      style={{ filter: 'drop-shadow(0 8px 32px rgba(200,16,46,0.4))' }}
     >
       <div
         className="rounded-2xl p-5"
-        style={{ background: 'linear-gradient(135deg,#1e0040,#2d1b4e)', border: '2px solid #7c3aed' }}
+        style={{ background: 'linear-gradient(135deg,#ffffff,#fff5f6)', border: '2px solid #e8949e' }}
       >
         {/* Header */}
         <div className="flex items-start justify-between gap-3 mb-3">
           <div className="flex items-center gap-2">
             <span style={{ fontSize: 28 }}>📲</span>
             <div>
-              <div className="text-sm font-bold" style={{ color: '#fde68a' }}>ຕິດຕັ້ງແອັບ Pupatao</div>
-              <div className="text-[10px]" style={{ color: '#a78bfa' }}>
+              <div className="text-sm font-bold" style={{ color: '#c8102e' }}>ຕິດຕັ້ງແອັບ Pupatao</div>
+              <div className="text-[10px]" style={{ color: '#9c1024' }}>
                 {isIos ? 'ສຳລັບ iPhone / iPad' : 'ໃຊ້ງານໄດ້ດີຂຶ້ນຄືແອັບ'}
               </div>
             </div>
           </div>
           <button type="button" onClick={dismiss}
             className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-            style={{ background: 'rgba(255,255,255,0.08)', color: '#818cf8' }}>
+            style={{ background: 'rgba(200,16,46,0.07)', color: '#9c1024' }}>
             <X size={14} />
           </button>
         </div>
@@ -487,7 +487,7 @@ function PWAInstallPrompt() {
         {isIos ? (
           /* iOS: step-by-step instructions (Safari has no install API) */
           <>
-            <p className="mb-3 text-xs" style={{ color: '#c4b5fd' }}>
+            <p className="mb-3 text-xs" style={{ color: '#6b4a4f' }}>
               Safari ໃນ iPhone ສາມາດຕິດຕັ້ງໄດ້ດ້ວຍຂັ້ນຕອນດັ່ງນີ້:
             </p>
             <ol className="flex flex-col gap-2">
@@ -497,33 +497,33 @@ function PWAInstallPrompt() {
                 { step: '3', icon: '✅', text: 'ກົດ "Add" ມູມຂວາເທິງ' },
               ].map(({ step, icon, text }) => (
                 <li key={step} className="flex items-start gap-2 rounded-lg px-3 py-2"
-                  style={{ background: 'rgba(124,58,237,0.12)', border: '1px solid #4c1d95' }}>
+                  style={{ background: 'rgba(200,16,46,0.12)', border: '1px solid #f2ccd2' }}>
                   <span className="shrink-0 text-sm">{icon}</span>
-                  <span className="text-xs" style={{ color: '#e9d5ff' }}>{text}</span>
+                  <span className="text-xs" style={{ color: '#2b0b10' }}>{text}</span>
                 </li>
               ))}
             </ol>
             <button type="button" onClick={dismiss}
               className="mt-4 w-full rounded-xl py-2.5 text-sm font-bold"
-              style={{ background: 'linear-gradient(135deg,#4c1d95,#2d1b4e)', color: '#e9d5ff', border: '1px solid #7c3aed' }}>
+              style={{ background: 'linear-gradient(135deg,#ffe4e6,#fff1f2)', color: '#2b0b10', border: '1px solid #e8949e' }}>
               ເຂົ້າໃຈແລ້ວ
             </button>
           </>
         ) : (
           /* Android / Chrome: trigger native install prompt */
           <>
-            <p className="mb-4 text-xs" style={{ color: '#c4b5fd' }}>
+            <p className="mb-4 text-xs" style={{ color: '#6b4a4f' }}>
               ຕິດຕັ້ງ Pupatao ໃສ່ໜ້າຈໍຫຼັກ — ໄວ, ສະດວກ, ໃຊ້ໄດ້ຄືແອັບ!
             </p>
             <div className="flex gap-2">
               <button type="button" onClick={dismiss}
                 className="flex-1 rounded-xl py-2.5 text-sm font-bold"
-                style={{ background: 'rgba(255,255,255,0.06)', color: '#a78bfa', border: '1px solid #4c1d95' }}>
+                style={{ background: 'rgba(200,16,46,0.07)', color: '#9c1024', border: '1px solid #f2ccd2' }}>
                 ບໍ່ດຽວນີ້
               </button>
               <button type="button" onClick={installAndroid}
                 className="flex-1 rounded-xl py-2.5 text-sm font-bold"
-                style={{ background: 'linear-gradient(135deg,#7c3aed,#4c1d95)', color: '#fff', border: '1px solid #a78bfa' }}>
+                style={{ background: 'linear-gradient(135deg,#c8102e,#a50d26)', color: '#fff', border: '1px solid #e8949e' }}>
                 ຕິດຕັ້ງເລີຍ
               </button>
             </div>
@@ -551,23 +551,23 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         <h1 className="text-3xl font-bold">404</h1>
         <p className="text-sm opacity-80">The requested page could not be found.</p>
         <a href="/" className="mt-2 rounded-lg px-4 py-2 text-sm font-bold"
-          style={{ background: "#4338ca", color: "#fff" }}>ກັບໜ້າຫຼັກ · Home</a>
+          style={{ background: "#c8102e", color: "#fff" }}>ກັບໜ້າຫຼັກ · Home</a>
       </main>
     )
   }
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center gap-4 p-6 text-center"
-      style={{ background: "linear-gradient(160deg, #0f172a, #1e1b4b)", color: "#e9d5ff" }}>
+      style={{ background: "linear-gradient(160deg, #ffffff, #fff5f6)", color: "#2b0b10" }}>
       <div>
-        <p className="text-base font-bold" style={{ color: "#fde68a" }}>
+        <p className="text-base font-bold" style={{ color: "#c8102e" }}>
           ເວັບໄຊຕ໌ກຳລັງຫຍຸ້ງ, ກະລຸນາລອງໃໝ່
         </p>
         <p className="mt-1 text-xs opacity-70">The site is busy — please try again in a moment.</p>
       </div>
       <button type="button" onClick={() => { window.location.reload() }}
         className="mt-1 rounded-lg px-5 py-2 text-sm font-bold"
-        style={{ background: "#4338ca", color: "#fff", border: "1px solid #818cf8" }}>
+        style={{ background: "#c8102e", color: "#fff", border: "1px solid #e8949e" }}>
         ລອງອີກຄັ້ງ · Try again
       </button>
     </main>

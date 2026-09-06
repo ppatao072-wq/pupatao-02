@@ -635,8 +635,8 @@ export default function AdminTransactions() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold" style={{ color: '#fde68a' }}>{t('admin.transactions.title')}</h1>
-        <span className="text-xs" style={{ color: '#a5b4fc' }}>{t('admin.transactions.totalCount', { n: data.total.toLocaleString() })}</span>
+        <h1 className="text-xl font-bold" style={{ color: '#c8102e' }}>{t('admin.transactions.title')}</h1>
+        <span className="text-xs" style={{ color: '#6b4a4f' }}>{t('admin.transactions.totalCount', { n: data.total.toLocaleString() })}</span>
       </div>
 
       {/* Filters bar — tabs + status on the left, phone search on the right.
@@ -653,9 +653,9 @@ export default function AdminTransactions() {
                   to={tabHref(tab.key)}
                   className="inline-flex items-center gap-1.5 rounded-lg px-4 py-1.5 text-xs font-bold capitalize"
                   style={{
-                    background: data.tab === tab.key ? '#4338ca' : '#1e1b4b',
-                    color: data.tab === tab.key ? '#fff' : '#a5b4fc',
-                    border: `1px solid ${data.tab === tab.key ? '#818cf8' : '#4338ca'}`,
+                    background: data.tab === tab.key ? '#c8102e' : '#ffffff',
+                    color: data.tab === tab.key ? '#fff' : '#6b4a4f',
+                    border: `1px solid ${data.tab === tab.key ? '#e8949e' : '#f2ccd2'}`,
                   }}
                 >
                   {t(tab.labelKey)}
@@ -676,9 +676,9 @@ export default function AdminTransactions() {
                   to={statusHref(s)}
                   className="rounded-md px-2 py-1 text-[10px] font-bold"
                   style={{
-                    background: data.status === s ? '#1e1b4b' : 'transparent',
-                    color: data.status === s ? '#fde68a' : '#818cf8',
-                    border: `1px solid ${data.status === s ? '#4338ca' : '#1e1b4b'}`,
+                    background: data.status === s ? '#ffffff' : 'transparent',
+                    color: data.status === s ? '#c8102e' : '#9c1024',
+                    border: `1px solid ${data.status === s ? '#f2ccd2' : '#f2ccd2'}`,
                   }}
                 >
                   {s}
@@ -699,24 +699,24 @@ export default function AdminTransactions() {
             defaultValue={data.pageSize}
             onChange={e => { e.currentTarget.form?.requestSubmit() }}
             className="rounded-lg px-2 py-2 text-xs font-bold outline-none"
-            style={{ background: '#0f172a', color: '#a5b4fc', border: '1.5px solid #4338ca' }}
+            style={{ background: '#fff5f6', color: '#6b4a4f', border: '1.5px solid #f2ccd2' }}
           >
             {PAGE_SIZES.map(s => <option key={s} value={s}>{t('admin.transactions.pageSizeOption', { n: s })}</option>)}
           </select>
           <div className="relative flex-1">
-            <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#818cf8' }} />
+            <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#9c1024' }} />
             <input
               name="q"
               defaultValue={data.q}
               placeholder={t('admin.transactions.searchPlaceholder')}
               className="w-full rounded-lg py-2 pl-9 pr-3 text-sm outline-none"
-              style={{ background: '#0f172a', color: '#fde68a', border: '1.5px solid #4338ca' }}
+              style={{ background: '#fff5f6', color: '#c8102e', border: '1.5px solid #f2ccd2' }}
             />
           </div>
           <button
             type="submit"
             className="rounded-lg px-3 py-2 text-xs font-bold"
-            style={{ background: '#4338ca', color: '#fff', border: '1.5px solid #818cf8' }}
+            style={{ background: '#c8102e', color: '#fff', border: '1.5px solid #e8949e' }}
           >
             {loading ? <Loader size={14} className="animate-spin" /> : t('admin.transactions.search')}
           </button>
@@ -729,7 +729,7 @@ export default function AdminTransactions() {
                 return `?${next.toString()}`
               })()}
               className="rounded-lg px-3 py-2 text-xs font-bold"
-              style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1.5px solid #4338ca' }}
+              style={{ background: '#ffffff', color: '#6b4a4f', border: '1.5px solid #f2ccd2' }}
             >
               {t('admin.transactions.clear')}
             </Link>
@@ -741,7 +741,7 @@ export default function AdminTransactions() {
         {data.txs.length === 0 && (
           <div
             className="rounded-xl p-8 text-center text-xs"
-            style={{ background: '#0f172a', color: '#818cf8', border: '1px solid #1e1b4b' }}
+            style={{ background: '#fff5f6', color: '#9c1024', border: '1px solid #f2ccd2' }}
           >
             {t('admin.transactions.noneMatch', { tab: t(TABS.find(tab => tab.key === data.tab)?.labelKey ?? 'admin.transactions.tab.deposit') })}
           </div>
@@ -774,18 +774,18 @@ export default function AdminTransactions() {
           <div className="flex items-center gap-2">
             {data.page > 1 && (
               <Link to={pageHref(data.page - 1)} className="rounded-md px-3 py-1.5 text-xs font-bold"
-                style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}>
+                style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}>
                 {t('admin.transactions.prev')}
               </Link>
             )}
             {data.page < totalPages && (
               <Link to={pageHref(data.page + 1)} className="rounded-md px-3 py-1.5 text-xs font-bold"
-                style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}>
+                style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}>
                 {t('admin.transactions.next')}
               </Link>
             )}
           </div>
-          <span className="text-xs tabular-nums" style={{ color: '#a5b4fc' }}>
+          <span className="text-xs tabular-nums" style={{ color: '#6b4a4f' }}>
             {t('admin.transactions.showingRange', {
               from: Math.min((data.page - 1) * data.pageSize + 1, data.total),
               to: Math.min(data.page * data.pageSize, data.total).toLocaleString(),
@@ -852,26 +852,26 @@ export default function AdminTransactions() {
         >
           {isDepositApprove && (
             <label className="flex flex-col gap-1">
-              <span className="text-xs font-bold" style={{ color: '#a5b4fc' }}>{t('admin.transactions.confirm.depositAmountLabel')}</span>
+              <span className="text-xs font-bold" style={{ color: '#6b4a4f' }}>{t('admin.transactions.confirm.depositAmountLabel')}</span>
               <input
                 type="text"
                 inputMode="numeric"
                 value={approveAmount ? Number(approveAmount).toLocaleString() : ''}
                 onChange={e => setApproveAmount(e.target.value.replace(/\D/g, ''))}
                 className="rounded-md px-3 py-2 text-sm font-bold outline-none"
-                style={{ background: '#0f172a', color: '#fde68a', border: '1.5px solid #4338ca' }}
+                style={{ background: '#fff5f6', color: '#c8102e', border: '1.5px solid #f2ccd2' }}
               />
-              <span className="text-[10px]" style={{ color: '#64748b' }}>{t('admin.transactions.confirm.depositAmountHint')}</span>
+              <span className="text-[10px]" style={{ color: '#8a6d71' }}>{t('admin.transactions.confirm.depositAmountHint')}</span>
             </label>
           )}
           {pending.op === 'reject' && (
             <label className="flex flex-col gap-1">
-              <span className="text-xs font-bold" style={{ color: '#a5b4fc' }}>{t('admin.transactions.confirm.rejectReasonLabel')}</span>
+              <span className="text-xs font-bold" style={{ color: '#6b4a4f' }}>{t('admin.transactions.confirm.rejectReasonLabel')}</span>
               <select
                 value={rejectReason}
                 onChange={e => setRejectReason(e.target.value)}
                 className="rounded-md px-2 py-2 text-xs font-semibold outline-none"
-                style={{ background: '#0f172a', color: '#fde68a', border: '1.5px solid #4338ca' }}
+                style={{ background: '#fff5f6', color: '#c8102e', border: '1.5px solid #f2ccd2' }}
               >
                 <option value="" disabled>{t('admin.transactions.confirm.rejectReasonPlaceholder')}</option>
                 {rejectReasonsFor(data.tab === 'deposit' ? 'DEPOSIT' : 'WITHDRAW').map(r => (
@@ -882,7 +882,7 @@ export default function AdminTransactions() {
           )}
           {needsCode && (
             <label className="flex flex-col gap-1">
-              <span className="text-xs font-bold" style={{ color: '#a5b4fc' }}>{t('admin.transactions.confirm.codeLabel')}</span>
+              <span className="text-xs font-bold" style={{ color: '#6b4a4f' }}>{t('admin.transactions.confirm.codeLabel')}</span>
               <input
                 type="text"
                 autoComplete="off"
@@ -890,7 +890,7 @@ export default function AdminTransactions() {
                 onChange={e => setConfirmCode(e.target.value)}
                 placeholder={t('admin.transactions.confirm.codePlaceholder')}
                 className="rounded-md px-3 py-2 text-sm font-bold outline-none"
-                style={{ background: '#0f172a', color: '#fde68a', border: '1.5px solid #4338ca' }}
+                style={{ background: '#fff5f6', color: '#c8102e', border: '1.5px solid #f2ccd2' }}
               />
             </label>
           )}
@@ -901,9 +901,9 @@ export default function AdminTransactions() {
 }
 
 function statusStyle(status: string) {
-  if (status === 'COMPLETED') return { bg: 'rgba(22,163,74,0.2)', color: '#4ade80' }
-  if (status === 'PENDING') return { bg: 'rgba(234,179,8,0.2)', color: '#fde68a' }
-  return { bg: 'rgba(220,38,38,0.2)', color: '#f87171' }
+  if (status === 'COMPLETED') return { bg: 'rgba(22,163,74,0.2)', color: '#15803d' }
+  if (status === 'PENDING') return { bg: 'rgba(234,179,8,0.2)', color: '#b45309' }
+  return { bg: 'rgba(220,38,38,0.2)', color: '#dc2626' }
 }
 
 function StatusBadge({ status }: { status: string }) {
@@ -961,7 +961,7 @@ function TxCard({
 
   return (
     <div className="flex flex-col gap-3 rounded-xl p-4 md:flex-row md:items-center"
-      style={{ background: '#0f172a', border: `1px solid ${isPending ? '#4338ca' : '#1e1b4b'}` }}>
+      style={{ background: '#fff5f6', border: `1px solid ${isPending ? '#f2ccd2' : '#f2ccd2'}` }}>
       {(tx.slipUrl || tab === 'withdraw') && (
         <div className="flex shrink-0 flex-col items-center gap-1">
           {tx.slipUrl ? (
@@ -969,11 +969,11 @@ function TxCard({
               type="button"
               onClick={() => onSlipPreview(tx.slipUrl!)}
               className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-lg transition-opacity hover:opacity-80"
-              style={{ background: '#1e1b4b', border: '1px solid #4338ca' }}
+              style={{ background: '#ffffff', border: '1px solid #f2ccd2' }}
               aria-label={t('admin.transactions.card.previewSlipAria')}
             >
               {tx.slipUrl.endsWith('.pdf')
-                ? <span className="text-xs font-bold" style={{ color: '#fde68a' }}>📄 PDF</span>
+                ? <span className="text-xs font-bold" style={{ color: '#c8102e' }}>📄 PDF</span>
                 : <img src={tx.slipUrl} alt={t('admin.transactions.card.slipAlt')} className="h-full w-full object-cover" />}
             </button>
           ) : (
@@ -982,7 +982,7 @@ function TxCard({
               onClick={() => qrInputRef.current?.click()}
               disabled={qrUploading}
               className="flex h-20 w-20 flex-col items-center justify-center gap-1 rounded-lg transition-opacity hover:opacity-80 disabled:opacity-50"
-              style={{ background: '#1e1b4b', border: '1px dashed #4338ca', color: '#a5b4fc' }}
+              style={{ background: '#ffffff', border: '1px dashed #f2ccd2', color: '#6b4a4f' }}
             >
               {qrUploading
                 ? <Loader size={16} className="animate-spin" />
@@ -1004,7 +1004,7 @@ function TxCard({
                   onClick={() => qrInputRef.current?.click()}
                   disabled={qrUploading}
                   className="inline-flex items-center gap-1 text-[10px] font-bold underline disabled:opacity-50"
-                  style={{ color: '#a5b4fc' }}
+                  style={{ color: '#6b4a4f' }}
                 >
                   {qrUploading
                     ? <><Loader size={9} className="animate-spin" /> {t('admin.transactions.card.qrUploading')}</>
@@ -1017,43 +1017,43 @@ function TxCard({
       )}
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[10px] font-bold tabular-nums" style={{ color: '#64748b' }}>#{rowNum}</span>
-          <span className="font-semibold" style={{ color: '#e9d5ff' }}>
+          <span className="text-[10px] font-bold tabular-nums" style={{ color: '#8a6d71' }}>#{rowNum}</span>
+          <span className="font-semibold" style={{ color: '#2b0b10' }}>
             {tx.sender.name !== tx.sender.tel ? `${tx.sender.name} · ` : ''}{tx.sender.tel}
           </span>
           <StatusBadge status={tx.status} />
         </div>
-        <div className="mt-0.5 text-xs" style={{ color: '#818cf8' }}>
+        <div className="mt-0.5 text-xs" style={{ color: '#9c1024' }}>
           {new Date(tx.createdAt).toLocaleString()}
         </div>
-        {tx.note && <div className="mt-1 text-xs" style={{ color: '#a5b4fc' }}>{tx.note}</div>}
+        {tx.note && <div className="mt-1 text-xs" style={{ color: '#6b4a4f' }}>{tx.note}</div>}
         {tab === 'withdraw' && (
           <div className="mt-1.5 inline-flex flex-wrap items-center gap-x-2 gap-y-0.5 rounded-md px-2 py-1 text-xs font-semibold"
             style={{ background: 'rgba(217,119,6,0.12)' }}>
-            <span style={{ color: '#fbbf24' }}>
+            <span style={{ color: '#b45309' }}>
               {t('admin.transactions.card.fee')}: {withdrawFee(tx.amount).toLocaleString()} ₭
             </span>
-            <span style={{ color: '#94a3b8' }}>·</span>
-            <span style={{ color: '#cbd5e1' }}>
-              {t('admin.transactions.card.netTransfer')}: <strong style={{ color: '#4ade80' }}>{(tx.amount - withdrawFee(tx.amount)).toLocaleString()} ₭</strong>
+            <span style={{ color: '#8a6d71' }}>·</span>
+            <span style={{ color: '#8a6d71' }}>
+              {t('admin.transactions.card.netTransfer')}: <strong style={{ color: '#15803d' }}>{(tx.amount - withdrawFee(tx.amount)).toLocaleString()} ₭</strong>
             </span>
           </div>
         )}
         {'approvedBy' in tx && tx.approvedBy && (
-          <div className="mt-1 text-[10px]" style={{ color: '#4ade80' }}>
+          <div className="mt-1 text-[10px]" style={{ color: '#15803d' }}>
             ✓ {t('admin.transactions.card.approvedBy')} <strong>{tx.approvedBy}</strong>
             {tx.reviewedAt ? ` · ${new Date(tx.reviewedAt).toLocaleString()}` : ''}
           </div>
         )}
         {'rejectedBy' in tx && tx.rejectedBy && (
-          <div className="mt-1 text-[10px]" style={{ color: '#f87171' }}>
+          <div className="mt-1 text-[10px]" style={{ color: '#dc2626' }}>
             ✗ {t('admin.transactions.card.rejectedBy')} <strong>{tx.rejectedBy}</strong>
             {tx.reviewedAt ? ` · ${new Date(tx.reviewedAt).toLocaleString()}` : ''}
           </div>
         )}
       </div>
       <div className="flex items-center gap-3 md:flex-col md:items-end">
-        <span className="text-lg font-bold" style={{ color: '#fde68a' }}>
+        <span className="text-lg font-bold" style={{ color: '#c8102e' }}>
           {tx.amount.toLocaleString()} ₭
         </span>
         {isPending ? (
@@ -1076,7 +1076,7 @@ function TxCard({
                 type="button"
                 onClick={() => onSlipPreview(tx.slipUrl!)}
                 className="inline-flex items-center gap-1 text-[10px] font-bold underline"
-                style={{ color: '#a5b4fc' }}
+                style={{ color: '#6b4a4f' }}
               >
                 <Maximize2 size={10} /> {t('admin.transactions.card.slipAlt')}
               </button>
@@ -1110,46 +1110,46 @@ function TransferCard({ tx, rowNum }: { tx: TxLite; rowNum: number }) {
 
   return (
     <div className="flex flex-col gap-3 rounded-xl p-4 md:flex-row md:items-center"
-      style={{ background: '#0f172a', border: `1px solid ${isPending ? '#4338ca' : '#1e1b4b'}` }}>
+      style={{ background: '#fff5f6', border: `1px solid ${isPending ? '#f2ccd2' : '#f2ccd2'}` }}>
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
           {/* Sender → Recipient */}
           <div className="flex items-center gap-1.5 flex-wrap">
-            <span className="text-[10px] font-bold tabular-nums" style={{ color: '#64748b' }}>#{rowNum}</span>
-            <span className="font-semibold" style={{ color: '#e9d5ff' }}>{tx.sender.name}</span>
-            <ArrowRight size={12} style={{ color: '#818cf8' }} />
+            <span className="text-[10px] font-bold tabular-nums" style={{ color: '#8a6d71' }}>#{rowNum}</span>
+            <span className="font-semibold" style={{ color: '#2b0b10' }}>{tx.sender.name}</span>
+            <ArrowRight size={12} style={{ color: '#9c1024' }} />
             {tx.recipient ? (
-              <span className="font-semibold" style={{ color: '#e9d5ff' }}>{tx.recipient.name}</span>
+              <span className="font-semibold" style={{ color: '#2b0b10' }}>{tx.recipient.name}</span>
             ) : (
-              <span className="text-xs" style={{ color: '#818cf8' }}>{t('admin.transactions.transfer.unknownRecipient')}</span>
+              <span className="text-xs" style={{ color: '#9c1024' }}>{t('admin.transactions.transfer.unknownRecipient')}</span>
             )}
           </div>
           <StatusBadge status={tx.status} />
           {/* Transfer type badge */}
           <span className="rounded-full px-2 py-0.5 text-[10px] font-bold"
-            style={{ background: isEncrypted ? 'rgba(124,58,237,0.2)' : 'rgba(59,130,246,0.2)', color: isEncrypted ? '#c4b5fd' : '#93c5fd' }}>
+            style={{ background: isEncrypted ? 'rgba(200,16,46,0.2)' : 'rgba(59,130,246,0.2)', color: isEncrypted ? '#a50d26' : '#2563eb' }}>
             {isEncrypted ? t('admin.transactions.transfer.encrypted') : t('admin.transactions.transfer.normal')}
           </span>
         </div>
 
         {/* Sender tel + recipient tel */}
-        <div className="mt-1 flex items-center gap-1.5 text-xs" style={{ color: '#818cf8' }}>
+        <div className="mt-1 flex items-center gap-1.5 text-xs" style={{ color: '#9c1024' }}>
           <span>{tx.sender.tel}</span>
           <ArrowRight size={10} />
           <span>{tx.recipient?.tel ?? '—'}</span>
         </div>
 
-        <div className="mt-0.5 text-xs" style={{ color: '#818cf8' }}>
+        <div className="mt-0.5 text-xs" style={{ color: '#9c1024' }}>
           {new Date(tx.createdAt).toLocaleString()}
         </div>
-        {tx.note && <div className="mt-1 text-xs" style={{ color: '#a5b4fc' }}>{tx.note}</div>}
+        {tx.note && <div className="mt-1 text-xs" style={{ color: '#6b4a4f' }}>{tx.note}</div>}
       </div>
 
       <div className="flex items-center gap-3 md:flex-col md:items-end">
-        <span className="text-lg font-bold" style={{ color: '#fde68a' }}>
+        <span className="text-lg font-bold" style={{ color: '#c8102e' }}>
           {tx.amount.toLocaleString()} ₭
         </span>
-        <span className="text-[10px]" style={{ color: '#818cf8' }}>
+        <span className="text-[10px]" style={{ color: '#9c1024' }}>
           {t('admin.transactions.transfer.balanceAfter', { amount: tx.balanceAfter.toLocaleString() })}
         </span>
       </div>
@@ -1161,28 +1161,28 @@ function RewardCard({ tx, rowNum }: { tx: TxLite; rowNum: number }) {
   const t = useT()
   return (
     <div className="flex flex-col gap-3 rounded-xl p-4 md:flex-row md:items-center"
-      style={{ background: '#0f172a', border: '1px solid #14532d' }}>
+      style={{ background: '#fff5f6', border: '1px solid #14532d' }}>
       <div className="min-w-0 flex-1">
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-[10px] font-bold tabular-nums" style={{ color: '#64748b' }}>#{rowNum}</span>
-          <span className="font-semibold" style={{ color: '#e9d5ff' }}>
+          <span className="text-[10px] font-bold tabular-nums" style={{ color: '#8a6d71' }}>#{rowNum}</span>
+          <span className="font-semibold" style={{ color: '#2b0b10' }}>
             {tx.sender.name !== tx.sender.tel ? `${tx.sender.name} · ` : ''}{tx.sender.tel}
           </span>
           <span className="rounded-full px-2 py-0.5 text-[10px] font-bold"
-            style={{ background: 'rgba(22,163,74,0.2)', color: '#4ade80' }}>
+            style={{ background: 'rgba(22,163,74,0.2)', color: '#15803d' }}>
             {t('admin.transactions.reward.badge')}
           </span>
         </div>
-        <div className="mt-0.5 text-xs" style={{ color: '#818cf8' }}>
+        <div className="mt-0.5 text-xs" style={{ color: '#9c1024' }}>
           {new Date(tx.createdAt).toLocaleString()}
         </div>
-        {tx.note && <div className="mt-1 text-xs" style={{ color: '#a5b4fc' }}>{tx.note}</div>}
+        {tx.note && <div className="mt-1 text-xs" style={{ color: '#6b4a4f' }}>{tx.note}</div>}
       </div>
       <div className="flex items-center gap-3 md:flex-col md:items-end">
-        <span className="text-lg font-bold" style={{ color: '#4ade80' }}>
+        <span className="text-lg font-bold" style={{ color: '#15803d' }}>
           +{tx.amount.toLocaleString()} ₭
         </span>
-        <span className="text-[10px]" style={{ color: '#818cf8' }}>
+        <span className="text-[10px]" style={{ color: '#9c1024' }}>
           {t('admin.transactions.transfer.balanceAfter', { amount: tx.balanceAfter.toLocaleString() })}
         </span>
       </div>
@@ -1222,7 +1222,7 @@ function SlipPreview({ url, onClose }: { url: string; onClose: () => void }) {
         type="button"
         onClick={onClose}
         className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-        style={{ background: '#0f172a', color: '#fde68a', border: '1px solid #4338ca' }}
+        style={{ background: '#fff5f6', color: '#c8102e', border: '1px solid #f2ccd2' }}
         aria-label={t('admin.transactions.slip.closeAria')}
       >
         <X size={18} />
@@ -1233,7 +1233,7 @@ function SlipPreview({ url, onClose }: { url: string; onClose: () => void }) {
             src={url}
             title={t('admin.transactions.slip.pdfTitle')}
             className="h-full w-full max-w-5xl rounded-lg"
-            style={{ background: '#fff', border: '1px solid #4338ca' }}
+            style={{ background: '#fff', border: '1px solid #f2ccd2' }}
           />
         ) : (
           <img

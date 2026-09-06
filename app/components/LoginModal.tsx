@@ -61,7 +61,7 @@ export function LoginModal({ open, onClose, next, hint, onSwitchToRegister }: Lo
           'md:h-auto md:max-h-[90vh] md:w-full md:max-w-md md:rounded-xl md:pb-6 md:animate-in md:fade-in md:zoom-in-95 md:duration-200',
         ].join(' ')}
         style={{
-          background: 'linear-gradient(135deg, #4c1d95, #1e0040)',
+          background: 'linear-gradient(135deg, #ffffff, #fff5f6)',
           boxShadow: '0 10px 60px rgba(0,0,0,0.7)',
         }}
       >
@@ -69,7 +69,7 @@ export function LoginModal({ open, onClose, next, hint, onSwitchToRegister }: Lo
         <div
           aria-hidden
           className="mx-auto mb-3 h-1 w-10 rounded-full md:hidden"
-          style={{ background: '#7c3aed' }}
+          style={{ background: '#c8102e' }}
         />
 
         {/* Close button — top-right on all breakpoints */}
@@ -77,20 +77,20 @@ export function LoginModal({ open, onClose, next, hint, onSwitchToRegister }: Lo
           onClick={onClose}
           type="button"
           className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-          style={{ background: '#4c1d95', border: '1px solid #7c3aed', color: '#e9d5ff' }}
+          style={{ background: '#ffe4e6', border: '1px solid #e8949e', color: '#2b0b10' }}
           aria-label={t('common.close')}
         >
           <X size={18} />
         </button>
 
-        <div className="mb-1 text-center text-xs font-bold " style={{ color: '#a78bfa' }}>
+        <div className="mb-1 text-center text-xs font-bold " style={{ color: '#9c1024' }}>
           {t('auth.titleLogin')}
         </div>
-        <h2 className="mb-1 text-center text-2xl font-bold" style={{ color: '#fde68a' }}>
+        <h2 className="mb-1 text-center text-2xl font-bold" style={{ color: '#c8102e' }}>
           {t('auth.welcomeBack')}
         </h2>
         {hint && (
-          <p className="mb-4 text-center text-[11px]" style={{ color: '#c4b5fd' }}>
+          <p className="mb-4 text-center text-[11px]" style={{ color: '#6b4a4f' }}>
             {hint}
           </p>
         )}
@@ -99,7 +99,7 @@ export function LoginModal({ open, onClose, next, hint, onSwitchToRegister }: Lo
         <fetcher.Form method="post" action="/login" className="flex flex-col gap-3">
           <input type="hidden" name="next" value={nextPath} />
 
-          <label className="flex gap-1 text-xs font-semibold" style={{ color: '#c4b5fd' }}>
+          <label className="flex gap-1 text-xs font-semibold" style={{ color: '#6b4a4f' }}>
             {t('auth.phone')} <span className="text-rose-500">*</span>
           </label>
           <input
@@ -109,10 +109,10 @@ export function LoginModal({ open, onClose, next, hint, onSwitchToRegister }: Lo
             required
             placeholder="+85620xxxxxxxx"
             className="rounded-lg px-3 py-2.5 text-sm font-semibold outline-none"
-            style={{ background: '#2d1b4e', color: '#fde68a', border: '2px solid #7c3aed' }}
+            style={{ background: '#fff0f2', color: '#c8102e', border: '2px solid #e8949e' }}
           />
 
-          <label className="flex gap-1 text-xs font-semibold" style={{ color: '#c4b5fd' }}>
+          <label className="flex gap-1 text-xs font-semibold" style={{ color: '#6b4a4f' }}>
             {t('auth.password')}<span className="text-rose-500">*</span>
           </label>
           <PasswordInput name="password" autoComplete="current-password" required />
@@ -120,7 +120,7 @@ export function LoginModal({ open, onClose, next, hint, onSwitchToRegister }: Lo
           {fetcher.data?.error && (
             <div
               className="rounded-lg px-3 py-2 text-xs font-semibold"
-              style={{ background: 'rgba(220,38,38,0.2)', color: '#f87171', border: '1px solid #f87171' }}
+              style={{ background: 'rgba(220,38,38,0.2)', color: '#dc2626', border: '1px solid #f87171' }}
             >
               {fetcher.data.error}
             </div>
@@ -141,7 +141,7 @@ export function LoginModal({ open, onClose, next, hint, onSwitchToRegister }: Lo
           </button>
         </fetcher.Form>
 
-        <div className="mt-5 flex flex-col items-center gap-2 text-sm" style={{ color: '#c4b5fd' }}>
+        <div className="mt-5 flex flex-col items-center gap-2 text-sm" style={{ color: '#6b4a4f' }}>
           <div>
             {t('auth.noAccount')}{' '}&nbsp;
             {onSwitchToRegister ? (
@@ -149,12 +149,12 @@ export function LoginModal({ open, onClose, next, hint, onSwitchToRegister }: Lo
                 type="button"
                 onClick={onSwitchToRegister}
                 className="text-base font-bold underline underline-offset-2"
-                style={{ color: '#fde68a' }}
+                style={{ color: '#c8102e' }}
               >
                 {t('auth.register')}
               </button>
             ) : (
-              <a href="/register" className="text-base font-bold underline underline-offset-2" style={{ color: '#fde68a' }}>
+              <a href="/register" className="text-base font-bold underline underline-offset-2" style={{ color: '#c8102e' }}>
                 {t('auth.register')}
               </a>
             )}
@@ -164,7 +164,7 @@ export function LoginModal({ open, onClose, next, hint, onSwitchToRegister }: Lo
             target="_blank"
             rel="noreferrer"
             className="font-bold text-md"
-            style={{ color: '#fde68a' }}
+            style={{ color: '#c8102e' }}
           >
             {t('auth.forgotPassword')}
           </a>

@@ -172,21 +172,21 @@ export default function AdminNotifications() {
   // Live preview with sample recipient data.
   const preview = renderPreview(message)
 
-  const panel = { background: '#0f172a', border: '1px solid #1e1b4b' }
-  const field = { background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }
+  const panel = { background: '#fff5f6', border: '1px solid #f2ccd2' }
+  const field = { background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }
 
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-5 px-4 py-6">
       {/* Header */}
       <div className="flex items-center gap-3">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: '#312e81' }}>
-          <Bell size={20} color="#a5b4fc" />
+        <div className="flex h-10 w-10 items-center justify-center rounded-xl" style={{ background: '#ffe4e6' }}>
+          <Bell size={20} color="#6b4a4f" />
         </div>
         <div className="min-w-0">
-          <h1 className="text-lg font-bold text-white">{t('admin.notifications.title')}</h1>
-          <p className="text-xs" style={{ color: '#a5b4fc' }}>{t('admin.notifications.subtitle')}</p>
+          <h1 className="text-lg font-bold text-[#2b0b10]">{t('admin.notifications.title')}</h1>
+          <p className="text-xs" style={{ color: '#6b4a4f' }}>{t('admin.notifications.subtitle')}</p>
         </div>
-        <div className="ml-auto flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold" style={{ background: '#1e1b4b', color: '#a5b4fc' }}>
+        <div className="ml-auto flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-bold" style={{ background: '#ffffff', color: '#6b4a4f' }}>
           <UsersIcon size={13} /> {subscriberCount} <span className="opacity-70">{t('admin.notifications.subscribers')}</span>
         </div>
       </div>
@@ -199,22 +199,22 @@ export default function AdminNotifications() {
           <input type="hidden" name="schedule" value="now" />
           <input type="hidden" name="message" value={message} />
 
-          <div className="text-sm font-bold" style={{ color: '#e9d5ff' }}>{t('admin.notifications.compose')}</div>
+          <div className="text-sm font-bold" style={{ color: '#2b0b10' }}>{t('admin.notifications.compose')}</div>
 
           {/* Title */}
-          <label className="text-[10px] font-semibold" style={{ color: '#a5b4fc' }}>{t('admin.notifications.titleLabel')}</label>
+          <label className="text-[10px] font-semibold" style={{ color: '#6b4a4f' }}>{t('admin.notifications.titleLabel')}</label>
           <input name="title" placeholder={t('admin.notifications.titlePlaceholder')} className="rounded-lg px-3 py-2 text-xs outline-none" style={field} />
 
           {/* Audience */}
-          <label className="text-[10px] font-semibold" style={{ color: '#a5b4fc' }}>{t('admin.notifications.audience')}</label>
+          <label className="text-[10px] font-semibold" style={{ color: '#6b4a4f' }}>{t('admin.notifications.audience')}</label>
           <select name="audience" defaultValue="ALL" className="rounded-lg px-3 py-2 text-xs outline-none" style={field}>
             {audiences.map(a => (
-              <option key={a.value} value={a.value} style={{ background: '#1e1b4b' }}>{a.label}</option>
+              <option key={a.value} value={a.value} style={{ background: '#ffffff' }}>{a.label}</option>
             ))}
           </select>
 
           {/* Message + params */}
-          <label className="text-[10px] font-semibold" style={{ color: '#a5b4fc' }}>{t('admin.notifications.message')}</label>
+          <label className="text-[10px] font-semibold" style={{ color: '#6b4a4f' }}>{t('admin.notifications.message')}</label>
           <textarea
             ref={msgRef}
             value={message}
@@ -225,14 +225,14 @@ export default function AdminNotifications() {
             style={field}
           />
           <div className="flex flex-wrap items-center gap-1.5">
-            <span className="text-[10px]" style={{ color: '#818cf8' }}>{t('admin.notifications.params')}</span>
+            <span className="text-[10px]" style={{ color: '#9c1024' }}>{t('admin.notifications.params')}</span>
             {PARAMS.map(p => (
               <button
                 key={p}
                 type="button"
                 onClick={() => insertParam(p)}
                 className="rounded-full px-2 py-0.5 text-[10px] font-semibold active:scale-95"
-                style={{ background: '#312e81', color: '#c7d2fe', border: '1px solid #4338ca' }}
+                style={{ background: '#ffe4e6', color: '#2b0b10', border: '1px solid #f2ccd2' }}
               >
                 {`{{${p}}}`}
               </button>
@@ -241,9 +241,9 @@ export default function AdminNotifications() {
 
           {/* Preview */}
           {message.trim() && (
-            <div className="rounded-lg p-2.5" style={{ background: '#0b1220', border: '1px dashed #4338ca' }}>
-              <div className="mb-1 text-[9px] font-bold uppercase tracking-wide" style={{ color: '#818cf8' }}>{t('admin.notifications.preview')}</div>
-              <div className="text-xs" style={{ color: '#e2e8f0' }}>{preview}</div>
+            <div className="rounded-lg p-2.5" style={{ background: '#ffffff', border: '1px dashed #f2ccd2' }}>
+              <div className="mb-1 text-[9px] font-bold uppercase tracking-wide" style={{ color: '#9c1024' }}>{t('admin.notifications.preview')}</div>
+              <div className="text-xs" style={{ color: '#2b0b10' }}>{preview}</div>
             </div>
           )}
 
@@ -251,7 +251,7 @@ export default function AdminNotifications() {
             type="submit"
             disabled={busy || !message.trim()}
             className="mt-1 inline-flex items-center justify-center gap-1.5 rounded-lg py-2.5 text-xs font-bold disabled:opacity-50"
-            style={{ background: 'linear-gradient(135deg,#4338ca,#312e81)', color: '#fff', border: '1px solid #818cf8' }}
+            style={{ background: 'linear-gradient(135deg,#c8102e,#a50d26)', color: '#fff', border: '1px solid #e8949e' }}
           >
             {busy ? <Loader size={14} className="animate-spin" /> : <Send size={14} />}
             {busy ? t('admin.notifications.sending') : t('admin.notifications.sendNow')}
@@ -260,11 +260,11 @@ export default function AdminNotifications() {
 
         {/* ── Campaign list ── */}
         <div className="flex flex-col gap-2.5 rounded-2xl p-4" style={panel}>
-          <div className="text-sm font-bold" style={{ color: '#e9d5ff' }}>{t('admin.notifications.campaigns')}</div>
+          <div className="text-sm font-bold" style={{ color: '#2b0b10' }}>{t('admin.notifications.campaigns')}</div>
           {campaigns.length === 0 ? (
             <div className="flex flex-col items-center gap-2 py-10 text-center">
-              <Bell size={28} color="#4338ca" />
-              <p className="text-xs" style={{ color: '#64748b' }}>{t('admin.notifications.none')}</p>
+              <Bell size={28} color="#c8102e" />
+              <p className="text-xs" style={{ color: '#8a6d71' }}>{t('admin.notifications.none')}</p>
             </div>
           ) : (
             campaigns.map(c => <CampaignRow key={c.id} c={c} />)
@@ -293,8 +293,8 @@ function CampaignRow({ c }: { c: Campaign }) {
   const statusStyle = c.mode === 'ONCE' && !c.active && c.lastRunAt
     ? { bg: 'rgba(22,163,74,0.15)', fg: '#4ade80', label: t('admin.notifications.done') }
     : c.active
-      ? { bg: 'rgba(67,56,202,0.2)', fg: '#a5b4fc', label: t('admin.notifications.active') }
-      : { bg: 'rgba(100,116,139,0.15)', fg: '#94a3b8', label: t('admin.notifications.paused') }
+      ? { bg: 'rgba(200,16,46,0.2)', fg: '#fff1f2', label: t('admin.notifications.active') }
+      : { bg: 'rgba(100,116,139,0.15)', fg: '#f1e7e8', label: t('admin.notifications.paused') }
 
   const schedText = c.mode === 'DAILY'
     ? `${t('admin.notifications.daily')} · ${c.timeOfDay ?? ''}`
@@ -303,18 +303,18 @@ function CampaignRow({ c }: { c: Campaign }) {
       : t('admin.notifications.sendNow')
 
   return (
-    <div className="rounded-xl p-3" style={{ background: '#0b1220', border: '1px solid #1e1b4b' }}>
+    <div className="rounded-xl p-3" style={{ background: '#ffffff', border: '1px solid #f2ccd2' }}>
       <div className="flex items-start gap-2">
         <div className="min-w-0 flex-1">
-          {c.title && <div className="truncate text-xs font-bold" style={{ color: '#fde68a' }}>{c.title}</div>}
-          <div className="line-clamp-2 text-[11px]" style={{ color: '#cbd5e1' }}>{c.message}</div>
+          {c.title && <div className="truncate text-xs font-bold" style={{ color: '#c8102e' }}>{c.title}</div>}
+          <div className="line-clamp-2 text-[11px]" style={{ color: '#8a6d71' }}>{c.message}</div>
           <div className="mt-1.5 flex flex-wrap items-center gap-1.5 text-[9px]">
-            <span className="rounded-full px-1.5 py-0.5 font-semibold" style={{ background: '#1e1b4b', color: '#c7d2fe' }}>{c.audienceLabel}</span>
-            <span className="flex items-center gap-1 rounded-full px-1.5 py-0.5 font-semibold" style={{ background: '#1e1b4b', color: '#a5b4fc' }}>
+            <span className="rounded-full px-1.5 py-0.5 font-semibold" style={{ background: '#ffffff', color: '#2b0b10' }}>{c.audienceLabel}</span>
+            <span className="flex items-center gap-1 rounded-full px-1.5 py-0.5 font-semibold" style={{ background: '#ffffff', color: '#6b4a4f' }}>
               {c.mode === 'DAILY' ? <Repeat size={9} /> : <CalendarClock size={9} />}{schedText}
             </span>
             {c.lastSent != null && (
-              <span className="rounded-full px-1.5 py-0.5" style={{ color: '#64748b' }}>{t('admin.notifications.lastSent', { n: String(c.lastSent) })}</span>
+              <span className="rounded-full px-1.5 py-0.5" style={{ color: '#8a6d71' }}>{t('admin.notifications.lastSent', { n: String(c.lastSent) })}</span>
             )}
           </div>
         </div>
@@ -325,7 +325,7 @@ function CampaignRow({ c }: { c: Campaign }) {
         <fetcher.Form method="post" className="inline">
           <input type="hidden" name="op" value="runNow" />
           <input type="hidden" name="id" value={c.id} />
-          <button type="submit" disabled={busy} className="flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-bold disabled:opacity-50" style={{ background: '#4338ca', color: '#fff' }}>
+          <button type="submit" disabled={busy} className="flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-bold disabled:opacity-50" style={{ background: '#c8102e', color: '#fff' }}>
             {busy ? <Loader size={11} className="animate-spin" /> : <Send size={11} />} {t('admin.notifications.runNow')}
           </button>
         </fetcher.Form>
@@ -334,7 +334,7 @@ function CampaignRow({ c }: { c: Campaign }) {
           <fetcher.Form method="post" className="inline">
             <input type="hidden" name="op" value="toggle" />
             <input type="hidden" name="id" value={c.id} />
-            <button type="submit" disabled={busy} className="flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-bold disabled:opacity-50" style={{ background: '#1e1b4b', color: '#a5b4fc' }}>
+            <button type="submit" disabled={busy} className="flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-bold disabled:opacity-50" style={{ background: '#ffffff', color: '#6b4a4f' }}>
               {c.active ? <><Pause size={11} /> {t('admin.notifications.pause')}</> : <><Play size={11} /> {t('admin.notifications.resume')}</>}
             </button>
           </fetcher.Form>
@@ -343,7 +343,7 @@ function CampaignRow({ c }: { c: Campaign }) {
         <fetcher.Form method="post" className="ml-auto inline" onSubmit={e => { if (!confirm(t('admin.notifications.deleteConfirm'))) e.preventDefault() }}>
           <input type="hidden" name="op" value="delete" />
           <input type="hidden" name="id" value={c.id} />
-          <button type="submit" disabled={busy} className="flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-bold disabled:opacity-50" style={{ background: 'rgba(127,29,29,0.4)', color: '#fca5a5' }}>
+          <button type="submit" disabled={busy} className="flex items-center gap-1 rounded-lg px-2 py-1 text-[10px] font-bold disabled:opacity-50" style={{ background: 'rgba(220,38,38,0.12)', color: '#b91c1c' }}>
             <Trash2 size={11} /> {t('admin.notifications.delete')}
           </button>
         </fetcher.Form>

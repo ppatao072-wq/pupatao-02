@@ -167,7 +167,7 @@ export default function AdminLayout() {
   return (
     <div
       className="min-h-screen font-sans"
-      style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e1b4b 60%, #0f172a 100%)' }}
+      style={{ background: 'linear-gradient(160deg, #ffffff 0%, #fff5f6 60%, #ffffff 100%)' }}
     >
       {/* Top progress bar */}
       {isNavigating && (
@@ -186,32 +186,32 @@ export default function AdminLayout() {
         <div className="pointer-events-none fixed inset-0 z-40 flex items-start justify-center pt-16">
           <div
             className="flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold shadow-2xl"
-            style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}
+            style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}
           >
             <Loader size={14} className="animate-spin" />
             {t('admin.shell.loading')}
           </div>
         </div>
       )}
-      <header style={{ background: '#0f172a', borderBottom: '1px solid #4338ca' }}>
+      <header style={{ background: '#fff5f6', borderBottom: '1px solid #f2ccd2' }}>
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2">
-            <ShieldCheck size={18} style={{ color: '#a5b4fc' }} />
-            <span className="text-sm font-bold " style={{ color: '#fde68a' }}>
+            <ShieldCheck size={18} style={{ color: '#6b4a4f' }} />
+            <span className="text-sm font-bold " style={{ color: '#c8102e' }}>
               PUPATAO · ADMIN
             </span>
           </div>
           <div className="flex items-center gap-3">
             <div className="hidden flex-col text-right sm:flex">
-              <span className="text-xs font-semibold" style={{ color: '#e9d5ff' }}>{fullName}</span>
-              <span className="text-[10px] font-bold " style={{ color: '#a5b4fc' }}>{admin.role}</span>
+              <span className="text-xs font-semibold" style={{ color: '#2b0b10' }}>{fullName}</span>
+              <span className="text-[10px] font-bold " style={{ color: '#6b4a4f' }}>{admin.role}</span>
             </div>
             <LanguageSwitch variant="pill" />
             <Form method="post" action="/admin/logout">
               <button
                 type="submit"
                 className="flex items-center gap-1 rounded-lg px-3 py-1.5 text-xs font-bold transition-opacity hover:opacity-80"
-                style={{ background: '#1e1b4b', color: '#e9d5ff', border: '1px solid #4338ca' }}
+                style={{ background: '#ffffff', color: '#2b0b10', border: '1px solid #f2ccd2' }}
               >
                 <LogOut size={12} />
                 {t('admin.shell.signOut')}
@@ -226,7 +226,7 @@ export default function AdminLayout() {
         <aside className="hidden md:block md:w-56 md:shrink-0">
           <nav
             className="flex flex-col gap-1 rounded-xl p-2"
-            style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}
+            style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}
           >
             {visibleNav.map(item => (
               <NavLink
@@ -238,9 +238,9 @@ export default function AdminLayout() {
                   isActive ? 'border' : 'hover:opacity-80',
                 ].join(' ')}
                 style={({ isActive }) => ({
-                  background: isActive ? '#1e1b4b' : 'transparent',
-                  color: isActive ? '#fde68a' : '#a5b4fc',
-                  borderColor: isActive ? '#4338ca' : 'transparent',
+                  background: isActive ? '#ffffff' : 'transparent',
+                  color: isActive ? '#c8102e' : '#6b4a4f',
+                  borderColor: isActive ? '#f2ccd2' : 'transparent',
                 })}
               >
                 <item.Icon size={14} />
@@ -269,8 +269,8 @@ export default function AdminLayout() {
       <nav
         className="fixed inset-x-0 bottom-0 z-40 flex md:hidden"
         style={{
-          background: '#0f172a',
-          borderTop: '1px solid #4338ca',
+          background: '#fff5f6',
+          borderTop: '1px solid #f2ccd2',
           paddingBottom: 'env(safe-area-inset-bottom)',
         }}
       >
@@ -281,8 +281,8 @@ export default function AdminLayout() {
             end={item.end}
             className="relative flex flex-1 flex-col items-center justify-center gap-0.5 py-2 text-[10px] font-semibold tracking-wide"
             style={({ isActive }) => ({
-              color: isActive ? '#fde68a' : '#a5b4fc',
-              background: isActive ? '#1e1b4b' : 'transparent',
+              color: isActive ? '#c8102e' : '#6b4a4f',
+              background: isActive ? '#ffffff' : 'transparent',
             })}
           >
             <item.Icon size={18} />
@@ -315,7 +315,7 @@ function Badge({ n }: { n: number }) {
   )
 }
 
-const SK = 'bg-white/10 animate-pulse'
+const SK = 'bg-black/5 animate-pulse'
 
 function DashboardSkeleton() {
   return (
@@ -323,7 +323,7 @@ function DashboardSkeleton() {
       <Skeleton className={`h-7 w-36 ${SK}`} />
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         {Array.from({ length: 6 }).map((_, i) => (
-          <div key={i} className="flex flex-col gap-2 rounded-xl p-4" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+          <div key={i} className="flex flex-col gap-2 rounded-xl p-4" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
             <Skeleton className={`h-3 w-20 ${SK}`} />
             <Skeleton className={`h-7 w-12 ${SK}`} />
             <Skeleton className={`h-3 w-16 ${SK}`} />
@@ -332,7 +332,7 @@ function DashboardSkeleton() {
       </div>
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
         {[1, 2].map(i => (
-          <div key={i} className="rounded-xl p-4" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+          <div key={i} className="rounded-xl p-4" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
             <Skeleton className={`mb-3 h-4 w-28 ${SK}`} />
             {Array.from({ length: 4 }).map((_, j) => (
               <Skeleton key={j} className={`mb-2 h-8 w-full rounded-lg ${SK}`} />
@@ -359,12 +359,12 @@ function TableSkeleton() {
         ))}
       </div>
       {/* Table */}
-      <div className="overflow-hidden rounded-xl" style={{ border: '1px solid #1e1b4b' }}>
-        <div className="flex gap-3 px-4 py-3" style={{ background: '#0a0f1e', borderBottom: '1px solid #1e1b4b' }}>
+      <div className="overflow-hidden rounded-xl" style={{ border: '1px solid #f2ccd2' }}>
+        <div className="flex gap-3 px-4 py-3" style={{ background: '#ffffff', borderBottom: '1px solid #f2ccd2' }}>
           {cols.map((w, i) => <Skeleton key={i} className={`h-3 ${SK}`} style={{ width: w }} />)}
         </div>
         {Array.from({ length: 9 }).map((_, row) => (
-          <div key={row} className="flex gap-3 px-4 py-3" style={{ background: row % 2 === 0 ? '#0f172a' : '#0a0f1e', borderBottom: '1px solid #1e1b4b' }}>
+          <div key={row} className="flex gap-3 px-4 py-3" style={{ background: row % 2 === 0 ? '#fff5f6' : '#ffffff', borderBottom: '1px solid #f2ccd2' }}>
             {cols.map((w, i) => <Skeleton key={i} className={`h-3 rounded ${SK}`} style={{ width: w }} />)}
           </div>
         ))}
@@ -394,13 +394,13 @@ function LiveSkeleton() {
         </div>
       </div>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-5">
-        <div className="md:col-span-2 rounded-xl p-3" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+        <div className="md:col-span-2 rounded-xl p-3" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
           <Skeleton className={`mb-3 h-4 w-20 ${SK}`} />
           {Array.from({ length: 4 }).map((_, i) => (
             <Skeleton key={i} className={`mb-2 h-8 w-full rounded-lg ${SK}`} />
           ))}
         </div>
-        <div className="md:col-span-3 rounded-xl p-3" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+        <div className="md:col-span-3 rounded-xl p-3" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
           <Skeleton className={`mb-3 h-4 w-24 ${SK}`} />
           {Array.from({ length: 6 }).map((_, i) => (
             <Skeleton key={i} className={`mb-2 h-8 w-full rounded-lg ${SK}`} />

@@ -147,7 +147,7 @@ export default function CompetitionPage() {
     if (n >= 1_000) return `${(n / 1_000).toFixed(1)}K`
     return n.toLocaleString()
   }
-  const rankColor = (r: number) => r === 1 ? '#fbbf24' : r === 2 ? '#94a3b8' : r === 3 ? '#fb923c' : '#a5b4fc'
+  const rankColor = (r: number) => r === 1 ? '#b45309' : r === 2 ? '#8a6d71' : r === 3 ? '#c2410c' : '#6b4a4f'
   const rankMedal = (r: number) => r === 1 ? '🥇' : r === 2 ? '🥈' : r === 3 ? '🥉' : null
   const myEntry = ranked.find(u => u.isMe)
 
@@ -158,36 +158,36 @@ export default function CompetitionPage() {
   const typeLabel   = isDemo ? 'Demo Competition' : 'Real Competition'
 
   return (
-    <div className="min-h-screen" style={{ background: 'linear-gradient(180deg,#1e0040,#0f0020)' }}>
+    <div className="min-h-screen" style={{ background: 'linear-gradient(180deg,#fff5f6,#ffffff)' }}>
       {/* Header */}
       <div className="sticky top-0 z-10 flex items-center gap-3 px-4 py-3"
-        style={{ background: '#1e0040', borderBottom: '1px solid #4c1d95' }}>
+        style={{ background: '#fff5f6', borderBottom: '1px solid #f2ccd2' }}>
         <a href="/" className="flex items-center gap-1.5 rounded-lg px-3 py-2 text-sm font-bold"
-          style={{ background: '#4c1d95', color: '#e9d5ff', border: '1px solid #7c3aed' }}>
+          style={{ background: '#ffe4e6', color: '#2b0b10', border: '1px solid #e8949e' }}>
           <ArrowLeft size={14} /> ກັບຄືນ
         </a>
         <div className="flex items-center gap-2">
-          <Trophy size={18} style={{ color: '#fbbf24' }} />
-          <h1 className="text-base font-bold" style={{ color: '#fbbf24' }}>
+          <Trophy size={18} style={{ color: '#b45309' }} />
+          <h1 className="text-base font-bold" style={{ color: '#b45309' }}>
             {typeLabel}
           </h1>
         </div>
         <div className="ml-auto flex items-center gap-2">
           {needsJoin && showLive && (
-            <span className="text-[10px]" style={{ color: '#818cf8' }}>
+            <span className="text-[10px]" style={{ color: '#9c1024' }}>
               {participantCount} ຜູ້ເຂົ້າຮ່ວມ
             </span>
           )}
           {showLive && (
             <span className="flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold"
-              style={{ background: 'rgba(234,179,8,0.2)', color: '#fbbf24', border: '1px solid #ca8a04' }}>
+              style={{ background: 'rgba(234,179,8,0.2)', color: '#b45309', border: '1px solid #ca8a04' }}>
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-yellow-400" />
               LIVE
             </span>
           )}
           {showSummary && (
             <span className="rounded-full px-2 py-0.5 text-[10px] font-bold"
-              style={{ background: 'rgba(74,222,128,0.15)', color: '#4ade80', border: '1px solid #16a34a' }}>
+              style={{ background: 'rgba(74,222,128,0.15)', color: '#15803d', border: '1px solid #16a34a' }}>
               ສຳເລັດ ✓
             </span>
           )}
@@ -207,8 +207,8 @@ export default function CompetitionPage() {
               <div className="flex items-center gap-3">
                 <span className="text-2xl">✅</span>
                 <div>
-                  <div className="text-sm font-bold" style={{ color: '#4ade80' }}>ທ່ານໄດ້ເຂົ້າຮ່ວມການແຂ່ງຂັນແລ້ວ</div>
-                  <div className="text-xs" style={{ color: '#6ee7b7' }}>
+                  <div className="text-sm font-bold" style={{ color: '#15803d' }}>ທ່ານໄດ້ເຂົ້າຮ່ວມການແຂ່ງຂັນແລ້ວ</div>
+                  <div className="text-xs" style={{ color: '#0f766e' }}>
                     {competition.type === 'REAL_LIVE'
                       ? 'ຫ້າມຖອນໄລຍະການແຂ່ງຂັນ · ຫຼິ້ນ Live ດ້ວຍ Real ເທົ່ານັ້ນ'
                       : 'ຫ້າມຖອນໄລຍະການແຂ່ງຂັນ · ຫຼິ້ນໄດ້ທຸກ mode ດ້ວຍ Real'}
@@ -218,8 +218,8 @@ export default function CompetitionPage() {
             ) : (
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <div className="text-sm font-bold" style={{ color: '#fbbf24' }}>ເຂົ້າຮ່ວມການແຂ່ງຂັນ</div>
-                  <div className="text-xs" style={{ color: '#a5b4fc' }}>
+                  <div className="text-sm font-bold" style={{ color: '#b45309' }}>ເຂົ້າຮ່ວມການແຂ່ງຂັນ</div>
+                  <div className="text-xs" style={{ color: '#6b4a4f' }}>
                     {competition.type === 'REAL_LIVE'
                       ? 'ໃຊ້ Real wallet ໃນ Live mode · ຫ້າມຖອນໄລຍະການແຂ່ງຂັນ'
                       : 'ໃຊ້ Real wallet ທຸກ mode · ຫ້າມຖອນໄລຍະການແຂ່ງຂັນ'}
@@ -237,7 +237,7 @@ export default function CompetitionPage() {
               </div>
             )}
             {joinFetcher.data?.error && (
-              <div className="mt-2 text-xs" style={{ color: '#f87171' }}>{joinFetcher.data.error}</div>
+              <div className="mt-2 text-xs" style={{ color: '#dc2626' }}>{joinFetcher.data.error}</div>
             )}
           </div>
         )}
@@ -245,35 +245,35 @@ export default function CompetitionPage() {
         {/* ── LIVE MODE ── */}
         {showLive && (
           <>
-            <div className="rounded-2xl p-4" style={{ background: 'rgba(76,29,149,0.3)', border: '1px solid #4c1d95' }}>
+            <div className="rounded-2xl p-4" style={{ background: 'rgba(200,16,46,0.3)', border: '1px solid #f2ccd2' }}>
               <div className="flex items-center gap-2 mb-3">
-                <Trophy size={16} style={{ color: '#fbbf24' }} />
-                <span className="text-sm font-bold" style={{ color: '#fbbf24' }}>ກົດລະບຽບ</span>
+                <Trophy size={16} style={{ color: '#b45309' }} />
+                <span className="text-sm font-bold" style={{ color: '#b45309' }}>ກົດລະບຽບ</span>
               </div>
               {(competition.start || competition.end) && (
-                <div className="mb-3 flex flex-wrap gap-4 text-xs" style={{ color: '#c4b5fd' }}>
-                  {competition.start && <div><span style={{ color: '#818cf8' }}>ເລີ່ມ: </span><span className="font-semibold">{fmtGMT7(competition.start)}</span></div>}
-                  {competition.end   && <div><span style={{ color: '#818cf8' }}>ສິ້ນສຸດ: </span><span className="font-semibold">{fmtGMT7(competition.end)}</span></div>}
+                <div className="mb-3 flex flex-wrap gap-4 text-xs" style={{ color: '#6b4a4f' }}>
+                  {competition.start && <div><span style={{ color: '#9c1024' }}>ເລີ່ມ: </span><span className="font-semibold">{fmtGMT7(competition.start)}</span></div>}
+                  {competition.end   && <div><span style={{ color: '#9c1024' }}>ສິ້ນສຸດ: </span><span className="font-semibold">{fmtGMT7(competition.end)}</span></div>}
                 </div>
               )}
-              <p className="whitespace-pre-wrap text-xs leading-relaxed" style={{ color: '#e9d5ff' }}>
+              <p className="whitespace-pre-wrap text-xs leading-relaxed" style={{ color: '#2b0b10' }}>
                 {competition.rules ?? (isDemo ? 'ແຂ່ງຂັນດ້ວຍ Demo Balance — ຜູ້ທີ່ມີ Demo ສູງສຸດຊະນະ!' : 'ແຂ່ງຂັນດ້ວຍ Real Balance — ຜູ້ທີ່ມີ Real ສູງສຸດຊະນະ!')}
               </p>
             </div>
 
             {myEntry && (
               <div className="rounded-2xl p-4" style={{ background: 'rgba(234,179,8,0.1)', border: '2px solid #ca8a04' }}>
-                <div className="text-[10px] font-bold mb-2" style={{ color: '#fbbf24' }}>ຕຳແໜ່ງຂອງທ່ານ</div>
+                <div className="text-[10px] font-bold mb-2" style={{ color: '#b45309' }}>ຕຳແໜ່ງຂອງທ່ານ</div>
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-lg font-bold"
-                    style={{ background: 'rgba(234,179,8,0.2)', color: '#fbbf24' }}>
+                    style={{ background: 'rgba(234,179,8,0.2)', color: '#b45309' }}>
                     {rankMedal(myEntry.rank) ?? `#${myEntry.rank}`}
                   </div>
                   <div className="flex-1">
-                    <div className="text-sm font-bold" style={{ color: '#fbbf24' }}>ອັນດັບ #{myEntry.rank} ຈາກ {ranked.length}</div>
+                    <div className="text-sm font-bold" style={{ color: '#b45309' }}>ອັນດັບ #{myEntry.rank} ຈາກ {ranked.length}</div>
                   </div>
                   <div className="text-right">
-                    <div className="text-lg font-bold" style={{ color: '#fbbf24' }}>{fmt(myEntry.demoBalance)} ₭</div>
+                    <div className="text-lg font-bold" style={{ color: '#b45309' }}>{fmt(myEntry.demoBalance)} ₭</div>
                     <div className="text-[10px]" style={{ color: '#ca8a04' }}>{isDemo ? 'Demo' : 'Real'} Balance</div>
                   </div>
                 </div>
@@ -288,13 +288,13 @@ export default function CompetitionPage() {
         {showSummary && summary && (
           <>
             <div className="rounded-2xl p-4 text-center" style={{ background: 'rgba(234,179,8,0.08)', border: '2px solid #ca8a04' }}>
-              <div className="text-lg font-bold" style={{ color: '#fbbf24' }}>🏆 ຜົນການແຂ່ງຂັນ</div>
+              <div className="text-lg font-bold" style={{ color: '#b45309' }}>🏆 ຜົນການແຂ່ງຂັນ</div>
               {(competition.start || competition.end) && (
-                <div className="mt-1 text-xs" style={{ color: '#a5b4fc' }}>
+                <div className="mt-1 text-xs" style={{ color: '#6b4a4f' }}>
                   {competition.start ? fmtGMT7(competition.start) : '?'} — {competition.end ? fmtGMT7(competition.end) : '?'}
                 </div>
               )}
-              {competition.rules && <p className="mt-2 text-xs" style={{ color: '#c4b5fd' }}>{competition.rules}</p>}
+              {competition.rules && <p className="mt-2 text-xs" style={{ color: '#6b4a4f' }}>{competition.rules}</p>}
             </div>
             <Top3Podium winners={summary} fmt={fmt} rankColor={rankColor} />
           </>
@@ -302,12 +302,12 @@ export default function CompetitionPage() {
 
         {showHistory && latestHistory && (
           <>
-            <div className="rounded-2xl p-4 text-center" style={{ background: 'rgba(76,29,149,0.2)', border: '1px solid #4c1d95' }}>
-              <div className="text-base font-bold" style={{ color: '#fbbf24' }}>🏆 ຜົນການແຂ່ງຂັນຄັ້ງຜ່ານມາ</div>
-              <div className="mt-1 text-xs" style={{ color: '#a5b4fc' }}>
+            <div className="rounded-2xl p-4 text-center" style={{ background: 'rgba(200,16,46,0.2)', border: '1px solid #f2ccd2' }}>
+              <div className="text-base font-bold" style={{ color: '#b45309' }}>🏆 ຜົນການແຂ່ງຂັນຄັ້ງຜ່ານມາ</div>
+              <div className="mt-1 text-xs" style={{ color: '#6b4a4f' }}>
                 {latestHistory.startDate ? fmtGMT7(latestHistory.startDate) : '?'} — {fmtGMT7(latestHistory.endDate)}
               </div>
-              {latestHistory.rules && <p className="mt-2 text-xs" style={{ color: '#c4b5fd' }}>{latestHistory.rules}</p>}
+              {latestHistory.rules && <p className="mt-2 text-xs" style={{ color: '#6b4a4f' }}>{latestHistory.rules}</p>}
             </div>
             {latestHistory.winners.length > 0 && (
               <Top3Podium winners={latestHistory.winners} fmt={fmt} rankColor={rankColor} />
@@ -327,12 +327,12 @@ function RankingList({ ranked, fmt, rankColor, rankMedal }: {
 }) {
   return (
     <div className="flex flex-col gap-2">
-      <div className="text-xs font-bold" style={{ color: '#a5b4fc' }}>ຄະແນນທັງໝົດ ({ranked.length} ຄົນ)</div>
+      <div className="text-xs font-bold" style={{ color: '#6b4a4f' }}>ຄະແນນທັງໝົດ ({ranked.length} ຄົນ)</div>
       {ranked.map(u => (
         <div key={u.userId} className="flex items-center gap-3 rounded-xl p-3 transition-all"
           style={{
-            background: u.isMe ? 'rgba(234,179,8,0.12)' : 'rgba(76,29,149,0.15)',
-            border: `1px solid ${u.isMe ? '#ca8a04' : u.rank <= 3 ? rankColor(u.rank) + '30' : '#2d1b4e'}`,
+            background: u.isMe ? 'rgba(234,179,8,0.12)' : 'rgba(200,16,46,0.15)',
+            border: `1px solid ${u.isMe ? '#ca8a04' : u.rank <= 3 ? rankColor(u.rank) + '30' : '#f2ccd2'}`,
           }}>
           <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-bold"
             style={{ background: 'rgba(0,0,0,0.3)', color: rankColor(u.rank) }}>
@@ -340,11 +340,11 @@ function RankingList({ ranked, fmt, rankColor, rankMedal }: {
           </div>
           <Avatar name={u.name ?? u.tel} src={u.profile} size={36} />
           <div className="min-w-0 flex-1">
-            <div className="truncate text-sm font-semibold" style={{ color: u.isMe ? '#fbbf24' : '#fde68a' }}>
+            <div className="truncate text-sm font-semibold" style={{ color: u.isMe ? '#b45309' : '#c8102e' }}>
               {u.name ?? u.tel}
-              {u.isMe && <span className="ml-1.5 text-[10px] font-bold" style={{ color: '#fbbf24' }}>(ທ່ານ)</span>}
+              {u.isMe && <span className="ml-1.5 text-[10px] font-bold" style={{ color: '#b45309' }}>(ທ່ານ)</span>}
             </div>
-            <div className="text-[10px]" style={{ color: '#818cf8' }}>{u.tel}</div>
+            <div className="text-[10px]" style={{ color: '#9c1024' }}>{u.tel}</div>
           </div>
           <div className="text-right shrink-0">
             <div className="font-bold" style={{ color: rankColor(u.rank) }}>{fmt(u.demoBalance)} ₭</div>
@@ -374,7 +374,7 @@ function Top3Podium({ winners, fmt, rankColor }: {
               <Avatar name={w.name ?? w.tel} src={w.profile} size={48} />
               <div className="text-center">
                 <div className="text-xs font-bold truncate" style={{ color: rankColor(w.rank) }}>{w.name ?? w.tel}</div>
-                <div className="text-[10px]" style={{ color: '#818cf8' }}>{w.tel}</div>
+                <div className="text-[10px]" style={{ color: '#9c1024' }}>{w.tel}</div>
                 <div className="mt-0.5 text-sm font-bold" style={{ color: rankColor(w.rank) }}>{fmt(w.demoBalance)} ₭</div>
               </div>
               <div className={`w-full ${h} flex items-center justify-center rounded-t-lg`}
@@ -388,12 +388,12 @@ function Top3Podium({ winners, fmt, rankColor }: {
       <div className="flex flex-col gap-2">
         {sorted.map(w => (
           <div key={w.userId} className="flex items-center gap-3 rounded-xl p-3"
-            style={{ background: 'rgba(76,29,149,0.15)', border: `1px solid ${rankColor(w.rank)}30` }}>
+            style={{ background: 'rgba(200,16,46,0.15)', border: `1px solid ${rankColor(w.rank)}30` }}>
             <span style={{ fontSize: 20, minWidth: 28, textAlign: 'center' }}>{medals[w.rank - 1]}</span>
             <Avatar name={w.name ?? w.tel} src={w.profile} size={36} />
             <div className="min-w-0 flex-1">
-              <div className="truncate text-sm font-semibold" style={{ color: '#fde68a' }}>{w.name ?? w.tel}</div>
-              <div className="text-[10px]" style={{ color: '#818cf8' }}>{w.tel}</div>
+              <div className="truncate text-sm font-semibold" style={{ color: '#c8102e' }}>{w.name ?? w.tel}</div>
+              <div className="text-[10px]" style={{ color: '#9c1024' }}>{w.tel}</div>
             </div>
             <div className="text-right font-bold" style={{ color: rankColor(w.rank) }}>{fmt(w.demoBalance)} ₭</div>
           </div>
@@ -412,7 +412,7 @@ function Avatar({ name, src, size }: { name: string; src: string | null; size: n
   }
   return (
     <div className="flex shrink-0 items-center justify-center rounded-full text-xs font-bold"
-      style={{ width: size, height: size, background: 'linear-gradient(135deg,#4338ca,#7c3aed)', color: '#fde68a' }}>
+      style={{ width: size, height: size, background: 'linear-gradient(135deg,#c8102e,#a50d26)', color: '#fde68a' }}>
       {initials}
     </div>
   )

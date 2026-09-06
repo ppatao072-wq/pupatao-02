@@ -28,7 +28,7 @@ interface ConfirmDialogProps {
 const TONE_STYLES: Record<ConfirmTone, { bg: string; border: string; color: string }> = {
   danger: { bg: 'linear-gradient(135deg, #7f1d1d, #4c0519)', border: '#fca5a5', color: '#fff' },
   success: { bg: 'linear-gradient(135deg, #14532d, #052e16)', border: '#4ade80', color: '#fff' },
-  neutral: { bg: 'linear-gradient(135deg, #4338ca, #1e1b4b)', border: '#818cf8', color: '#fff' },
+  neutral: { bg: 'linear-gradient(135deg, #c8102e, #7d0a1c)', border: '#e8949e', color: '#fff' },
 }
 
 // Generic confirm dialog used by admin actions (approve/reject deposits,
@@ -89,33 +89,33 @@ export function ConfirmDialog({
           'md:max-w-sm md:rounded-xl md:pb-5 md:fade-in md:zoom-in-95',
         ].join(' ')}
         style={{
-          background: 'linear-gradient(135deg, #1e1b4b, #0f172a)',
-          border: '1px solid #4338ca',
+          background: 'linear-gradient(135deg, #ffffff, #fff5f6)',
+          border: '1px solid #f2ccd2',
           boxShadow: '0 10px 60px rgba(0,0,0,0.7)',
         }}
       >
-        <div aria-hidden className="mx-auto mb-3 h-1 w-10 rounded-full md:hidden" style={{ background: '#4338ca' }} />
+        <div aria-hidden className="mx-auto mb-3 h-1 w-10 rounded-full md:hidden" style={{ background: '#c8102e' }} />
 
         <button
           type="button"
           onClick={onClose}
           disabled={submitting}
           className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full transition-opacity hover:opacity-80 disabled:opacity-30"
-          style={{ background: '#1e1b4b', border: '1px solid #4338ca', color: '#a5b4fc' }}
+          style={{ background: '#ffffff', border: '1px solid #f2ccd2', color: '#6b4a4f' }}
           aria-label="Close"
         >
           <X size={14} />
         </button>
 
-        <h3 className="mb-1 text-base font-bold" style={{ color: '#fde68a' }}>{title}</h3>
+        <h3 className="mb-1 text-base font-bold" style={{ color: '#c8102e' }}>{title}</h3>
         {description && (
-          <p className="mb-4 text-xs" style={{ color: '#a5b4fc' }}>{description}</p>
+          <p className="mb-4 text-xs" style={{ color: '#6b4a4f' }}>{description}</p>
         )}
 
         {fetcher.data?.error && (
           <div
             className="mb-3 rounded-lg px-3 py-2 text-xs font-semibold"
-            style={{ background: 'rgba(220,38,38,0.2)', color: '#f87171', border: '1px solid #f87171' }}
+            style={{ background: 'rgba(220,38,38,0.2)', color: '#dc2626', border: '1px solid #f87171' }}
           >
             {fetcher.data.error}
           </div>
@@ -132,7 +132,7 @@ export function ConfirmDialog({
               onClick={onClose}
               disabled={submitting}
               className="rounded-md px-3 py-1.5 text-xs font-bold  disabled:opacity-50"
-              style={{ background: 'transparent', color: '#a5b4fc', border: '1px solid #4338ca' }}
+              style={{ background: 'transparent', color: '#6b4a4f', border: '1px solid #f2ccd2' }}
             >
               CANCEL
             </button>

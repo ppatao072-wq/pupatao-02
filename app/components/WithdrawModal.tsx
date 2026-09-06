@@ -144,45 +144,45 @@ export function WithdrawModal({ open, onClose, amount, existingBankQrUrl, onSucc
             'md:h-auto md:max-h-[90vh] md:max-w-md md:rounded-xl md:pb-6 md:animate-in md:fade-in md:zoom-in-95 md:duration-200',
           ].join(' ')}
           style={{
-            background: 'linear-gradient(135deg, #4c1d95, #1e0040)',
+            background: 'linear-gradient(135deg, #ffffff, #fff5f6)',
             boxShadow: '0 10px 60px rgba(0,0,0,0.7)',
           }}
         >
-          <div aria-hidden className="mx-auto mb-3 h-1 w-10 rounded-full md:hidden" style={{ background: '#7c3aed' }} />
+          <div aria-hidden className="mx-auto mb-3 h-1 w-10 rounded-full md:hidden" style={{ background: '#c8102e' }} />
 
           <button
             onClick={onClose}
             type="button"
             disabled={submitting}
             className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full transition-opacity hover:opacity-80 disabled:opacity-30"
-            style={{ background: '#4c1d95', border: '1px solid #7c3aed', color: '#e9d5ff' }}
+            style={{ background: '#ffe4e6', border: '1px solid #e8949e', color: '#2b0b10' }}
             aria-label={t('withdraw.aria.close')}
           >
             <X size={18} />
           </button>
 
-          <div className="mb-1 text-center text-xs font-bold " style={{ color: '#a78bfa' }}>
+          <div className="mb-1 text-center text-xs font-bold " style={{ color: '#9c1024' }}>
             {step === 'qr' ? t('withdraw.step1') : currentQr && existingBankQrUrl ? t('withdraw.confirmTitle') : t('withdraw.step2')}
           </div>
-          <h2 className="mb-4 text-center text-2xl font-bold" style={{ color: '#fde68a' }}>
+          <h2 className="mb-4 text-center text-2xl font-bold" style={{ color: '#c8102e' }}>
             {amount.toLocaleString()} ₭
           </h2>
 
           {/* ─── Step 1 — bank QR upload ──────────────────────────── */}
           {step === 'qr' && (
             <>
-              <p className="mb-4 text-center text-xs" style={{ color: '#c4b5fd' }}>
+              <p className="mb-4 text-center text-xs" style={{ color: '#6b4a4f' }}>
                 {t('withdraw.qrInstruction')}
               </p>
 
               <div
                 className="mb-4 flex flex-col items-center gap-3 rounded-xl px-4 py-5"
-                style={{ background: '#1e0040', border: '1.5px dashed #7c3aed' }}
+                style={{ background: '#fff5f6', border: '1.5px dashed #e8949e' }}
               >
                 {previewSrc ? (
                   <div
                     className="relative w-full max-w-[240px] overflow-hidden rounded-lg"
-                    style={{ border: '2px solid #a78bfa' }}
+                    style={{ border: '2px solid #e8949e' }}
                   >
                     <img src={previewSrc} alt="Bank QR preview" className="block h-auto w-full object-contain" />
                     {uploading && (
@@ -193,9 +193,9 @@ export function WithdrawModal({ open, onClose, amount, existingBankQrUrl, onSucc
                   </div>
                 ) : (
                   <div className="flex flex-col items-center gap-1 py-6 text-center">
-                    <Camera size={36} style={{ color: '#a78bfa' }} />
-                    <div className="text-sm font-semibold" style={{ color: '#c4b5fd' }}>{t('withdraw.tapToUpload')}</div>
-                    <div className="text-[10px]" style={{ color: '#7c3aed' }}>{t('withdraw.fileTypes')}</div>
+                    <Camera size={36} style={{ color: '#9c1024' }} />
+                    <div className="text-sm font-semibold" style={{ color: '#6b4a4f' }}>{t('withdraw.tapToUpload')}</div>
+                    <div className="text-[10px]" style={{ color: '#c8102e' }}>{t('withdraw.fileTypes')}</div>
                   </div>
                 )}
 
@@ -211,7 +211,7 @@ export function WithdrawModal({ open, onClose, amount, existingBankQrUrl, onSucc
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploading}
                   className="flex items-center gap-2 rounded-lg px-4 py-2 text-xs font-bold  transition-opacity hover:opacity-90 disabled:opacity-50"
-                  style={{ background: '#4c1d95', color: '#fde68a', border: '1.5px solid #7c3aed' }}
+                  style={{ background: '#ffe4e6', color: '#c8102e', border: '1.5px solid #e8949e' }}
                 >
                   <Upload size={14} />
                   {currentQr ? t('withdraw.changeQr') : t('common.chooseFile')}
@@ -221,7 +221,7 @@ export function WithdrawModal({ open, onClose, amount, existingBankQrUrl, onSucc
               {uploadError && (
                 <div
                   className="mb-3 rounded-lg px-3 py-2 text-xs font-semibold"
-                  style={{ background: 'rgba(220,38,38,0.2)', color: '#f87171', border: '1px solid #f87171' }}
+                  style={{ background: 'rgba(220,38,38,0.2)', color: '#dc2626', border: '1px solid #f87171' }}
                 >
                   {uploadError}
                 </div>
@@ -232,22 +232,22 @@ export function WithdrawModal({ open, onClose, amount, existingBankQrUrl, onSucc
           {/* ─── Step 2 — confirm ─────────────────────────────────── */}
           {step === 'confirm' && currentQr && (
             <>
-              <p className="mb-2 text-center text-xs" style={{ color: '#c4b5fd' }}>
+              <p className="mb-2 text-center text-xs" style={{ color: '#6b4a4f' }}>
                 {t('withdraw.confirmInstruction')}
               </p>
 
               {/* Fee + net the customer receives, shown below the description. */}
               <div
                 className="mb-3 rounded-lg px-3 py-2 text-xs"
-                style={{ background: '#1e0040', border: '1px solid #4c1d95' }}
+                style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}
               >
                 <div className="flex items-center justify-between">
-                  <span style={{ color: '#c4b5fd' }}>{t('withdraw.fee')}</span>
-                  <span className="font-bold" style={{ color: '#fbbf24' }}>{withdrawFee(amount).toLocaleString()} ₭</span>
+                  <span style={{ color: '#6b4a4f' }}>{t('withdraw.fee')}</span>
+                  <span className="font-bold" style={{ color: '#b45309' }}>{withdrawFee(amount).toLocaleString()} ₭</span>
                 </div>
                 <div className="mt-1 flex items-center justify-between">
-                  <span style={{ color: '#c4b5fd' }}>{t('withdraw.youReceive')}</span>
-                  <span className="font-bold" style={{ color: '#4ade80' }}>{(amount - withdrawFee(amount)).toLocaleString()} ₭</span>
+                  <span style={{ color: '#6b4a4f' }}>{t('withdraw.youReceive')}</span>
+                  <span className="font-bold" style={{ color: '#15803d' }}>{(amount - withdrawFee(amount)).toLocaleString()} ₭</span>
                 </div>
               </div>
 
@@ -255,13 +255,13 @@ export function WithdrawModal({ open, onClose, amount, existingBankQrUrl, onSucc
                   confirm button above the fold without scrolling. Tap to enlarge. */}
               <div
                 className="mb-3 flex flex-col items-center gap-2 rounded-xl px-4 py-3"
-                style={{ background: '#1e0040', border: '1.5px solid #7c3aed' }}
+                style={{ background: '#fff5f6', border: '1.5px solid #e8949e' }}
               >
                 <button
                   type="button"
                   onClick={() => setLightbox(currentQr)}
                   className="block w-full max-w-[120px] overflow-hidden rounded-lg transition-opacity hover:opacity-90"
-                  style={{ border: '2px solid #a78bfa' }}
+                  style={{ border: '2px solid #e8949e' }}
                   aria-label={t('withdraw.aria.viewQr')}
                 >
                   <img src={currentQr} alt="Bank QR" className="block h-auto w-full object-contain" />
@@ -271,7 +271,7 @@ export function WithdrawModal({ open, onClose, amount, existingBankQrUrl, onSucc
                   onClick={() => setStep('qr')}
                   disabled={submitting}
                   className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-[10px] font-bold  transition-opacity hover:opacity-90 disabled:opacity-40"
-                  style={{ background: '#4c1d95', color: '#e9d5ff', border: '1px solid #7c3aed' }}
+                  style={{ background: '#ffe4e6', color: '#2b0b10', border: '1px solid #e8949e' }}
                 >
                   <Pencil size={10} />
                   {t('withdraw.changeQr')}
@@ -281,7 +281,7 @@ export function WithdrawModal({ open, onClose, amount, existingBankQrUrl, onSucc
               {withdrawFetcher.data?.error && (
                 <div
                   className="mb-3 rounded-lg px-3 py-2 text-xs font-semibold"
-                  style={{ background: 'rgba(220,38,38,0.2)', color: '#f87171', border: '1px solid #f87171' }}
+                  style={{ background: 'rgba(220,38,38,0.2)', color: '#dc2626', border: '1px solid #f87171' }}
                 >
                   {withdrawFetcher.data.error}
                 </div>
@@ -315,7 +315,7 @@ export function WithdrawModal({ open, onClose, amount, existingBankQrUrl, onSucc
               type="button"
               onClick={() => setStep('confirm')}
               className="mt-2 flex w-full items-center justify-center gap-1 rounded-xl py-2.5 text-xs font-bold "
-              style={{ background: '#4c1d95', color: '#fde68a', border: '1.5px solid #7c3aed' }}
+              style={{ background: '#ffe4e6', color: '#c8102e', border: '1.5px solid #e8949e' }}
             >
               {t('withdraw.keepCurrentQr')}
               <ArrowRight size={14} />
@@ -326,7 +326,7 @@ export function WithdrawModal({ open, onClose, amount, existingBankQrUrl, onSucc
               type="button"
               onClick={() => setStep('qr')}
               className="mt-2 flex w-full items-center justify-center gap-1 rounded-xl py-2.5 text-xs font-bold "
-              style={{ background: 'transparent', color: '#c4b5fd', border: '1px solid #4c1d95' }}
+              style={{ background: 'transparent', color: '#6b4a4f', border: '1px solid #f2ccd2' }}
             >
               <ArrowLeft size={14} />
               {t('common.back')}
@@ -347,7 +347,7 @@ export function WithdrawModal({ open, onClose, amount, existingBankQrUrl, onSucc
             type="button"
             onClick={e => { e.stopPropagation(); setLightbox(null) }}
             className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-            style={{ background: '#4c1d95', border: '1px solid #7c3aed', color: '#e9d5ff' }}
+            style={{ background: '#ffe4e6', border: '1px solid #e8949e', color: '#2b0b10' }}
             aria-label={t('common.close')}
           >
             <X size={20} />

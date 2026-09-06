@@ -99,7 +99,7 @@ export function ReferralModal({
   return (
     <div
       className="fixed inset-0 z-[110] flex items-center justify-center p-4"
-      style={{ background: 'rgba(15,0,32,0.85)' }}
+      style={{ background: 'rgba(43,11,16,0.55)' }}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -108,25 +108,25 @@ export function ReferralModal({
         onClick={e => e.stopPropagation()}
         className="relative max-h-[90vh] w-full max-w-md overflow-y-auto rounded-2xl p-6"
         style={{
-          background: 'linear-gradient(135deg, #3b0764, #1e0040)',
-          border: '1px solid #a78bfa',
-          boxShadow: '0 10px 40px rgba(124,58,237,0.5)',
+          background: 'linear-gradient(135deg, #fff1f2, #ffffff)',
+          border: '1px solid #e8949e',
+          boxShadow: '0 10px 40px rgba(200,16,46,0.5)',
         }}
       >
         <button
           type="button"
           onClick={onClose}
           className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-          style={{ background: '#4c1d95', color: '#e9d5ff', border: '1px solid #7c3aed' }}
+          style={{ background: '#ffe4e6', color: '#2b0b10', border: '1px solid #e8949e' }}
           aria-label={t('common.close')}
         >
           <X size={16} />
         </button>
 
-        <div className="mb-1 text-center text-lg font-bold " style={{ color: '#fde68a' }}>
+        <div className="mb-1 text-center text-lg font-bold " style={{ color: '#c8102e' }}>
           {t('referral.title')}
         </div>
-        <p className="mb-5 text-center text-xs" style={{ color: '#c4b5fd' }}>
+        <p className="mb-5 text-center text-xs" style={{ color: '#6b4a4f' }}>
           {campaign?.enabled
             ? t('referral.descriptionCommission', { percent: campaign.percent })
             : t('referral.description')}
@@ -140,22 +140,22 @@ export function ReferralModal({
             size={160}
             level="M"
             bgColor="#ffffff"
-            fgColor="#1e0040"
+            fgColor="#fff5f6"
           />
         </div>
 
         {/* Code chip — shown above the link as a fallback for typed entry.
             Also copyable on its own, for sharing just the code. */}
-        <div className="mb-3 flex items-center justify-center gap-2 text-[10px] font-bold " style={{ color: '#a78bfa' }}>
+        <div className="mb-3 flex items-center justify-center gap-2 text-[10px] font-bold " style={{ color: '#9c1024' }}>
           <span>{t('referral.codeLabel')}</span>
           <button
             type="button"
             onClick={copyCode}
             className="flex items-center gap-1.5 rounded-md px-2 py-0.5 text-sm transition-opacity hover:opacity-80"
             style={{
-              background: '#2d1b4e',
-              color: codeCopied ? '#4ade80' : '#fde68a',
-              border: `1px solid ${codeCopied ? '#4ade80' : '#4c1d95'}`,
+              background: '#fff0f2',
+              color: codeCopied ? '#15803d' : '#c8102e',
+              border: `1px solid ${codeCopied ? '#4ade80' : '#f2ccd2'}`,
             }}
             aria-label={t('referral.copy')}
           >
@@ -167,21 +167,21 @@ export function ReferralModal({
         {/* Share URL + copy button. */}
         <div
           className="flex items-stretch gap-2 rounded-xl p-1.5"
-          style={{ background: '#1a0630', border: '1.5px solid #4c1d95' }}
+          style={{ background: '#fff7f8', border: '1.5px solid #f2ccd2' }}
         >
           <input
             readOnly
             value={shareUrl}
             onFocus={e => e.currentTarget.select()}
             className="min-w-0 flex-1 bg-transparent px-2 py-2 text-xs outline-none"
-            style={{ color: '#e9d5ff' }}
+            style={{ color: '#2b0b10' }}
             aria-label={t('referral.linkAria')}
           />
           <button
             type="button"
             onClick={copyLink}
             className="flex shrink-0 items-center gap-1 rounded-lg px-3 py-2 text-[11px] font-bold  transition-opacity hover:opacity-90"
-            style={{ background: copied ? '#16a34a' : '#7c3aed', color: '#fff', border: `1px solid ${copied ? '#4ade80' : '#a78bfa'}` }}
+            style={{ background: copied ? '#16a34a' : '#c8102e', color: '#fff', border: `1px solid ${copied ? '#4ade80' : '#e8949e'}` }}
             aria-label={t('referral.copy')}
           >
             {copied ? <Check size={14} /> : <Copy size={14} />}
@@ -206,11 +206,11 @@ export function ReferralsList({ referrals }: { referrals: ReferralListItem[] }) 
   const t = useT()
   return (
     <>
-      <div className="mb-2 flex items-center justify-between text-[10px] font-bold " style={{ color: '#a78bfa' }}>
+      <div className="mb-2 flex items-center justify-between text-[10px] font-bold " style={{ color: '#9c1024' }}>
         <span>{t('referral.yourReferrals')}</span>
         <span
           className="rounded-full px-2 py-0.5"
-          style={{ background: '#2d1b4e', color: '#fde68a', border: '1px solid #4c1d95' }}
+          style={{ background: '#fff0f2', color: '#c8102e', border: '1px solid #f2ccd2' }}
         >
           {referrals.length}
         </span>
@@ -219,7 +219,7 @@ export function ReferralsList({ referrals }: { referrals: ReferralListItem[] }) 
       {referrals.length === 0 ? (
         <div
           className="rounded-xl py-4 text-center text-xs"
-          style={{ background: '#1a0630', border: '1px dashed #4c1d95', color: '#a78bfa' }}
+          style={{ background: '#fff7f8', border: '1px dashed #f2ccd2', color: '#9c1024' }}
         >
           {t('referral.empty')}
         </div>
@@ -229,13 +229,13 @@ export function ReferralsList({ referrals }: { referrals: ReferralListItem[] }) 
             <li
               key={r.id}
               className="flex items-center justify-between gap-2 rounded-lg px-3 py-2"
-              style={{ background: '#1a0630', border: '1px solid #4c1d95' }}
+              style={{ background: '#fff7f8', border: '1px solid #f2ccd2' }}
             >
               <div className="min-w-0 flex-1">
-                <div className="truncate text-xs font-semibold" style={{ color: '#e9d5ff' }}>
+                <div className="truncate text-xs font-semibold" style={{ color: '#2b0b10' }}>
                   {r.name ?? r.tel}
                 </div>
-                <div className="text-[10px]" style={{ color: '#a78bfa' }}>
+                <div className="text-[10px]" style={{ color: '#9c1024' }}>
                   {r.name ? `${r.tel} · ` : ''}{new Date(r.joinedAt).toLocaleDateString()}
                 </div>
               </div>
@@ -243,8 +243,8 @@ export function ReferralsList({ referrals }: { referrals: ReferralListItem[] }) 
                 className="shrink-0 rounded-full px-2 py-0.5 text-[9px] font-bold "
                 style={
                   r.totalEarned > 0
-                    ? { background: 'rgba(22,163,74,0.25)', color: '#4ade80', border: '1px solid #4ade80' }
-                    : { background: 'rgba(234,179,8,0.18)', color: '#fde68a', border: '1px solid #fbbf24' }
+                    ? { background: 'rgba(22,163,74,0.25)', color: '#15803d', border: '1px solid #4ade80' }
+                    : { background: 'rgba(234,179,8,0.18)', color: '#b45309', border: '1px solid #fbbf24' }
                 }
               >
                 {r.totalEarned > 0 ? `+${r.totalEarned.toLocaleString()} ₭` : t('referral.pending')}

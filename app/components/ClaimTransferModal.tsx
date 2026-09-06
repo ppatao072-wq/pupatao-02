@@ -83,39 +83,39 @@ export function ClaimTransferModal({ open, onClose, transfer, onSuccess }: Claim
           'md:max-w-sm md:rounded-xl md:pb-6 md:fade-in md:zoom-in-95',
         ].join(' ')}
         style={{
-          background: 'linear-gradient(135deg, #4c1d95, #1e0040)',
+          background: 'linear-gradient(135deg, #ffffff, #fff5f6)',
           boxShadow: '0 10px 60px rgba(0,0,0,0.7)',
         }}
       >
-        <div aria-hidden className="mx-auto mb-3 h-1 w-10 rounded-full md:hidden" style={{ background: '#7c3aed' }} />
+        <div aria-hidden className="mx-auto mb-3 h-1 w-10 rounded-full md:hidden" style={{ background: '#c8102e' }} />
 
         <button
           onClick={onClose}
           type="button"
           disabled={submitting}
           className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full transition-opacity hover:opacity-80 disabled:opacity-30"
-          style={{ background: '#4c1d95', border: '1px solid #7c3aed', color: '#e9d5ff' }}
+          style={{ background: '#ffe4e6', border: '1px solid #e8949e', color: '#2b0b10' }}
           aria-label={t('common.close')}
         >
           <X size={18} />
         </button>
 
-        <div className="mb-1 text-center text-xs font-bold " style={{ color: '#a78bfa' }}>
+        <div className="mb-1 text-center text-xs font-bold " style={{ color: '#9c1024' }}>
           {t('transfer.claimTitle')}
         </div>
-        <h2 className="mb-1 text-center text-2xl font-bold" style={{ color: '#fde68a' }}>
+        <h2 className="mb-1 text-center text-2xl font-bold" style={{ color: '#c8102e' }}>
           {transfer.amount.toLocaleString()} ₭
         </h2>
-        <p className="mb-4 text-center text-xs" style={{ color: '#c4b5fd' }}>
+        <p className="mb-4 text-center text-xs" style={{ color: '#6b4a4f' }}>
           {t('transfer.claimDesc', { sender: transfer.sender.name ?? transfer.sender.tel })}
         </p>
 
         <form onSubmit={submit} className="flex flex-col gap-3">
-          <label className="text-[10px] font-bold " style={{ color: '#a78bfa' }}>
+          <label className="text-[10px] font-bold " style={{ color: '#9c1024' }}>
             {t('transfer.code')}
           </label>
           <div className="relative">
-            <KeyRound size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#a78bfa' }} />
+            <KeyRound size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#9c1024' }} />
             <input
               autoFocus
               value={code}
@@ -124,12 +124,12 @@ export function ClaimTransferModal({ open, onClose, transfer, onSuccess }: Claim
               maxLength={6}
               placeholder="000000"
               className="w-full rounded-lg py-2.5 pl-9 pr-3 text-lg font-bold tracking-[0.5em] outline-none"
-              style={{ background: '#2d1b4e', color: '#fde68a', border: '2px solid #7c3aed', textAlign: 'center' }}
+              style={{ background: '#fff0f2', color: '#c8102e', border: '2px solid #e8949e', textAlign: 'center' }}
             />
           </div>
 
           {fetcher.data?.error && (
-            <div className="rounded-lg px-3 py-2 text-xs font-semibold" style={{ background: 'rgba(220,38,38,0.2)', color: '#f87171', border: '1px solid #f87171' }}>
+            <div className="rounded-lg px-3 py-2 text-xs font-semibold" style={{ background: 'rgba(220,38,38,0.2)', color: '#dc2626', border: '1px solid #f87171' }}>
               {fetcher.data.error}
             </div>
           )}

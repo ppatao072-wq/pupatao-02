@@ -30,15 +30,15 @@ export function PushOptIn() {
   return (
     <div
       className="flex items-center gap-3 rounded-xl p-3"
-      style={{ background: '#1e0040', border: '1px solid #4c1d95' }}
+      style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}
     >
-      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full" style={{ background: '#4c1d95' }}>
-        {state === 'granted' ? <BellRing size={18} color="#fde68a" /> : state === 'denied' ? <BellOff size={18} color="#f87171" /> : <Bell size={18} color="#a78bfa" />}
+      <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full" style={{ background: '#ffe4e6' }}>
+        {state === 'granted' ? <BellRing size={18} color="#c8102e" /> : state === 'denied' ? <BellOff size={18} color="#dc2626" /> : <Bell size={18} color="#9c1024" />}
       </div>
 
       <div className="min-w-0 flex-1">
-        <p className="text-sm font-bold" style={{ color: '#e9d5ff' }}>{t('push.title')}</p>
-        <p className="text-[11px]" style={{ color: '#a78bfa' }}>
+        <p className="text-sm font-bold" style={{ color: '#2b0b10' }}>{t('push.title')}</p>
+        <p className="text-[11px]" style={{ color: '#9c1024' }}>
           {state === 'denied'
             ? t('push.blocked')
             : state === 'installFirst'
@@ -53,7 +53,7 @@ export function PushOptIn() {
           disabled={busy}
           onClick={() => toggle(false)}
           className="shrink-0 rounded-lg px-3 py-1.5 text-xs font-bold disabled:opacity-50"
-          style={{ background: '#2d1b4e', color: '#a78bfa', border: '1px solid #4c1d95' }}
+          style={{ background: '#fff0f2', color: '#9c1024', border: '1px solid #f2ccd2' }}
         >
           {t('push.disable')}
         </button>
@@ -63,7 +63,7 @@ export function PushOptIn() {
           disabled={busy}
           onClick={() => toggle(true)}
           className="shrink-0 rounded-lg px-3 py-1.5 text-xs font-bold disabled:opacity-50"
-          style={{ background: '#7c3aed', color: '#fff' }}
+          style={{ background: '#c8102e', color: '#fff' }}
         >
           {t('push.enable')}
         </button>

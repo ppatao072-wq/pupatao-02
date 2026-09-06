@@ -90,7 +90,7 @@ export default function RegisterPage() {
     <div
       className="min-h-screen font-sans"
       style={{
-        background: 'linear-gradient(160deg, #3b0764 0%, #5b21b6 35%, #7c3aed 65%, #4c1d95 100%)',
+        background: 'linear-gradient(160deg, #ffffff 0%, #fff5f6 35%, #ffe9ec 65%, #ffd9de 100%)',
       }}
     >
       <RegisterModal

@@ -206,14 +206,14 @@ export default function AdminFinancial() {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center gap-3">
-        <BarChart2 size={18} style={{ color: '#fde68a' }} />
-        <h1 className="text-xl font-bold" style={{ color: '#fde68a' }}>{t('admin.financial.title')}</h1>
-        {loading && <Loader size={14} className="animate-spin ml-auto" style={{ color: '#a5b4fc' }} />}
+        <BarChart2 size={18} style={{ color: '#c8102e' }} />
+        <h1 className="text-xl font-bold" style={{ color: '#c8102e' }}>{t('admin.financial.title')}</h1>
+        {loading && <Loader size={14} className="animate-spin ml-auto" style={{ color: '#6b4a4f' }} />}
       </div>
 
       {/* ── Period filter ─────────────────────────────────── */}
       <Form method="get" className="flex flex-wrap items-center gap-2">
-        <div className="flex overflow-hidden rounded-lg text-xs font-bold" style={{ border: '1px solid #4338ca' }}>
+        <div className="flex overflow-hidden rounded-lg text-xs font-bold" style={{ border: '1px solid #f2ccd2' }}>
           {PERIOD_TABS.map(tab => (
             <button
               key={tab.key}
@@ -222,8 +222,8 @@ export default function AdminFinancial() {
               value={tab.key}
               className="px-3 py-1.5 transition-colors"
               style={{
-                background: data.period === tab.key ? '#4338ca' : 'transparent',
-                color: data.period === tab.key ? '#fff' : '#a5b4fc',
+                background: data.period === tab.key ? '#c8102e' : 'transparent',
+                color: data.period === tab.key ? '#fff' : '#6b4a4f',
               }}
             >
               {t(tab.labelKey)}
@@ -237,37 +237,37 @@ export default function AdminFinancial() {
               name="from"
               defaultValue={data.from || data.rangeStart}
               className="rounded-md px-2 py-1 text-xs outline-none"
-              style={{ background: '#0f172a', color: '#e9d5ff', border: '1px solid #4338ca' }}
+              style={{ background: '#fff5f6', color: '#2b0b10', border: '1px solid #f2ccd2' }}
             />
-            <span className="text-xs" style={{ color: '#64748b' }}>→</span>
+            <span className="text-xs" style={{ color: '#8a6d71' }}>→</span>
             <input
               type="datetime-local"
               name="to"
               defaultValue={data.to || data.rangeEnd}
               className="rounded-md px-2 py-1 text-xs outline-none"
-              style={{ background: '#0f172a', color: '#e9d5ff', border: '1px solid #4338ca' }}
+              style={{ background: '#fff5f6', color: '#2b0b10', border: '1px solid #f2ccd2' }}
             />
             <button
               type="submit"
               name="period"
               value="custom"
               className="rounded-md px-3 py-1.5 text-xs font-bold"
-              style={{ background: '#4338ca', color: '#fff' }}
+              style={{ background: '#c8102e', color: '#fff' }}
             >
               {t('admin.financial.apply')}
             </button>
           </>
         )}
         {data.period !== 'all' && (
-          <span className="ml-auto text-[11px]" style={{ color: '#64748b' }}>
+          <span className="ml-auto text-[11px]" style={{ color: '#8a6d71' }}>
             {fmtDatetime(data.rangeStart)} – {fmtDatetime(data.rangeEnd)}
           </span>
         )}
       </Form>
 
       {/* ── Bank Reconciliation (all-time) ────────────────── */}
-      <div className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #1e1b4b, #0f172a)', border: '1.5px solid #4338ca' }}>
-        <div className="mb-3 text-[11px] font-bold tracking-widest" style={{ color: '#a5b4fc' }}>
+      <div className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #ffffff, #fff5f6)', border: '1.5px solid #f2ccd2' }}>
+        <div className="mb-3 text-[11px] font-bold tracking-widest" style={{ color: '#6b4a4f' }}>
           {t('admin.financial.recon.title')}
         </div>
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
@@ -281,20 +281,20 @@ export default function AdminFinancial() {
             label={t('admin.financial.recon.customerLiability')}
             sublabel={t('admin.financial.recon.customerLiabilitySub')}
             value={data.customerLiability}
-            color="#a5b4fc"
+            color="#6b4a4f"
           />
           <div
             className="col-span-2 flex flex-col justify-center rounded-xl p-3"
             style={{ background: profitPositive ? 'rgba(74,222,128,0.08)' : 'rgba(248,113,113,0.08)', border: `1px solid ${profitPositive ? '#4ade80' : '#f87171'}` }}
           >
-            <div className="flex items-center gap-1.5 text-[10px] font-bold" style={{ color: profitPositive ? '#4ade80' : '#f87171' }}>
+            <div className="flex items-center gap-1.5 text-[10px] font-bold" style={{ color: profitPositive ? '#15803d' : '#dc2626' }}>
               {profitPositive ? <TrendingUp size={12} /> : <TrendingDown size={12} />}
               {profitPositive ? t('admin.financial.recon.estimatedProfit') : t('admin.financial.recon.estimatedDeficit')}
             </div>
-            <div className="mt-1 text-2xl font-bold md:text-3xl" style={{ color: profitPositive ? '#4ade80' : '#f87171' }}>
+            <div className="mt-1 text-2xl font-bold md:text-3xl" style={{ color: profitPositive ? '#15803d' : '#dc2626' }}>
               {fmt(Math.abs(data.houseProfit))}
             </div>
-            <div className="mt-1 text-[10px]" style={{ color: '#64748b' }}>
+            <div className="mt-1 text-[10px]" style={{ color: '#8a6d71' }}>
               {t('admin.financial.recon.profitFormula')}
             </div>
           </div>
@@ -308,7 +308,7 @@ export default function AdminFinancial() {
                 icon={<ArrowDownCircle size={11} />}
                 label={t('admin.financial.pending.deposits', { count: data.pendingDepCount, s: data.pendingDepCount === 1 ? '' : 's' })}
                 amount={data.pendingDepAmount}
-                color="#4ade80"
+                color="#15803d"
                 note={t('admin.financial.pending.depositsNote')}
               />
             )}
@@ -317,7 +317,7 @@ export default function AdminFinancial() {
                 icon={<ArrowUpCircle size={11} />}
                 label={t('admin.financial.pending.withdrawals', { count: data.pendingWithCount, s: data.pendingWithCount === 1 ? '' : 's' })}
                 amount={data.pendingWithAmount}
-                color="#f87171"
+                color="#dc2626"
                 note={t('admin.financial.pending.withdrawalsNote')}
               />
             )}
@@ -332,27 +332,27 @@ export default function AdminFinancial() {
           label={t('admin.financial.metric.depositsIn')}
           value={data.periodIn}
           count={data.periodInCount}
-          color="#4ade80"
+          color="#15803d"
         />
         <MetricCard
           icon={<ArrowUpCircle size={14} />}
           label={t('admin.financial.metric.withdrawalsOut')}
           value={data.periodOut}
           count={data.periodOutCount}
-          color="#f87171"
+          color="#dc2626"
         />
         <MetricCard
           icon={data.periodNet >= 0 ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
           label={t('admin.financial.metric.netCashFlow')}
           value={data.periodNet}
-          color={data.periodNet >= 0 ? '#fde68a' : '#f87171'}
+          color={data.periodNet >= 0 ? '#c8102e' : '#dc2626'}
           signed
         />
         <MetricCard
           icon={<Users size={14} />}
           label={t('admin.financial.metric.newCustomers')}
           value={data.periodNewUsers}
-          color="#a5b4fc"
+          color="#6b4a4f"
           isCount
         />
       </div>
@@ -365,7 +365,7 @@ export default function AdminFinancial() {
               label={t('admin.financial.metric.promoBonusGiven')}
               value={data.periodPromoAmount}
               count={data.periodPromoCount}
-              color="#fcd34d"
+              color="#b45309"
             />
           )}
           {data.periodReferralAmount > 0 && (
@@ -374,7 +374,7 @@ export default function AdminFinancial() {
               label={t('admin.financial.metric.referralBonusGiven')}
               value={data.periodReferralAmount}
               count={data.periodReferralCount}
-              color="#fcd34d"
+              color="#b45309"
             />
           )}
         </div>
@@ -382,13 +382,13 @@ export default function AdminFinancial() {
 
       {/* ── Daily breakdown ───────────────────────────────── */}
       <div>
-        <div className="mb-2 text-[10px] font-bold tracking-wider" style={{ color: '#a5b4fc' }}>
+        <div className="mb-2 text-[10px] font-bold tracking-wider" style={{ color: '#6b4a4f' }}>
           {t('admin.financial.daily.title')}
         </div>
-        <div className="overflow-x-auto rounded-xl" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+        <div className="overflow-x-auto rounded-xl" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
           <table className="w-full min-w-[540px] text-left text-xs">
-            <thead style={{ color: '#a5b4fc' }}>
-              <tr className="text-[10px] font-bold" style={{ background: '#1e1b4b' }}>
+            <thead style={{ color: '#6b4a4f' }}>
+              <tr className="text-[10px] font-bold" style={{ background: '#ffffff' }}>
                 <th className="px-4 py-2.5">{t('admin.financial.daily.date')}</th>
                 <th className="px-4 py-2.5 text-right">{t('admin.financial.metric.depositsIn')}</th>
                 <th className="px-4 py-2.5 text-right">{t('admin.financial.metric.withdrawalsOut')}</th>
@@ -398,34 +398,34 @@ export default function AdminFinancial() {
             <tbody>
               {data.dailyRows.length === 0 && (
                 <tr>
-                  <td colSpan={4} className="px-4 py-6 text-center" style={{ color: '#64748b' }}>
+                  <td colSpan={4} className="px-4 py-6 text-center" style={{ color: '#8a6d71' }}>
                     {t('admin.financial.daily.empty')}
                   </td>
                 </tr>
               )}
               {data.dailyRows.map(row => (
-                <tr key={row.date} style={{ borderTop: '1px solid #1e1b4b', color: '#e9d5ff' }}>
-                  <td className="px-4 py-2.5 font-semibold" style={{ color: '#a5b4fc' }}>
+                <tr key={row.date} style={{ borderTop: '1px solid #f2ccd2', color: '#2b0b10' }}>
+                  <td className="px-4 py-2.5 font-semibold" style={{ color: '#6b4a4f' }}>
                     {fmtDate(row.date)}
                   </td>
                   <td className="px-4 py-2.5 text-right">
                     {row.depAmount > 0 ? (
-                      <span style={{ color: '#4ade80' }}>
+                      <span style={{ color: '#15803d' }}>
                         +{fmt(row.depAmount)}{' '}
-                        <span className="text-[10px]" style={{ color: '#64748b' }}>×{row.depCount}</span>
+                        <span className="text-[10px]" style={{ color: '#8a6d71' }}>×{row.depCount}</span>
                       </span>
-                    ) : <span style={{ color: '#64748b' }}>—</span>}
+                    ) : <span style={{ color: '#8a6d71' }}>—</span>}
                   </td>
                   <td className="px-4 py-2.5 text-right">
                     {row.withAmount > 0 ? (
-                      <span style={{ color: '#f87171' }}>
+                      <span style={{ color: '#dc2626' }}>
                         −{fmt(row.withAmount)}{' '}
-                        <span className="text-[10px]" style={{ color: '#64748b' }}>×{row.withCount}</span>
+                        <span className="text-[10px]" style={{ color: '#8a6d71' }}>×{row.withCount}</span>
                       </span>
-                    ) : <span style={{ color: '#64748b' }}>—</span>}
+                    ) : <span style={{ color: '#8a6d71' }}>—</span>}
                   </td>
                   <td className="px-4 py-2.5 text-right font-bold">
-                    <span style={{ color: row.net >= 0 ? '#fde68a' : '#f87171' }}>
+                    <span style={{ color: row.net >= 0 ? '#c8102e' : '#dc2626' }}>
                       {row.net >= 0 ? '+' : '−'}{fmt(Math.abs(row.net))}
                     </span>
                   </td>
@@ -434,15 +434,15 @@ export default function AdminFinancial() {
             </tbody>
             {data.dailyRows.length > 1 && (
               <tfoot>
-                <tr style={{ borderTop: '2px solid #4338ca', color: '#e9d5ff' }}>
-                  <td className="px-4 py-2.5 text-[10px] font-bold" style={{ color: '#a5b4fc' }}>{t('admin.financial.daily.total')}</td>
-                  <td className="px-4 py-2.5 text-right font-bold" style={{ color: '#4ade80' }}>
+                <tr style={{ borderTop: '2px solid #f2ccd2', color: '#2b0b10' }}>
+                  <td className="px-4 py-2.5 text-[10px] font-bold" style={{ color: '#6b4a4f' }}>{t('admin.financial.daily.total')}</td>
+                  <td className="px-4 py-2.5 text-right font-bold" style={{ color: '#15803d' }}>
                     +{fmt(data.periodIn)}
                   </td>
-                  <td className="px-4 py-2.5 text-right font-bold" style={{ color: '#f87171' }}>
+                  <td className="px-4 py-2.5 text-right font-bold" style={{ color: '#dc2626' }}>
                     −{fmt(data.periodOut)}
                   </td>
-                  <td className="px-4 py-2.5 text-right font-bold" style={{ color: data.periodNet >= 0 ? '#fde68a' : '#f87171' }}>
+                  <td className="px-4 py-2.5 text-right font-bold" style={{ color: data.periodNet >= 0 ? '#c8102e' : '#dc2626' }}>
                     {data.periodNet >= 0 ? '+' : '−'}{fmt(Math.abs(data.periodNet))}
                   </td>
                 </tr>
@@ -456,28 +456,28 @@ export default function AdminFinancial() {
       <div className="flex flex-col gap-2">
         <GlossaryCard
           term={t('admin.financial.metric.netCashFlow')}
-          color="#fde68a"
+          color="#c8102e"
           formula={t('admin.financial.glossary.netCashFlow.formula')}
           explain={t('admin.financial.glossary.netCashFlow.explain')}
           example={t('admin.financial.glossary.netCashFlow.example', { periodIn: fmt(data.periodIn), periodOut: fmt(data.periodOut), periodNet: `${data.periodNet >= 0 ? '+' : ''}${fmt(data.periodNet)}` })}
         />
         <GlossaryCard
           term={t('admin.financial.recon.customerLiability')}
-          color="#a5b4fc"
+          color="#6b4a4f"
           formula={t('admin.financial.glossary.customerLiability.formula')}
           explain={t('admin.financial.glossary.customerLiability.explain')}
           example={t('admin.financial.glossary.customerLiability.example', { amount: fmt(data.customerLiability) })}
         />
         <GlossaryCard
           term={t('admin.financial.recon.bankPosition')}
-          color="#fde68a"
+          color="#c8102e"
           formula={t('admin.financial.glossary.bankPosition.formula')}
           explain={t('admin.financial.glossary.bankPosition.explain')}
           example={t('admin.financial.glossary.bankPosition.example', { amount: fmt(data.bankPosition) })}
         />
         <GlossaryCard
           term={data.houseProfit >= 0 ? t('admin.financial.glossary.houseProfit.term') : t('admin.financial.glossary.houseDeficit.term')}
-          color={data.houseProfit >= 0 ? '#4ade80' : '#f87171'}
+          color={data.houseProfit >= 0 ? '#15803d' : '#dc2626'}
           formula={t('admin.financial.recon.profitFormula')}
           explain={
             data.houseProfit >= 0
@@ -489,12 +489,12 @@ export default function AdminFinancial() {
       </div>
 
       {/* ── Verification guide ───────────────────────────── */}
-      <div className="rounded-lg px-4 py-3 text-xs" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
-        <div className="mb-2 flex items-center gap-1.5 font-bold" style={{ color: '#a5b4fc' }}>
+      <div className="rounded-lg px-4 py-3 text-xs" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
+        <div className="mb-2 flex items-center gap-1.5 font-bold" style={{ color: '#6b4a4f' }}>
           <AlertTriangle size={11} />
           {t('admin.financial.verify.title')}
         </div>
-        <ol className="list-decimal ml-4 space-y-1" style={{ color: '#94a3b8' }}>
+        <ol className="list-decimal ml-4 space-y-1" style={{ color: '#8a6d71' }}>
           <li>{t('admin.financial.verify.step1')}</li>
           <li>{t('admin.financial.verify.step2', { amount: fmt(data.bankPosition) })}</li>
           <li>{t('admin.financial.verify.step3')}</li>
@@ -509,10 +509,10 @@ export default function AdminFinancial() {
 
 function ReconCard({ label, sublabel, value, color }: { label: string; sublabel: string; value: number; color: string }) {
   return (
-    <div className="rounded-xl p-3" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
-      <div className="text-[10px] font-bold" style={{ color: '#a5b4fc' }}>{label.toUpperCase()}</div>
+    <div className="rounded-xl p-3" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
+      <div className="text-[10px] font-bold" style={{ color: '#6b4a4f' }}>{label.toUpperCase()}</div>
       <div className="mt-1 text-xl font-bold md:text-2xl" style={{ color }}>{fmt(value)}</div>
-      <div className="mt-0.5 text-[10px]" style={{ color: '#64748b' }}>{sublabel}</div>
+      <div className="mt-0.5 text-[10px]" style={{ color: '#8a6d71' }}>{sublabel}</div>
     </div>
   )
 }
@@ -525,14 +525,14 @@ function MetricCard({
   const t = useT()
   const display = isCount ? value.toLocaleString() : `${signed && value >= 0 ? '+' : signed && value < 0 ? '−' : ''}${fmt(Math.abs(value))}`
   return (
-    <div className="rounded-xl p-3" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
-      <div className="flex items-center gap-1.5 text-[10px] font-bold" style={{ color: '#a5b4fc' }}>
+    <div className="rounded-xl p-3" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
+      <div className="flex items-center gap-1.5 text-[10px] font-bold" style={{ color: '#6b4a4f' }}>
         <span style={{ color }}>{icon}</span>
         {label.toUpperCase()}
       </div>
       <div className="mt-1 text-xl font-bold" style={{ color }}>{display}</div>
       {count !== undefined && (
-        <div className="mt-0.5 text-[10px]" style={{ color: '#64748b' }}>{t('admin.financial.metric.transactionCount', { count, s: count === 1 ? '' : 's' })}</div>
+        <div className="mt-0.5 text-[10px]" style={{ color: '#8a6d71' }}>{t('admin.financial.metric.transactionCount', { count, s: count === 1 ? '' : 's' })}</div>
       )}
     </div>
   )
@@ -549,7 +549,7 @@ function PendingChip({
       <span className="mt-0.5" style={{ color }}>{icon}</span>
       <div>
         <div className="font-bold" style={{ color }}>{label} — {fmt(amount)}</div>
-        <div style={{ color: '#64748b' }}>{note}</div>
+        <div style={{ color: '#8a6d71' }}>{note}</div>
       </div>
     </div>
   )
@@ -560,15 +560,15 @@ function GlossaryCard({
 }: { term: string; color: string; formula: string; explain: string; example: string }) {
   const t = useT()
   return (
-    <div className="rounded-lg px-4 py-3 text-xs" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+    <div className="rounded-lg px-4 py-3 text-xs" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
       <div className="flex flex-wrap items-baseline gap-2">
         <span className="font-bold" style={{ color }}>{term}</span>
-        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded" style={{ background: '#1e1b4b', color: '#a5b4fc' }}>
+        <span className="text-[10px] font-mono px-1.5 py-0.5 rounded" style={{ background: '#ffffff', color: '#6b4a4f' }}>
           {formula}
         </span>
       </div>
-      <p className="mt-1.5" style={{ color: '#94a3b8' }}>{explain}</p>
-      <p className="mt-1 text-[10px]" style={{ color: '#64748b' }}>{t('admin.financial.glossary.example.prefix')} {example}</p>
+      <p className="mt-1.5" style={{ color: '#8a6d71' }}>{explain}</p>
+      <p className="mt-1 text-[10px]" style={{ color: '#8a6d71' }}>{t('admin.financial.glossary.example.prefix')} {example}</p>
     </div>
   )
 }

@@ -31,7 +31,7 @@ export function GlobalNavLoader() {
       aria-hidden
       role="progressbar"
       className="fixed inset-x-0 top-0 z-[200] h-[3px] overflow-hidden pointer-events-none"
-      style={{ background: 'rgba(76,29,149,0.35)' }}
+      style={{ background: 'rgba(200,16,46,0.35)' }}
     >
       <div
         className="h-full w-full"

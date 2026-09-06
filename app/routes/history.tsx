@@ -203,34 +203,34 @@ export default function HistoryPage() {
   }, [visible])
 
   return (
-    <div className="min-h-screen font-sans" style={{ background: '#7c3aed' }}>
+    <div className="min-h-screen font-sans" style={{ background: 'linear-gradient(160deg, #fff1f2 0%, #ffe4e6 50%, #ffd9de 100%)' }}>
       <header
         className="flex items-center gap-4 px-4 py-3"
-        style={{ background: '#1e0040', borderBottom: '2px solid #a78bfa' }}
+        style={{ background: '#ffffff', borderBottom: '2px solid #e8949e' }}
       >
         <button
           onClick={() => { playClick(); navigate('/') }}
           className="flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition-opacity hover:opacity-80"
-          style={{ background: '#4c1d95', color: '#e9d5ff', border: '1px solid #7c3aed' }}
+          style={{ background: '#ffe4e6', color: '#2b0b10', border: '1px solid #e8949e' }}
         >
           {`← ${t('common.back')}`}
         </button>
-        <h1 className="text-xl font-bold" style={{ color: '#fde68a' }}>
+        <h1 className="text-xl font-bold" style={{ color: '#c8102e' }}>
           {walletTab === 'REAL' ? t('history.title') : t('history.titleDemo')}
         </h1>
       </header>
 
       <div className="mx-auto flex max-w-2xl flex-col gap-6 px-4 py-6">
         {/* ─── Wallet tab — REAL vs DEMO ─────────────────────────────── */}
-        <div className="flex rounded-xl overflow-hidden" style={{ border: '1px solid #6d28d9' }}>
+        <div className="flex rounded-xl overflow-hidden" style={{ border: '1px solid #e8949e' }}>
           {(['REAL', 'DEMO'] as WalletTab[]).map(key => (
             <button
               key={key}
               onClick={() => { playClick(); setWalletTab(key) }}
               className="flex-1 py-2.5 text-sm font-bold  transition-all"
               style={{
-                background: walletTab === key ? '#7c3aed' : '#1e0040',
-                color: walletTab === key ? '#fff' : '#a78bfa',
+                background: walletTab === key ? '#c8102e' : '#ffffff',
+                color: walletTab === key ? '#fff' : '#9c1024',
               }}
             >
               {key === 'REAL' ? t('history.tab.real') : t('history.tab.demo')}
@@ -241,26 +241,26 @@ export default function HistoryPage() {
         {/* ─── Lifetime stats ─────────────────────────────────────────── */}
         <div
           className="rounded-2xl p-5"
-          style={{ background: 'linear-gradient(135deg, #4c1d95, #1e0040)', border: '2px solid #a78bfa' }}
+          style={{ background: 'linear-gradient(135deg, #ffffff, #fff5f6)', border: '2px solid #e8949e' }}
         >
-          <div className="mb-3 text-center text-xs font-bold " style={{ color: '#c4b5fd' }}>
+          <div className="mb-3 text-center text-xs font-bold " style={{ color: '#6b4a4f' }}>
             {walletTab === 'REAL' ? t('history.lifetimeStats') : t('history.lifetimeStatsDemo')}
           </div>
           <div className="grid grid-cols-3 gap-3">
             <div className="text-center">
-              <div className="text-[10px] font-bold" style={{ color: '#a78bfa' }}>{t('history.totalGames')}</div>
-              <div className="mt-1 text-2xl font-bold" style={{ color: '#fde68a' }}>{stats.totalRounds.toLocaleString()}</div>
+              <div className="text-[10px] font-bold" style={{ color: '#9c1024' }}>{t('history.totalGames')}</div>
+              <div className="mt-1 text-2xl font-bold" style={{ color: '#c8102e' }}>{stats.totalRounds.toLocaleString()}</div>
             </div>
-            <div className="border-x text-center" style={{ borderColor: '#6d28d9' }}>
-              <div className="text-[10px] font-bold" style={{ color: '#a78bfa' }}>{t('history.winRate')}</div>
-              <div className="mt-1 text-2xl font-bold" style={{ color: '#4ade80' }}>{stats.winRate}%</div>
+            <div className="border-x text-center" style={{ borderColor: '#e8949e' }}>
+              <div className="text-[10px] font-bold" style={{ color: '#9c1024' }}>{t('history.winRate')}</div>
+              <div className="mt-1 text-2xl font-bold" style={{ color: '#15803d' }}>{stats.winRate}%</div>
             </div>
             <div className="text-center min-w-0">
-              <div className="text-[10px] font-bold" style={{ color: '#a78bfa' }}>{t('history.netPL')}</div>
+              <div className="text-[10px] font-bold" style={{ color: '#9c1024' }}>{t('history.netPL')}</div>
               <div
                 className="mt-1 font-bold leading-tight"
                 style={{
-                  color: stats.netPL > 0 ? '#4ade80' : stats.netPL < 0 ? '#f87171' : '#fde68a',
+                  color: stats.netPL > 0 ? '#15803d' : stats.netPL < 0 ? '#dc2626' : '#c8102e',
                   fontSize: Math.abs(stats.netPL) >= 1_000_000_000 ? '0.85rem'
                     : Math.abs(stats.netPL) >= 100_000_000 ? '1rem'
                     : Math.abs(stats.netPL) >= 10_000_000 ? '1.15rem'
@@ -271,7 +271,7 @@ export default function HistoryPage() {
                 {stats.netPL > 0 ? '+' : ''}{fmtStatNumber(stats.netPL)}
               </div>
               {Math.abs(stats.netPL) >= 10_000_000 && (
-                <div className="text-[9px]" style={{ color: '#6d28d9' }}>
+                <div className="text-[9px]" style={{ color: '#a50d26' }}>
                   {stats.netPL > 0 ? '+' : ''}{stats.netPL.toLocaleString()}
                 </div>
               )}
@@ -283,7 +283,7 @@ export default function HistoryPage() {
         {records.length > 0 && (
           <div
             className="flex flex-col gap-2 rounded-xl p-3 sm:flex-row sm:flex-wrap"
-            style={{ background: '#1e0040', border: '1px solid #4c1d95' }}
+            style={{ background: '#ffffff', border: '1px solid #f2ccd2' }}
           >
             <FilterSelect
               label={t('history.filter.result')}
@@ -323,14 +323,14 @@ export default function HistoryPage() {
         {records.length === 0 && (
           <div
             className="rounded-2xl py-16 text-center"
-            style={{ background: '#1e0040', border: '2px solid #4c1d95' }}
+            style={{ background: '#ffffff', border: '2px solid #f2ccd2' }}
           >
-            <p className="text-base font-semibold" style={{ color: '#a78bfa' }}>{t('history.empty')}</p>
-            <p className="mt-1 text-sm" style={{ color: '#6d28d9' }}>{t('history.emptyHint')}</p>
+            <p className="text-base font-semibold" style={{ color: '#9c1024' }}>{t('history.empty')}</p>
+            <p className="mt-1 text-sm" style={{ color: '#a50d26' }}>{t('history.emptyHint')}</p>
             <button
               onClick={() => { playClick(); navigate('/') }}
               className="mt-4 rounded-xl px-6 py-2 text-sm font-bold"
-              style={{ background: '#7c3aed', color: '#fff' }}
+              style={{ background: '#c8102e', color: '#fff' }}
             >
               {t('history.playNow')}
             </button>
@@ -342,7 +342,7 @@ export default function HistoryPage() {
           <section key={group.day} className="flex flex-col gap-3">
             <div
               className="sticky top-0 z-10 -mx-4 px-4 py-1 text-[10px] font-bold "
-              style={{ color: '#c4b5fd', background: 'rgba(124,58,237,0.85)' }}
+              style={{ color: '#ffe4e6', background: 'rgba(200,16,46,0.85)' }}
             >
               {group.day}
             </div>
@@ -358,7 +358,7 @@ export default function HistoryPage() {
             type="button"
             onClick={() => { playClick(); setVisibleCount(c => c + PAGE_STEP) }}
             className="rounded-xl py-3 text-sm font-bold  transition-opacity hover:opacity-90"
-            style={{ background: '#4c1d95', color: '#e9d5ff', border: '2px dashed #7c3aed' }}
+            style={{ background: '#ffe4e6', color: '#2b0b10', border: '2px dashed #e8949e' }}
           >
             {t('common.loadMoreCount', { n: Math.min(PAGE_STEP, remaining) })}
           </button>
@@ -394,7 +394,7 @@ function FilterSelect({
 }) {
   return (
     <label className="flex flex-1 flex-col gap-1 sm:min-w-[140px]">
-      <span className="text-[10px] font-bold " style={{ color: '#a78bfa' }}>
+      <span className="text-[10px] font-bold " style={{ color: '#9c1024' }}>
         {label}
       </span>
       <select
@@ -402,9 +402,9 @@ function FilterSelect({
         onChange={e => onChange(e.target.value)}
         className="rounded-md px-2.5 py-2 text-xs font-semibold outline-none"
         style={{
-          background: '#2d1b4e',
-          color: '#fde68a',
-          border: '1.5px solid #4c1d95',
+          background: '#fff0f2',
+          color: '#c8102e',
+          border: '1.5px solid #f2ccd2',
           colorScheme: 'dark',
           appearance: 'none',
           WebkitAppearance: 'none',
@@ -416,7 +416,7 @@ function FilterSelect({
         }}
       >
         {options.map(o => (
-          <option key={o.value} value={o.value} style={{ background: '#1e0040', color: '#fde68a' }}>
+          <option key={o.value} value={o.value} style={{ background: '#ffffff', color: '#c8102e' }}>
             {o.label}
           </option>
         ))}
@@ -445,7 +445,7 @@ function GameRow({ round }: { round: Round }) {
     <div
       className="overflow-hidden rounded-2xl"
       style={{
-        background: '#1e0040',
+        background: '#ffffff',
         border: `2px solid ${isWin ? '#16a34a' : '#7f1d1d'}`,
       }}
     >
@@ -457,15 +457,15 @@ function GameRow({ round }: { round: Round }) {
         style={{ background: isWin ? 'rgba(22,163,74,0.15)' : 'rgba(127,29,29,0.25)' }}
       >
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs" style={{ color: '#a78bfa' }}>
+          <span className="text-xs" style={{ color: '#9c1024' }}>
             {new Date(round.timestamp).toLocaleString()}
           </span>
           <span
             className="rounded-full px-2 py-0.5 text-[10px] font-bold "
             style={{
-              background: round.mode === 'LIVE' ? 'rgba(220,38,38,0.25)' : 'rgba(99,102,241,0.25)',
-              color: round.mode === 'LIVE' ? '#fca5a5' : '#a5b4fc',
-              border: `1px solid ${round.mode === 'LIVE' ? '#fca5a5' : '#a5b4fc'}`,
+              background: round.mode === 'LIVE' ? 'rgba(220,38,38,0.25)' : 'rgba(200,16,46,0.25)',
+              color: round.mode === 'LIVE' ? '#dc2626' : '#6b4a4f',
+              border: `1px solid ${round.mode === 'LIVE' ? '#fca5a5' : '#eeb0b9'}`,
             }}
           >
             {round.mode === 'LIVE' ? t('history.modeLive') : t('history.modeRandom')}
@@ -497,12 +497,12 @@ function GameRow({ round }: { round: Round }) {
             </div>
           ))}
         </div>
-        <div className="rounded-full px-3 py-0.5 text-xs font-bold" style={{ background: '#4c1d95', color: '#fde68a' }}>
+        <div className="rounded-full px-3 py-0.5 text-xs font-bold" style={{ background: '#ffe4e6', color: '#c8102e' }}>
           {t('history.sum')} {round.diceSum}
         </div>
         <div className="ml-auto text-right">
-          <div className="text-[10px]" style={{ color: '#a78bfa' }}>{t('history.totalBet')}</div>
-          <div className="text-sm font-bold" style={{ color: '#fde68a' }}>{round.totalStake.toLocaleString()}</div>
+          <div className="text-[10px]" style={{ color: '#9c1024' }}>{t('history.totalBet')}</div>
+          <div className="text-sm font-bold" style={{ color: '#c8102e' }}>{round.totalStake.toLocaleString()}</div>
         </div>
       </div>
 
@@ -525,7 +525,7 @@ function GameRow({ round }: { round: Round }) {
 function BetSection({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <div className="text-[10px] font-bold " style={{ color: '#a78bfa' }}>
+      <div className="text-[10px] font-bold " style={{ color: '#9c1024' }}>
         {title}
       </div>
       <div className="flex flex-wrap justify-start gap-1.5">{children}</div>
@@ -574,7 +574,7 @@ function BetTile({
         <div className="relative h-6 w-6 overflow-hidden rounded bg-white">
           <img src={`/symbols/${bet.symbol}.png`} alt={bet.symbol} className="absolute inset-0 h-full w-full object-contain" />
         </div>
-        <span className="text-xs font-semibold" style={{ color: '#fde68a' }}>{bet.amount.toLocaleString()}</span>
+        <span className="text-xs font-semibold" style={{ color: '#c8102e' }}>{bet.amount.toLocaleString()}</span>
         <PayoutBadge won={won} profit={profit} refunded={refunded} refundAmount={bet.amount} />
       </div>
     )
@@ -587,12 +587,12 @@ function BetTile({
           <div className="relative h-6 w-6 overflow-hidden rounded bg-white">
             <img src={`/symbols/${bet.pairA}.png`} alt={bet.pairA} className="absolute inset-0 h-full w-full object-contain" />
           </div>
-          <span className="text-[10px] font-bold" style={{ color: '#a78bfa' }}>+</span>
+          <span className="text-[10px] font-bold" style={{ color: '#9c1024' }}>+</span>
           <div className="relative h-6 w-6 overflow-hidden rounded bg-white">
             <img src={`/symbols/${bet.pairB}.png`} alt={bet.pairB} className="absolute inset-0 h-full w-full object-contain" />
           </div>
         </div>
-        <span className="text-xs font-semibold" style={{ color: '#fde68a' }}>{bet.amount.toLocaleString()}</span>
+        <span className="text-xs font-semibold" style={{ color: '#c8102e' }}>{bet.amount.toLocaleString()}</span>
         <PayoutBadge won={won} profit={profit} refunded={refunded} refundAmount={bet.amount} />
       </div>
     )
@@ -605,9 +605,9 @@ function BetTile({
           : t('history.range.high')
     const bg =
       bet.range === 'LOW' ? 'linear-gradient(135deg, #0369a1, #0c4a6e)'
-        : bet.range === 'MIDDLE' ? 'linear-gradient(135deg, #a21caf, #581c87)'
+        : bet.range === 'MIDDLE' ? 'linear-gradient(135deg, #c8102e, #7d0a1c)'
           : 'linear-gradient(135deg, #b91c1c, #7f1d1d)'
-    const border = won ? '#4ade80' : '#4c1d95'
+    const border = won ? '#4ade80' : '#f2ccd2'
     const range = RANGE_BOUNDS[bet.range]
     return (
       <div
@@ -615,7 +615,7 @@ function BetTile({
         style={{ background: bg, color: '#fff', border: `1.5px solid ${border}`, boxShadow: won ? '0 0 8px rgba(74,222,128,0.4)' : undefined }}
       >
         <span>{label} ({range.min}-{range.max})</span>
-        <span style={{ color: '#fde68a' }}>· {bet.amount.toLocaleString()}</span>
+        <span style={{ color: '#c8102e' }}>· {bet.amount.toLocaleString()}</span>
         <PayoutBadge won={won} profit={profit} refunded={refunded} refundAmount={bet.amount} compact />
       </div>
     )
@@ -628,7 +628,7 @@ function BetTile({
         style={{ background: 'linear-gradient(135deg, #78350f, #451a03)', color: '#fff', border: `1.5px solid ${won ? '#4ade80' : '#92400e'}`, boxShadow: won ? '0 0 8px rgba(74,222,128,0.4)' : undefined }}
       >
         <span>ເລກ {bet.exactSum}</span>
-        <span style={{ color: '#fde68a' }}>· {bet.amount.toLocaleString()}</span>
+        <span style={{ color: '#c8102e' }}>· {bet.amount.toLocaleString()}</span>
         <PayoutBadge won={won} profit={profit} refunded={refunded} refundAmount={bet.amount} compact />
       </div>
     )
@@ -662,7 +662,7 @@ function PayoutBadge({ won, profit, compact, refunded, refundAmount }: { won: bo
   return (
     <span
       className={`rounded-full ${compact ? 'px-1.5 py-0.5 text-[9px]' : 'px-2 py-0.5 text-[10px]'} font-bold `}
-      style={{ background: 'rgba(127,29,29,0.6)', color: '#fda4af' }}
+      style={{ background: 'rgba(220,38,38,0.15)', color: '#b91c1c' }}
     >
       {t('history.lost')}
     </span>

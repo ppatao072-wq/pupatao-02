@@ -155,7 +155,7 @@ export function FeatureTour({ steps, open, onClose, onFinish }: FeatureTourProps
       height: rect.height + PADDING * 2,
       borderRadius: 14,
       border: '2px solid #facc15',
-      boxShadow: '0 0 0 9999px rgba(5,0,15,0.86), 0 0 28px rgba(250,204,21,0.55)',
+      boxShadow: '0 0 0 9999px rgba(24,10,12,0.86), 0 0 28px rgba(250,204,21,0.55)',
       transition: 'top 280ms ease, left 280ms ease, width 280ms ease, height 280ms ease',
       pointerEvents: 'none',
       zIndex: 1,
@@ -166,7 +166,7 @@ export function FeatureTour({ steps, open, onClose, onFinish }: FeatureTourProps
       left: '50%',
       width: 0,
       height: 0,
-      boxShadow: '0 0 0 9999px rgba(5,0,15,0.9)',
+      boxShadow: '0 0 0 9999px rgba(24,10,12,0.9)',
       pointerEvents: 'none',
       zIndex: 1,
     }
@@ -182,16 +182,16 @@ export function FeatureTour({ steps, open, onClose, onFinish }: FeatureTourProps
           top: tooltipPos?.top ?? -9999,
           left: tooltipPos?.left ?? -9999,
           opacity: tooltipPos ? 1 : 0,
-          background: 'linear-gradient(160deg, #2d1b4e 0%, #1e0040 100%)',
-          border: '1.5px solid #a78bfa',
-          boxShadow: '0 12px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(167,139,250,0.15)',
+          background: 'linear-gradient(160deg, #fff5f6 0%, #ffffff 100%)',
+          border: '1.5px solid #e8949e',
+          boxShadow: '0 12px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(200,16,46,0.15)',
           zIndex: 2,
         }}
       >
         <div className="mb-2 flex items-center justify-between">
           <span
             className="rounded-full px-2.5 py-0.5 text-[10px] font-bold tabular-nums"
-            style={{ background: 'rgba(124,58,237,0.35)', color: '#e9d5ff' }}
+            style={{ background: 'rgba(200,16,46,0.35)', color: '#2b0b10' }}
           >
             {t('tour.stepOf', { current: String(stepIndex + 1), total: String(steps.length) })}
           </span>
@@ -200,16 +200,16 @@ export function FeatureTour({ steps, open, onClose, onFinish }: FeatureTourProps
             onClick={onClose}
             aria-label={t('tour.skip')}
             className="flex h-6 w-6 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-            style={{ background: '#4c1d95', color: '#c4b5fd' }}
+            style={{ background: '#ffe4e6', color: '#6b4a4f' }}
           >
             <X size={13} />
           </button>
         </div>
 
-        <h3 className="mb-1.5 text-base font-bold" style={{ color: '#fde68a' }}>
+        <h3 className="mb-1.5 text-base font-bold" style={{ color: '#c8102e' }}>
           {t(step.titleKey)}
         </h3>
-        <p className="text-[13px] leading-relaxed" style={{ color: '#e9d5ff' }}>
+        <p className="text-[13px] leading-relaxed" style={{ color: '#2b0b10' }}>
           {t(step.bodyKey)}
         </p>
 
@@ -221,7 +221,7 @@ export function FeatureTour({ steps, open, onClose, onFinish }: FeatureTourProps
                 className="h-1.5 rounded-full transition-all"
                 style={{
                   width: i === stepIndex ? 16 : 6,
-                  background: i === stepIndex ? '#fde68a' : 'rgba(167,139,250,0.4)',
+                  background: i === stepIndex ? '#fde68a' : 'rgba(200,16,46,0.4)',
                 }}
               />
             ))}
@@ -232,7 +232,7 @@ export function FeatureTour({ steps, open, onClose, onFinish }: FeatureTourProps
                 type="button"
                 onClick={back}
                 className="rounded-lg px-3 py-1.5 text-xs font-bold transition-opacity hover:opacity-90"
-                style={{ background: '#4c1d95', color: '#e9d5ff', border: '1px solid #7c3aed' }}
+                style={{ background: '#ffe4e6', color: '#2b0b10', border: '1px solid #e8949e' }}
               >
                 {t('common.back')}
               </button>

@@ -53,21 +53,21 @@ export default function AdminLoginPage() {
   return (
     <div
       className="flex min-h-screen items-center justify-center px-4 font-sans"
-      style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)' }}
+      style={{ background: 'linear-gradient(160deg, #ffffff 0%, #fff5f6 50%, #ffe4e6 100%)' }}
     >
       <div
         className="w-full max-w-sm rounded-2xl p-6"
-        style={{ background: 'linear-gradient(135deg, #1e1b4b, #0f172a)', border: '1px solid #4338ca', boxShadow: '0 10px 60px rgba(0,0,0,0.7)' }}
+        style={{ background: 'linear-gradient(135deg, #ffffff, #fff5f6)', border: '1px solid #f2ccd2', boxShadow: '0 10px 60px rgba(0,0,0,0.7)' }}
       >
-        <div className="mb-1 flex items-center justify-center gap-2 text-xs font-bold " style={{ color: '#a5b4fc' }}>
+        <div className="mb-1 flex items-center justify-center gap-2 text-xs font-bold " style={{ color: '#6b4a4f' }}>
           <ShieldCheck size={14} /> {t('admin.login.badge')}
         </div>
-        <h1 className="mb-5 text-center text-2xl font-bold" style={{ color: '#fde68a' }}>
+        <h1 className="mb-5 text-center text-2xl font-bold" style={{ color: '#c8102e' }}>
           Pupatao Admin
         </h1>
 
         <Form method="post" className="flex flex-col gap-3">
-          <label className="text-xs font-semibold" style={{ color: '#a5b4fc' }}>{t('admin.login.emailLabel')}</label>
+          <label className="text-xs font-semibold" style={{ color: '#6b4a4f' }}>{t('admin.login.emailLabel')}</label>
           <input
             name="email"
             type="email"
@@ -75,23 +75,23 @@ export default function AdminLoginPage() {
             required
             placeholder="admin@pupatao.com"
             className="rounded-lg px-3 py-2.5 text-sm font-semibold outline-none"
-            style={{ background: '#0f172a', color: '#fde68a', border: '1.5px solid #4338ca' }}
+            style={{ background: '#fff5f6', color: '#c8102e', border: '1.5px solid #f2ccd2' }}
           />
 
-          <label className="text-xs font-semibold" style={{ color: '#a5b4fc' }}>{t('admin.login.passwordLabel')}</label>
+          <label className="text-xs font-semibold" style={{ color: '#6b4a4f' }}>{t('admin.login.passwordLabel')}</label>
           <input
             name="password"
             type="password"
             autoComplete="current-password"
             required
             className="rounded-lg px-3 py-2.5 text-sm font-semibold outline-none"
-            style={{ background: '#0f172a', color: '#fde68a', border: '1.5px solid #4338ca' }}
+            style={{ background: '#fff5f6', color: '#c8102e', border: '1.5px solid #f2ccd2' }}
           />
 
           {data?.error && (
             <div
               className="rounded-lg px-3 py-2 text-xs font-semibold"
-              style={{ background: 'rgba(220,38,38,0.2)', color: '#f87171', border: '1px solid #f87171' }}
+              style={{ background: 'rgba(220,38,38,0.2)', color: '#dc2626', border: '1px solid #f87171' }}
             >
               {t(data.error)}
             </div>
@@ -102,9 +102,9 @@ export default function AdminLoginPage() {
             disabled={submitting}
             className="mt-2 flex items-center justify-center gap-2 rounded-xl py-3 text-sm font-bold  disabled:opacity-50"
             style={{
-              background: 'linear-gradient(135deg, #4338ca, #3730a3)',
+              background: 'linear-gradient(135deg, #c8102e, #a50d26)',
               color: '#fff',
-              border: '1.5px solid #818cf8',
+              border: '1.5px solid #e8949e',
             }}
           >
             {submitting ? <Loader size={16} className="animate-spin" /> : <LogIn size={16} />}

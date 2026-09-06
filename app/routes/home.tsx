@@ -81,7 +81,7 @@ const RANGE_CONFIG: ReadonlyArray<{
     },
     {
       key: 'middle', label: 'MIDDLE', range: '9-10', min: 9, max: 10,
-      bg: 'linear-gradient(135deg, #a21caf, #581c87)', border: '#e879f9', color: '#fae8ff'
+      bg: 'linear-gradient(135deg, #c8102e, #7d0a1c)', border: '#e8949e', color: '#ffe4e6'
     },
     {
       key: 'high', label: 'HIGH', range: '11-18', min: 11, max: 18,
@@ -575,8 +575,8 @@ const LiveStreamBox = memo(function LiveStreamBox({
   const boxStyle: React.CSSProperties = fullScreen
     ? { position: 'absolute', inset: 0 }
     : isFb
-      ? { width: '100%', height: expanded ? '75vh' : '56vh', border: '1px solid #a78bfa' }
-      : { width: '100%', aspectRatio: '16/9', maxHeight: expanded ? '55vh' : '38vh', border: '1px solid #a78bfa' }
+      ? { width: '100%', height: expanded ? '75vh' : '56vh', border: '1px solid #e8949e' }
+      : { width: '100%', aspectRatio: '16/9', maxHeight: expanded ? '55vh' : '38vh', border: '1px solid #e8949e' }
 
   // Video stall detection helpers — arm a timer on stall/waiting; disarm on
   // timeupdate/playing. After VIDEO_STALL_TIMEOUT ms of no progress the
@@ -601,7 +601,7 @@ const LiveStreamBox = memo(function LiveStreamBox({
       style={{ ...boxStyle, background: bgColor, WebkitTransform: 'translate3d(0,0,0)', transform: 'translate3d(0,0,0)' }}
     >
       {!rawUrl ? (
-        <div className="flex h-full w-full items-center justify-center text-xs" style={{ color: '#a78bfa' }}>
+        <div className="flex h-full w-full items-center justify-center text-xs" style={{ color: '#9c1024' }}>
           {waitingText}
         </div>
       ) : isCf ? (
@@ -682,7 +682,7 @@ const LiveStreamBox = memo(function LiveStreamBox({
               className="absolute z-20 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold transition-transform active:scale-95"
               style={{
                 ...(fullScreen ? { top: 100, right: 12 } : { top: 12, right: 12 }),
-                background: fbMuted ? '#ef4444' : '#111827',
+                background: fbMuted ? '#ef4444' : '#ffffff',
                 color: '#fff',
                 boxShadow: '0 3px 16px rgba(0,0,0,0.7)',
               }}
@@ -713,8 +713,8 @@ const LiveStreamBox = memo(function LiveStreamBox({
       {/* Buffering spinner — shown when <video> stalls while waiting to auto-reload */}
       {isBuffering && rawUrl && (
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2" style={{ background: 'rgba(0,0,0,0.55)' }}>
-          <RefreshCw size={28} className="animate-spin" style={{ color: '#fde68a' }} />
-          <span className="text-xs font-semibold" style={{ color: '#fde68a' }}>Buffering…</span>
+          <RefreshCw size={28} className="animate-spin" style={{ color: '#c8102e' }} />
+          <span className="text-xs font-semibold" style={{ color: '#c8102e' }}>Buffering…</span>
         </div>
       )}
 
@@ -729,7 +729,7 @@ const LiveStreamBox = memo(function LiveStreamBox({
           className="absolute right-3 z-20 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold transition-transform active:scale-95"
           style={{
             ...(fullScreen ? { top: 142 } : { bottom: 'max(env(safe-area-inset-bottom), 14px)' }),
-            background: '#7c3aed',
+            background: '#c8102e',
             color: '#fff',
             boxShadow: '0 3px 16px rgba(0,0,0,0.7)',
           }}
@@ -759,7 +759,7 @@ const LiveStreamBox = memo(function LiveStreamBox({
           className="absolute z-20 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[11px] font-bold transition-transform active:scale-95"
           style={{
             ...(fullScreen ? { top: 100, right: 12 } : { bottom: 'max(env(safe-area-inset-bottom), 14px)', left: 12 }),
-            background: isMuted ? '#ef4444' : '#111827',
+            background: isMuted ? '#ef4444' : '#ffffff',
             color: '#fff',
             boxShadow: '0 3px 16px rgba(0,0,0,0.7)',
           }}
@@ -807,8 +807,8 @@ function LiveScheduleCard({
     return (
       <div className="flex flex-col items-center gap-2 text-center px-4">
         <span style={{ fontSize: compact ? 32 : 48 }}>📺</span>
-        <p className="text-xs font-semibold" style={{ color: '#a78bfa' }}>ບໍ່ມີການຖ່າຍທອດສົດຕອນນີ້</p>
-        <p className="text-[10px]" style={{ color: '#6d28d9' }}>No live stream scheduled</p>
+        <p className="text-xs font-semibold" style={{ color: '#9c1024' }}>ບໍ່ມີການຖ່າຍທອດສົດຕອນນີ້</p>
+        <p className="text-[10px]" style={{ color: '#a50d26' }}>No live stream scheduled</p>
       </div>
     )
   }
@@ -822,7 +822,7 @@ function LiveScheduleCard({
     return (
       <div className="flex flex-col items-center gap-2 text-center px-4">
         <span style={{ fontSize: compact ? 32 : 48 }}>📺</span>
-        <p className="text-xs font-semibold" style={{ color: '#a78bfa' }}>ການຖ່າຍທອດສົດສິ້ນສຸດແລ້ວ</p>
+        <p className="text-xs font-semibold" style={{ color: '#9c1024' }}>ການຖ່າຍທອດສົດສິ້ນສຸດແລ້ວ</p>
       </div>
     )
   }
@@ -832,12 +832,12 @@ function LiveScheduleCard({
     return (
       <div className="flex flex-col items-center gap-2 text-center px-4">
         <span className="animate-pulse" style={{ fontSize: compact ? 28 : 40 }}>🔴</span>
-        <p className="text-xs font-bold" style={{ color: '#f87171' }}>ການຖ່າຍທອດສົດຈວນຈະເລີ່ມ</p>
-        <p className="text-[10px]" style={{ color: '#a78bfa' }}>
+        <p className="text-xs font-bold" style={{ color: '#dc2626' }}>ການຖ່າຍທອດສົດຈວນຈະເລີ່ມ</p>
+        <p className="text-[10px]" style={{ color: '#9c1024' }}>
           {fmtTime(schedule.start)}{schedule.end ? ` – ${fmtTime(schedule.end)}` : ''} (GMT+7)
         </p>
         {schedule.notice && (
-          <p className="text-base font-semibold italic" style={{ color: '#fde68a' }}>{schedule.notice}</p>
+          <p className="text-base font-semibold italic" style={{ color: '#c8102e' }}>{schedule.notice}</p>
         )}
       </div>
     )
@@ -859,11 +859,11 @@ function LiveScheduleCard({
 
   return (
     <div className="flex flex-col items-center gap-3 text-center px-4">
-      <CalendarClock size={compact ? 28 : 40} style={{ color: '#a78bfa' }} />
+      <CalendarClock size={compact ? 28 : 40} style={{ color: '#9c1024' }} />
       <div>
-        <p className="text-base font-bold" style={{ color: '#fde68a' }}>ການຖ່າຍທອດສົດຄັ້ງຕໍ່ໄປ</p>
-        <p className="mt-0.5 text-[10px]" style={{ color: '#a78bfa' }}>
-          {fmtDate(schedule.start)} · {fmtTime(schedule.start)}{schedule.end ? ` – ${fmtTime(schedule.end)}` : ''} <span style={{ color: '#6d28d9' }}>(GMT+7)</span>
+        <p className="text-base font-bold" style={{ color: '#c8102e' }}>ການຖ່າຍທອດສົດຄັ້ງຕໍ່ໄປ</p>
+        <p className="mt-0.5 text-[10px]" style={{ color: '#9c1024' }}>
+          {fmtDate(schedule.start)} · {fmtTime(schedule.start)}{schedule.end ? ` – ${fmtTime(schedule.end)}` : ''} <span style={{ color: '#a50d26' }}>(GMT+7)</span>
         </p>
       </div>
       <div className={`grid grid-cols-4 ${compact ? 'gap-1.5' : 'gap-3'}`}>
@@ -872,20 +872,20 @@ function LiveScheduleCard({
             <span
               className="rounded-lg px-2 py-1 font-bold"
               style={{
-                background: 'rgba(76,29,149,0.5)',
-                color: '#fde68a',
+                background: 'rgba(200,16,46,0.92)',
+                color: '#ffffff',
                 fontSize: compact ? '1rem' : '1.5rem',
                 minWidth: compact ? 32 : 48,
               }}
             >
               {String(value).padStart(2, '0')}
             </span>
-            <span className="mt-0.5" style={{ color: '#818cf8', fontSize: '0.55rem' }}>{label}</span>
+            <span className="mt-0.5" style={{ color: '#9c1024', fontSize: '0.55rem' }}>{label}</span>
           </div>
         ))}
       </div>
       {schedule.notice && (
-        <p className="text-base font-semibold italic" style={{ color: '#fde68a' }}>{schedule.notice}</p>
+        <p className="text-base font-semibold italic" style={{ color: '#c8102e' }}>{schedule.notice}</p>
       )}
     </div>
   )
@@ -902,7 +902,7 @@ type LiveMirror = {
 }
 
 // Colors for pair connector lines, hashed from cell indices so same pair always gets the same color.
-const PAIR_COLORS = ['#3b82f6', '#22d3ee', '#f472b6', '#fbbf24', '#a3e635', '#f87171', '#c084fc', '#fb923c']
+const PAIR_COLORS = ['#3b82f6', '#0e7490', '#c8102e', '#b45309', '#4d7c0f', '#dc2626', '#ee7d8a', '#c2410c']
 function pairColor(cellA: number, cellB: number): string {
   return PAIR_COLORS[(cellA * 11 + cellB) % PAIR_COLORS.length]
 }
@@ -994,14 +994,14 @@ function ProcessingRing({ countdown, size }: { countdown: number; size: 'sm' | '
     <div style={{ position: 'relative', width: dim, height: dim, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <svg width={dim} height={dim} viewBox={`0 0 ${dim} ${dim}`} style={{ position: 'absolute' }}>
         <circle cx={cx} cy={cx} r={r} fill="none" stroke="rgba(250,204,21,0.15)" strokeWidth={size === 'sm' ? 3 : 4} />
-        <circle cx={cx} cy={cx} r={r} fill="none" stroke="#facc15"
+        <circle cx={cx} cy={cx} r={r} fill="none" stroke="#a16207"
           strokeWidth={size === 'sm' ? 3 : 4} strokeLinecap="round"
           strokeDasharray={circ}
           strokeDashoffset={circ * (1 - countdown / 8)}
           transform={`rotate(-90 ${cx} ${cx})`}
           style={{ transition: countdown === 8 ? 'none' : 'stroke-dashoffset 0.9s linear' }} />
       </svg>
-      <span style={{ color: '#facc15', fontWeight: 900, fontSize: size === 'sm' ? 18 : 24, position: 'relative' }}>
+      <span style={{ color: '#a16207', fontWeight: 900, fontSize: size === 'sm' ? 18 : 24, position: 'relative' }}>
         {countdown}
       </span>
     </div>
@@ -1017,13 +1017,13 @@ function BetCountdownRing({ countdown, size }: { countdown: number; size: 'sm' |
     <div style={{ position: 'relative', width: dim, height: dim, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       <svg width={dim} height={dim} viewBox={`0 0 ${dim} ${dim}`} style={{ position: 'absolute' }}>
         <circle cx={cx} cy={cx} r={r} fill="none" stroke="rgba(250,204,21,0.2)" strokeWidth={size === 'sm' ? 3 : 4} />
-        <circle cx={cx} cy={cx} r={r} fill="none" stroke="#facc15"
+        <circle cx={cx} cy={cx} r={r} fill="none" stroke="#a16207"
           strokeWidth={size === 'sm' ? 3 : 4} strokeLinecap="round"
           strokeDasharray={circ} strokeDashoffset={circ * (1 - countdown / 15)}
           transform={`rotate(-90 ${cx} ${cx})`}
           style={{ transition: 'stroke-dashoffset 0.9s linear' }} />
       </svg>
-      <span style={{ color: '#fde68a', fontWeight: 900, fontSize: size === 'sm' ? 18 : 24, position: 'relative' }}>
+      <span style={{ color: '#c8102e', fontWeight: 900, fontSize: size === 'sm' ? 18 : 24, position: 'relative' }}>
         {countdown}
       </span>
     </div>
@@ -1074,24 +1074,24 @@ function ProfileDropdown({ name, onClose, competitionEnabled, competitionType, o
       className="absolute left-0 top-full z-50 rounded-md overflow-hidden shadow-2xl"
       style={{
         width: 240,
-        background: '#1e0040',
-        border: '1px solid #a78bfa',
-        boxShadow: '0 8px 40px rgba(124,58,237,0.5)',
+        background: '#fff5f6',
+        border: '1px solid #e8949e',
+        boxShadow: '0 8px 40px rgba(200,16,46,0.5)',
       }}
     >
       <div
         className="flex items-center gap-3 px-4 py-3"
-        style={{ background: 'linear-gradient(135deg, #4c1d95, #2d1b4e)', borderBottom: '1px solid #4c1d95' }}
+        style={{ background: 'linear-gradient(135deg, #ffe4e6, #fff1f2)', borderBottom: '1px solid #f2ccd2' }}
       >
         <div
           className="flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold shrink-0"
-          style={{ background: 'linear-gradient(135deg, #7c3aed, #4c1d95)', color: '#fde68a', border: '1px solid #f59e0b' }}
+          style={{ background: 'linear-gradient(135deg, #c8102e, #a50d26)', color: '#fde68a', border: '1px solid #f59e0b' }}
         >
           {name.slice(0, 2).toUpperCase()}
         </div>
         <div>
-          <div className="text-sm font-bold" style={{ color: '#fde68a' }}>{name}</div>
-          <div className="text-[10px]" style={{ color: '#a78bfa' }}>{t('menu.loggedIn')}</div>
+          <div className="text-sm font-bold" style={{ color: '#c8102e' }}>{name}</div>
+          <div className="text-[10px]" style={{ color: '#9c1024' }}>{t('menu.loggedIn')}</div>
         </div>
       </div>
 
@@ -1107,13 +1107,13 @@ function ProfileDropdown({ name, onClose, competitionEnabled, competitionType, o
               }}
               className="flex w-full items-center gap-3 px-4 py-2 text-left transition-all hover:opacity-90"
               style={{ background: 'transparent' }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#2d1b4e')}
+              onMouseEnter={e => (e.currentTarget.style.background = '#fff0f2')}
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
             >
-              <span style={{ color: '#fff' }}>{item.icon}</span>
+              <span style={{ color: '#c8102e' }}>{item.icon}</span>
               <div>
-                <div className="text-sm font-semibold" style={{ color: '#e9d5ff' }}>{item.label}</div>
-                <div className="text-[10px] text-white">{item.desc}</div>
+                <div className="text-sm font-semibold" style={{ color: '#2b0b10' }}>{item.label}</div>
+                <div className="text-[10px] text-[#6b4a4f]">{item.desc}</div>
               </div>
             </button>
           ) : item.external ? (
@@ -1126,13 +1126,13 @@ function ProfileDropdown({ name, onClose, competitionEnabled, competitionType, o
               }}
               className="flex w-full items-center gap-3 px-4 py-2 text-left transition-all hover:opacity-90"
               style={{ background: 'transparent' }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#2d1b4e')}
+              onMouseEnter={e => (e.currentTarget.style.background = '#fff0f2')}
               onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
             >
-              <span style={{ color: '#fff' }}>{item.icon}</span>
+              <span style={{ color: '#c8102e' }}>{item.icon}</span>
               <div>
-                <div className="text-sm font-semibold" style={{ color: '#e9d5ff' }}>{item.label}</div>
-                <div className="text-[10px] text-white">{item.desc}</div>
+                <div className="text-sm font-semibold" style={{ color: '#2b0b10' }}>{item.label}</div>
+                <div className="text-[10px] text-[#6b4a4f]">{item.desc}</div>
               </div>
             </button>
           ) : (
@@ -1143,29 +1143,29 @@ function ProfileDropdown({ name, onClose, competitionEnabled, competitionType, o
               onClick={() => { playClick(); onClose() }}
               className="flex w-full items-center gap-3 px-4 py-2 text-left transition-all hover:opacity-90"
               style={{ background: item.highlight ? 'rgba(202,138,4,0.12)' : 'transparent' }}
-              onMouseEnter={e => (e.currentTarget.style.background = item.highlight ? 'rgba(202,138,4,0.2)' : '#2d1b4e')}
+              onMouseEnter={e => (e.currentTarget.style.background = item.highlight ? 'rgba(202,138,4,0.2)' : '#fff0f2')}
               onMouseLeave={e => (e.currentTarget.style.background = item.highlight ? 'rgba(202,138,4,0.12)' : 'transparent')}
             >
-              <span style={{ color: item.highlight ? '#fbbf24' : '#fff' }}>{item.icon}</span>
+              <span style={{ color: item.highlight ? '#b45309' : '#c8102e' }}>{item.icon}</span>
               <div>
-                <div className="text-sm font-semibold" style={{ color: item.highlight ? '#fbbf24' : '#e9d5ff' }}>{item.label}</div>
-                <div className="text-[10px] text-white">{item.desc}</div>
+                <div className="text-sm font-semibold" style={{ color: item.highlight ? '#b45309' : '#2b0b10' }}>{item.label}</div>
+                <div className="text-[10px] text-[#6b4a4f]">{item.desc}</div>
               </div>
             </Link>
           )
         )}
       </div>
 
-      <div className="mx-4" style={{ height: 1, background: '#4c1d95' }} />
+      <div className="mx-4" style={{ height: 1, background: '#ffe4e6' }} />
 
       <div className="px-4 py-3">
-        <div className="mb-2 text-[10px] font-bold " style={{ color: '#a78bfa' }}>
+        <div className="mb-2 text-[10px] font-bold " style={{ color: '#9c1024' }}>
           {t('menu.language')}
         </div>
         <LanguageSwitch variant="inline" />
       </div>
 
-      <div className="mx-4" style={{ height: 1, background: '#4c1d95' }} />
+      <div className="mx-4" style={{ height: 1, background: '#ffe4e6' }} />
 
       <div className="py-1">
         <Form method="post" action="/logout" onSubmit={() => { playClick(); onClose() }}>
@@ -1176,8 +1176,8 @@ function ProfileDropdown({ name, onClose, competitionEnabled, competitionType, o
             onMouseEnter={e => (e.currentTarget.style.background = 'rgba(220,38,38,0.15)')}
             onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
           >
-            <LogOut size={18} className="text-white" />
-            <div className="text-sm font-semibold" style={{ color: '#f87171' }}>Logout</div>
+            <LogOut size={18} className="text-[#dc2626]" />
+            <div className="text-sm font-semibold" style={{ color: '#dc2626' }}>Logout</div>
           </button>
         </Form>
       </div>
@@ -1213,12 +1213,12 @@ function AnnouncementBell({
         type="button"
         onClick={openList}
         className="relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full"
-        style={{ background: 'linear-gradient(135deg,#7c3aed,#4c1d95)', border: '1px solid #a78bfa', color: '#fde68a' }}
+        style={{ background: 'linear-gradient(135deg,#c8102e,#a50d26)', border: '1px solid #e8949e', color: '#fde68a' }}
         aria-label="Notifications"
       >
         <BellRing size={13} />
         {hasUnread && (
-          <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full" style={{ background: '#f87171', border: '1.5px solid #1e0040' }} />
+          <span className="absolute -right-0.5 -top-0.5 h-2.5 w-2.5 rounded-full" style={{ background: '#f87171', border: '1.5px solid #f2ccd2' }} />
         )}
       </button>
       {/* Tap the bell → bottom sheet with the full list. Portaled to <body> so
@@ -1236,34 +1236,34 @@ function AnnouncementBell({
             onClick={e => e.stopPropagation()}
             className="flex max-h-[82vh] w-full max-w-md flex-col rounded-t-2xl shadow-2xl"
             style={{
-              background: 'linear-gradient(135deg,#2d1b4e,#1e0040)',
-              borderTop: '1px solid #a78bfa',
+              background: 'linear-gradient(135deg,#fff5f6,#ffffff)',
+              borderTop: '1px solid #e8949e',
               animation: 'annSheetUp 0.28s cubic-bezier(0.22,1,0.36,1)',
               paddingBottom: 'env(safe-area-inset-bottom)',
             }}
           >
             {/* Grab handle */}
-            <div className="mx-auto mt-2 h-1 w-10 rounded-full" style={{ background: 'rgba(167,139,250,0.4)' }} />
+            <div className="mx-auto mt-2 h-1 w-10 rounded-full" style={{ background: 'rgba(200,16,46,0.4)' }} />
             <div className="flex items-center gap-2 px-4 py-3">
-              <div className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: 'rgba(124,58,237,0.35)' }}>
-                <BellRing size={16} style={{ color: '#fcd34d' }} />
+              <div className="flex h-8 w-8 items-center justify-center rounded-full" style={{ background: 'rgba(200,16,46,0.35)' }}>
+                <BellRing size={16} style={{ color: '#b45309' }} />
               </div>
-              <span className="text-sm font-bold" style={{ color: '#fde68a' }}>ການແຈ້ງເຕືອນ · Notifications</span>
+              <span className="text-sm font-bold" style={{ color: '#c8102e' }}>ການແຈ້ງເຕືອນ · Notifications</span>
               <button type="button" onClick={() => setOpen(false)} className="ml-auto flex h-7 w-7 items-center justify-center rounded-full"
-                style={{ background: 'rgba(255,255,255,0.08)', color: '#a78bfa' }} aria-label="Close">
+                style={{ background: 'rgba(200,16,46,0.07)', color: '#9c1024' }} aria-label="Close">
                 <X size={16} />
               </button>
             </div>
             <div className="flex-1 overflow-y-auto px-3 pb-4">
               {notifications.length === 0 ? (
-                <p className="px-1 py-6 text-center text-sm" style={{ color: '#a78bfa' }}>ບໍ່ມີການແຈ້ງເຕືອນ · No notifications</p>
+                <p className="px-1 py-6 text-center text-sm" style={{ color: '#9c1024' }}>ບໍ່ມີການແຈ້ງເຕືອນ · No notifications</p>
               ) : (
                 <ul className="flex flex-col gap-2">
                   {notifications.map(n => (
-                    <li key={n.id} className="rounded-xl p-3" style={{ background: 'rgba(124,58,237,0.14)', border: '1px solid rgba(167,139,250,0.25)' }}>
-                      {n.title && <div className="mb-0.5 text-xs font-bold" style={{ color: '#fde68a' }}>{n.title}</div>}
-                      <p className="whitespace-pre-wrap text-sm leading-relaxed" style={{ color: '#e9d5ff' }}>{n.message}</p>
-                      <div className="mt-1.5 text-[10px]" style={{ color: '#8b7fb8' }}>{formatNotifTime(n.createdAt)}</div>
+                    <li key={n.id} className="rounded-xl p-3" style={{ background: 'rgba(200,16,46,0.14)', border: '1px solid rgba(200,16,46,0.25)' }}>
+                      {n.title && <div className="mb-0.5 text-xs font-bold" style={{ color: '#c8102e' }}>{n.title}</div>}
+                      <p className="whitespace-pre-wrap text-sm leading-relaxed" style={{ color: '#2b0b10' }}>{n.message}</p>
+                      <div className="mt-1.5 text-[10px]" style={{ color: '#8a6d71' }}>{formatNotifTime(n.createdAt)}</div>
                     </li>
                   ))}
                 </ul>
@@ -1305,9 +1305,9 @@ function PickerDropdown({ items, active, onSelect, onClose, align = 'left' }: Pi
       className={`absolute ${align === 'right' ? 'right-0' : 'left-0'} top-full z-50 mt-1 rounded-md overflow-hidden shadow-2xl`}
       style={{
         minWidth: 160,
-        background: '#1e0040',
-        border: '1px solid #a78bfa',
-        boxShadow: '0 8px 40px rgba(124,58,237,0.5)',
+        background: '#fff5f6',
+        border: '1px solid #e8949e',
+        boxShadow: '0 8px 40px rgba(200,16,46,0.5)',
       }}
     >
       <div className="py-1">
@@ -1318,12 +1318,12 @@ function PickerDropdown({ items, active, onSelect, onClose, align = 'left' }: Pi
               key={item.key}
               onClick={() => { playClick(); onSelect(item.key); onClose() }}
               className="flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left transition-all"
-              style={{ background: isActive ? '#2d1b4e' : 'transparent' }}
-              onMouseEnter={e => (e.currentTarget.style.background = '#2d1b4e')}
-              onMouseLeave={e => (e.currentTarget.style.background = isActive ? '#2d1b4e' : 'transparent')}
+              style={{ background: isActive ? '#fff0f2' : 'transparent' }}
+              onMouseEnter={e => (e.currentTarget.style.background = '#fff0f2')}
+              onMouseLeave={e => (e.currentTarget.style.background = isActive ? '#fff0f2' : 'transparent')}
             >
-              <span className="text-sm font-semibold" style={{ color: isActive ? '#fde68a' : '#e9d5ff' }}>{item.label}</span>
-              {isActive && <Check size={14} style={{ color: '#fde68a' }} />}
+              <span className="text-sm font-semibold" style={{ color: isActive ? '#c8102e' : '#2b0b10' }}>{item.label}</span>
+              {isActive && <Check size={14} style={{ color: '#c8102e' }} />}
             </button>
           )
         })}
@@ -2858,9 +2858,9 @@ export default function FishPrawnCrabGame() {
             <div
               key={i}
               className="flex items-center justify-center rounded-xl"
-              style={{ width: 72, height: 72, background: '#3b0764', border: '2px dashed #7c3aed' }}
+              style={{ width: 72, height: 72, background: '#ffe9ec', border: '2px dashed #e8949e' }}
             >
-              <span style={{ color: '#7c3aed', fontSize: 28 }}>?</span>
+              <span style={{ color: '#c8102e', fontSize: 28 }}>?</span>
             </div>
           ))}
 
@@ -2869,7 +2869,7 @@ export default function FishPrawnCrabGame() {
       {!isRolling && !isRevealingResult && diceResults.length > 0 && (
         <div
           className="rounded-full px-4 py-0.5 text-xs font-bold"
-          style={{ background: 'rgba(30,0,64,0.6)', color: '#fde68a', border: '1px solid #a78bfa' }}
+          style={{ background: '#ffe4e6', color: '#c8102e', border: '1px solid #e8949e' }}
         >
           ຄະແນນລວມ: {diceSum}
         </div>
@@ -2884,17 +2884,17 @@ export default function FishPrawnCrabGame() {
       className="min-h-screen font-sans"
       style={{
         background: `
-          radial-gradient(ellipse at 20% 30%, rgba(167,139,250,0.18) 0%, transparent 55%),
+          radial-gradient(ellipse at 20% 30%, rgba(200,16,46,0.10) 0%, transparent 55%),
           radial-gradient(ellipse at 80% 70%, rgba(245,158,11,0.12) 0%, transparent 55%),
-          radial-gradient(ellipse at 50% 50%, rgba(109,40,217,0.35) 0%, transparent 80%),
+          radial-gradient(ellipse at 50% 50%, rgba(200,16,46,0.16) 0%, transparent 80%),
           repeating-linear-gradient(
             45deg,
             transparent,
             transparent 28px,
-            rgba(255,255,255,0.025) 28px,
-            rgba(255,255,255,0.025) 30px
+            rgba(200,16,46,0.045) 28px,
+            rgba(200,16,46,0.045) 30px
           ),
-          linear-gradient(160deg, #3b0764 0%, #5b21b6 35%, #7c3aed 65%, #4c1d95 100%)
+          linear-gradient(160deg, #ffffff 0%, #fff5f6 35%, #ffe9ec 65%, #ffd9de 100%)
         `,
         minHeight: '100vh',
       }}
@@ -2917,7 +2917,7 @@ export default function FishPrawnCrabGame() {
                 fullScreen
               />
             ) : (
-              <div className="flex h-full items-center justify-center" style={{ background: '#0a0014' }}>
+              <div className="flex h-full items-center justify-center" style={{ background: '#fff5f6' }}>
                 <LiveScheduleCard schedule={loaderData.schedule} />
               </div>
             )}
@@ -2954,7 +2954,7 @@ export default function FishPrawnCrabGame() {
                 // auto-signs-them-in) instead of the profile dropdown.
                 onClick={() => { playClick(); if (isAnonymous) navigate('/register'); else setOverlayProfileOpen(v => !v) }}
                 className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-[10px] font-bold"
-                style={{ background: '#4c1d95', border: '1px solid #a78bfa', color: '#e9d5ff' }}
+                style={{ background: '#ffe4e6', border: '1px solid #e8949e', color: '#2b0b10' }}
               >
                 {initials || '?'}
               </button>
@@ -2993,7 +2993,7 @@ export default function FishPrawnCrabGame() {
                 onClick={() => { if (isAnonymous) { setLoginOpen(true) } else { setOverlayWalletOpen(v => !v) } }}
                 className="flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold"
                 style={{
-                  background: user.activeWallet === 'demo' ? 'rgba(76,29,149,0.8)' : user.activeWallet === 'real' ? 'rgba(180,83,9,0.8)' : 'rgba(22,163,74,0.8)',
+                  background: user.activeWallet === 'demo' ? 'rgba(200,16,46,0.8)' : user.activeWallet === 'real' ? 'rgba(180,83,9,0.8)' : 'rgba(22,163,74,0.8)',
                   color: '#fff', border: '1px solid rgba(255,255,255,0.3)',
                 }}>
                 {user.activeWallet.toUpperCase()}
@@ -3057,7 +3057,7 @@ export default function FishPrawnCrabGame() {
               {activeStreamUrl && (
                 <span className="flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold"
                   style={{ background: 'rgba(0,0,0,0.55)', color: '#fff', border: '1px solid rgba(255,255,255,0.15)' }}>
-                  <Eye size={9} style={{ color: '#f87171' }} />
+                  <Eye size={9} style={{ color: '#dc2626' }} />
                   {fakeViewers.toLocaleString()}
                 </span>
               )}
@@ -3095,9 +3095,9 @@ export default function FishPrawnCrabGame() {
                           </>
                         )}
                         {b.kind === 'SUM' && b.exactSum != null && (
-                          <span className="font-bold" style={{ color: '#fbbf24' }}>ເລກ {b.exactSum}</span>
+                          <span className="font-bold" style={{ color: '#b45309' }}>ເລກ {b.exactSum}</span>
                         )}
-                        <span className="ml-0.5 font-bold" style={{ color: '#fde68a' }}>{b.amount.toLocaleString()}₭</span>
+                        <span className="ml-0.5 font-bold" style={{ color: '#c8102e' }}>{b.amount.toLocaleString()}₭</span>
                       </div>
                       {/* Cancel button — only visible during betting phase */}
                       {livePhase === 'betting' && (
@@ -3121,21 +3121,21 @@ export default function FishPrawnCrabGame() {
                 style={{ background: 'rgba(0,0,0,0.75)' }}
                 onClick={() => setCancelConfirmBet(null)}>
                 <div className="w-full max-w-xs rounded-2xl p-5"
-                  style={{ background: '#1e0040', border: '1px solid #7c3aed', boxShadow: '0 8px 40px rgba(0,0,0,0.6)' }}
+                  style={{ background: '#fff5f6', border: '1px solid #e8949e', boxShadow: '0 8px 40px rgba(0,0,0,0.6)' }}
                   onClick={e => e.stopPropagation()}>
                   {/* Title — Lao + Thai */}
-                  <h3 className="mb-1 text-center text-base font-bold" style={{ color: '#fde68a' }}>
+                  <h3 className="mb-1 text-center text-base font-bold" style={{ color: '#c8102e' }}>
                     {t('bet.cancelTitle')}
                   </h3>
                   {/* Description — Lao + Thai */}
-                  <p className="mt-3 text-center text-sm" style={{ color: '#e9d5ff' }}>
+                  <p className="mt-3 text-center text-sm" style={{ color: '#2b0b10' }}>
                     {t('bet.cancelDesc', { amount: cancelConfirmBet.amount.toLocaleString() })}
                   </p>
                   <div className="mt-4 flex gap-2">
                     <button
                       onClick={() => setCancelConfirmBet(null)}
                       className="flex-1 rounded-xl py-2.5 text-sm font-bold"
-                      style={{ background: '#2d1b4e', color: '#a78bfa', border: '1px solid #4c1d95' }}>
+                      style={{ background: '#fff0f2', color: '#9c1024', border: '1px solid #f2ccd2' }}>
                       {t('bet.cancelNo')}
                     </button>
                     <button
@@ -3171,7 +3171,7 @@ export default function FishPrawnCrabGame() {
               </span>
             ) : activeStreamUrl ? (
               <span className="rounded-full px-3 py-1 text-xs font-bold"
-                style={{ background: 'rgba(76,29,149,0.9)', color: '#fff' }}>
+                style={{ background: 'rgba(200,16,46,0.9)', color: '#fff' }}>
                 {t('live.waitingHostStart')}
               </span>
             ) : null}
@@ -3191,7 +3191,7 @@ export default function FishPrawnCrabGame() {
           {livePhase === 'idle' && activeStreamUrl && (
             <div className="pointer-events-none absolute inset-x-0 flex justify-center" style={{ bottom: 120 }}>
               <span className="rounded-xl px-4 py-2 text-sm font-semibold"
-                style={{ background: 'rgba(0,0,0,0.6)', color: '#c4b5fd' }}>
+                style={{ background: 'rgba(0,0,0,0.6)', color: '#ffe4e6' }}>
                 {t('live.waitingHostStart')}
               </span>
             </div>
@@ -3209,7 +3209,7 @@ export default function FishPrawnCrabGame() {
               ))}
               {currentRangeBets.map((b, i) => (
                 <div key={`fsr-${i}`} className="flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold"
-                  style={{ background: 'rgba(0,0,0,0.7)', color: '#fde68a', border: '1px solid #7c3aed' }}>
+                  style={{ background: 'rgba(0,0,0,0.7)', color: '#fde68a', border: '1px solid #e8949e' }}>
                   {b.range.toUpperCase()} {b.amount.toLocaleString()}
                 </div>
               ))}
@@ -3235,7 +3235,7 @@ export default function FishPrawnCrabGame() {
           {livePhase === 'betting' && betLocked && (
             <div className="absolute inset-x-0 flex justify-center px-4" style={{ bottom: 'max(env(safe-area-inset-bottom), 24px)' }}>
               <span className="rounded-full px-4 py-2 text-xs font-semibold text-center"
-                style={{ background: 'rgba(0,0,0,0.6)', color: '#c4b5fd' }}>
+                style={{ background: 'rgba(0,0,0,0.6)', color: '#ffe4e6' }}>
                 {t('live.betLocked')}
               </span>
             </div>
@@ -3254,7 +3254,7 @@ export default function FishPrawnCrabGame() {
               )}
               <button onClick={() => setBetSheetOpen(true)}
                 className="rounded-xl px-5 py-3 text-sm font-bold shadow-2xl"
-                style={{ background: 'linear-gradient(135deg,#7c3aed,#4c1d95)', color: '#fff', border: '2px solid #a78bfa', boxShadow: '0 4px 24px rgba(124,58,237,0.7)' }}>
+                style={{ background: 'linear-gradient(135deg,#c8102e,#a50d26)', color: '#fff', border: '2px solid #e8949e', boxShadow: '0 4px 24px rgba(200,16,46,0.7)' }}>
                 {myLiveBets.filter(b => !cancelledBetIds.has(b.id)).length > 0 ? 'ວາງເດີມພັນອີກ' : 'ວາງເດີມພັນ'}
               </button>
             </div>
@@ -3270,7 +3270,7 @@ export default function FishPrawnCrabGame() {
           <div className="absolute inset-x-0 bottom-0 z-20 rounded-t-3xl overflow-hidden"
             onClick={e => e.stopPropagation()}
             style={{
-              background: '#1e0040',
+              background: '#fff5f6',
               maxHeight: '92vh',
               transform: betSheetOpen ? 'translateY(0)' : 'translateY(100%)',
               transition: 'transform 300ms cubic-bezier(0.32,0.72,0,1)',
@@ -3278,12 +3278,12 @@ export default function FishPrawnCrabGame() {
             }}>
             {/* Handle + header */}
             <div className="flex items-center justify-between px-4 pt-4 pb-3">
-              <div className="h-1 w-10 rounded-full" style={{ background: '#6d28d9' }} />
-              <span className="text-xs font-bold" style={{ color: '#a78bfa' }}>
+              <div className="h-1 w-10 rounded-full" style={{ background: '#fecdd3' }} />
+              <span className="text-xs font-bold" style={{ color: '#9c1024' }}>
                 {hasAnyBet ? `Total: ${formatAmount(totalBet)}₭` : t('game.placeYourBets')}
               </span>
               <button onClick={() => setBetSheetOpen(false)}>
-                <X size={18} style={{ color: '#a78bfa' }} />
+                <X size={18} style={{ color: '#9c1024' }} />
               </button>
             </div>
 
@@ -3307,32 +3307,32 @@ export default function FishPrawnCrabGame() {
                         className="relative flex aspect-square flex-col items-center justify-center rounded-xl transition-all disabled:opacity-50"
                         style={{
                           background: isPending
-                            ? 'rgba(167,139,250,0.3)'
+                            ? 'rgba(200,16,46,0.3)'
                             : canPair
                               ? 'rgba(37,99,235,0.2)'
                               : isWinner
                                 ? 'rgba(250,204,21,0.2)'
                                 : hasBoth
-                                  ? 'rgba(168,85,247,0.18)'
+                                  ? 'rgba(216,27,63,0.14)'
                                   : hasSingle
                                     ? 'rgba(220,38,38,0.12)'
                                     : hasPairOnly
                                       ? 'rgba(250,204,21,0.12)'
                                       : '#fff',
-                          border: `2px solid ${isPending ? '#a78bfa'
+                          border: `2px solid ${isPending ? '#e8949e'
                             : canPair ? '#60a5fa'
-                              : isWinner ? '#facc15'
-                                : hasBoth ? '#a855f7'
+                              : isWinner ? '#a16207'
+                                : hasBoth ? '#d81b3f'
                                   : hasSingle ? '#dc2626'
-                                    : hasPairOnly ? '#facc15'
-                                      : '#e2e8f0'
+                                    : hasPairOnly ? '#a16207'
+                                      : '#2b0b10'
                             }`,
                           boxShadow: isPending
-                            ? '0 0 16px rgba(167,139,250,0.5)'
+                            ? '0 0 16px rgba(200,16,46,0.5)'
                             : isWinner
                               ? '0 0 16px rgba(250,204,21,0.4)'
                               : hasBoth
-                                ? '0 0 10px rgba(168,85,247,0.4)'
+                                ? '0 0 10px rgba(216,27,63,0.4)'
                                 : hasSingle
                                   ? '0 0 10px rgba(220,38,38,0.35)'
                                   : hasPairOnly
@@ -3341,7 +3341,7 @@ export default function FishPrawnCrabGame() {
                         }}>
                         <img src={`/symbols/${symbol}.png`} alt={symbol} className="h-10 w-10 object-contain" />
                         <div className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full text-[8px] font-bold"
-                          style={{ background: 'rgba(76,29,149,0.9)', color: '#fde68a', border: '1px solid #a78bfa' }}>
+                          style={{ background: 'rgba(200,16,46,0.9)', color: '#fde68a', border: '1px solid #e8949e' }}>
                           {SYMBOL_VALUES[symbol]}
                         </div>
                         {bet > 0 && (
@@ -3395,7 +3395,7 @@ export default function FishPrawnCrabGame() {
               </div>{/* end relative wrapper */}
 
               {/* Pair hint */}
-              <p className="mb-3 text-center text-[10px]" style={{ color: '#a78bfa' }}>
+              <p className="mb-3 text-center text-[10px]" style={{ color: '#9c1024' }}>
                 {pendingCell !== null
                   ? `${symName(BOARD_LAYOUT[pendingCell], t)} — ${t('game.tapAdjacent').split('.')[0]}`
                   : t('game.pairHint')}
@@ -3404,8 +3404,8 @@ export default function FishPrawnCrabGame() {
               {/* Range/Sum bets — numbers 3-18 for LIVE, LOW/MID/HIGH for RANDOM */}
               {mode === 'live' ? (
                 <div className="pb-2">
-                  <div className="mb-1 flex items-center justify-between text-[9px]" style={{ color: '#c4b5fd' }}>
-                    <span>ສູງສຸດ 3 ເລກ · ×3 ກຳໄລ (<span style={{ color: '#fca5a5' }}>3,7,11,15 = ×5</span>)</span>
+                  <div className="mb-1 flex items-center justify-between text-[9px]" style={{ color: '#6b4a4f' }}>
+                    <span>ສູງສຸດ 3 ເລກ · ×3 ກຳໄລ (<span style={{ color: '#dc2626' }}>3,7,11,15 = ×5</span>)</span>
                     <span>{currentSumBets.length}/3</span>
                   </div>
                   <div className="grid grid-cols-6 gap-1">
@@ -3420,9 +3420,9 @@ export default function FishPrawnCrabGame() {
                           disabled={bettingLocked || balance < selectedChip || maxReached}
                           className="relative flex flex-col items-center justify-center rounded py-1 font-bold disabled:opacity-40"
                           style={{
-                            background: isWinner ? 'rgba(250,204,21,0.3)' : isSelected ? 'rgba(124,58,237,0.5)' : isSpecial ? 'rgba(185,28,28,0.85)' : 'rgba(30,0,64,0.6)',
-                            border: `1px solid ${isWinner ? '#facc15' : isSelected ? '#a78bfa' : isSpecial ? '#ef4444' : '#4c1d95'}`,
-                            color: isWinner ? '#facc15' : '#fff',
+                            background: isWinner ? 'rgba(250,204,21,0.3)' : isSelected ? 'rgba(200,16,46,0.92)' : isSpecial ? 'rgba(185,28,28,0.9)' : '#ffffff',
+                            border: `1px solid ${isWinner ? '#facc15' : isSelected ? '#e8949e' : isSpecial ? '#ef4444' : '#f2ccd2'}`,
+                            color: isWinner ? '#b45309' : (isSelected || isSpecial) ? '#fff' : '#2b0b10',
                           }}>
                           <div className="text-[10px]">{n}</div>
                           <div className="text-[7px] opacity-70">{isSpecial ? '×5' : '×3'}</div>
@@ -3467,7 +3467,7 @@ export default function FishPrawnCrabGame() {
             </div>
 
             {/* Chip selector + actions */}
-            <div className="border-t px-3 py-3" style={{ borderColor: '#4c1d95' }}>
+            <div className="border-t px-3 py-3" style={{ borderColor: '#f2ccd2' }}>
               {/* px-2 + py-2 give the scaled active chip room so it isn't clipped */}
               <div className="flex items-center gap-1.5 overflow-x-auto px-2 py-2">
                 {CHIP_CONFIG.map(chip => (
@@ -3488,7 +3488,7 @@ export default function FishPrawnCrabGame() {
               <div className="flex gap-2 pt-1">
                 <button onClick={undoBet} disabled={!hasAnyBet && pendingCell === null}
                   className="flex-1 rounded-xl py-2.5 text-sm font-bold disabled:opacity-40"
-                  style={{ background: 'linear-gradient(180deg,#f59e0b,#b45309)', color: '#1e0040', border: '1px solid #fcd34d' }}>
+                  style={{ background: 'linear-gradient(180deg,#f59e0b,#b45309)', color: '#3d040f', border: '1px solid #fcd34d' }}>
                   {t('game.undo')}
                 </button>
                 <button onClick={() => { placeLiveBets(); setBetSheetOpen(false) }}
@@ -3506,7 +3506,7 @@ export default function FishPrawnCrabGame() {
 
       <header
         className="flex items-center justify-between px-4 py-2"
-        style={{ background: '#1e0040', borderBottom: '1px solid #a78bfa' }}
+        style={{ background: '#fff5f6', borderBottom: '1px solid #e8949e' }}
       >
         <div className='flex items-center gap-2'>
           <div className="relative">
@@ -3522,21 +3522,21 @@ export default function FishPrawnCrabGame() {
                 }}
                 className="flex items-center gap-2.5 rounded-full sm:rounded-xl p-1 sm:p-2 transition-all hover:opacity-90"
                 style={{
-                  background: 'linear-gradient(135deg, #4c1d95, #2d1b4e)',
-                  border: '1px dashed #a78bfa',
+                  background: 'linear-gradient(135deg, #ffe4e6, #fff1f2)',
+                  border: '1px dashed #e8949e',
                 }}
                 title={t('auth.signInOrRegister')}
               >
                 <div
                   className="flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold"
-                  style={{ background: '#2d1b4e', color: '#a78bfa', border: '1px dashed #a78bfa' }}
+                  style={{ background: '#fff0f2', color: '#9c1024', border: '1px dashed #e8949e' }}
                 >
                   👤
                 </div>
-                <span className="hidden sm:inline text-sm font-semibold" style={{ color: '#c4b5fd' }}>
+                <span className="hidden sm:inline text-sm font-semibold" style={{ color: '#6b4a4f' }}>
                   {displayName}
                 </span>
-                <span className="hidden sm:inline rounded-full px-2 py-0.5 text-[10px] font-bold uppercase" style={{ background: '#7c3aed', color: '#fff' }}>
+                <span className="hidden sm:inline rounded-full px-2 py-0.5 text-[10px] font-bold uppercase" style={{ background: '#c8102e', color: '#fff' }}>
                   {t('auth.signIn')}
                 </span>
               </button>
@@ -3546,22 +3546,22 @@ export default function FishPrawnCrabGame() {
                   onClick={() => { playClick(); ensureBgMusic(); setProfileOpen(v => !v) }}
                   className="flex items-center gap-2.5 rounded-full sm:rounded-xl p-1 sm:p-2 transition-all hover:opacity-90"
                   style={{
-                    background: profileOpen ? '#4c1d95' : 'linear-gradient(135deg, #4c1d95, #2d1b4e)',
-                    border: '1px solid #7c3aed',
+                    background: profileOpen ? '#ffe4e6' : 'linear-gradient(135deg, #ffe4e6, #fff1f2)',
+                    border: '1px solid #e8949e',
                   }}
                 >
                   <div
                     className="flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold"
-                    style={{ background: 'linear-gradient(135deg, #f59e0b, #b45309)', color: '#1e0040' }}
+                    style={{ background: 'linear-gradient(135deg, #f59e0b, #b45309)', color: '#3d040f' }}
                   >
                     {initials}
                   </div>
-                  <span className="hidden sm:inline text-sm font-semibold max-w-[90px] truncate" style={{ color: '#e9d5ff' }}>
+                  <span className="hidden sm:inline text-sm font-semibold max-w-[90px] truncate" style={{ color: '#2b0b10' }}>
                     {displayName}
                   </span>
                   <svg
                     className="hidden sm:block transition-transform"
-                    style={{ transform: profileOpen ? 'rotate(180deg)' : 'rotate(0deg)', color: '#a78bfa' }}
+                    style={{ transform: profileOpen ? 'rotate(180deg)' : 'rotate(0deg)', color: '#9c1024' }}
                     width="12" height="12" viewBox="0 0 12 12" fill="currentColor"
                   >
                     <path d="M6 8L1 3h10L6 8z" />
@@ -3581,7 +3581,7 @@ export default function FishPrawnCrabGame() {
               type="button"
               onClick={() => { playClick(); startTour() }}
               className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold transition-opacity hover:opacity-80"
-              style={{ background: '#4c1d95', border: '1px solid #7c3aed', color: '#fde68a' }}
+              style={{ background: '#ffe4e6', border: '1px solid #e8949e', color: '#c8102e' }}
               title={t('tour.replay')}
               aria-label={t('tour.replay')}
             >
@@ -3601,9 +3601,9 @@ export default function FishPrawnCrabGame() {
                   style={{
                     background: mode === 'live'
                       ? 'linear-gradient(180deg, #dc2626 0%, #7f1d1d 100%)'
-                      : 'linear-gradient(180deg, #7c3aed 0%, #4c1d95 100%)',
+                      : 'linear-gradient(180deg, #c8102e 0%, #a50d26 100%)',
                     color: '#fff',
-                    border: `1px solid ${mode === 'live' ? '#fca5a5' : '#a78bfa'}`,
+                    border: `1px solid ${mode === 'live' ? '#fca5a5' : '#e8949e'}`,
                   }}
                   title={t('menu.mode')}
                   aria-haspopup="menu"
@@ -3642,8 +3642,8 @@ export default function FishPrawnCrabGame() {
                     ? (liveTimer <= 10 ? 'rgba(220,38,38,0.25)' : 'rgba(22,163,74,0.25)')
                     : 'rgba(234,88,12,0.25)',
                   color: livePhase === 'betting'
-                    ? (liveTimer <= 10 ? '#fca5a5' : '#4ade80')
-                    : '#fdba74',
+                    ? (liveTimer <= 10 ? '#dc2626' : '#15803d')
+                    : '#c2410c',
                   border: `1px solid ${livePhase === 'betting' ? (liveTimer <= 10 ? '#fca5a5' : '#4ade80') : '#fb923c'}`,
                 }}
               >
@@ -3652,7 +3652,7 @@ export default function FishPrawnCrabGame() {
             ) : (
               <span
                 className="text-sm font-bold tracking-wide hidden sm:block"
-                style={{ color: diceResults.length > 0 && !isRolling && lastWin > 0 ? '#4ade80' : '#e9d5ff' }}
+                style={{ color: diceResults.length > 0 && !isRolling && lastWin > 0 ? '#15803d' : '#2b0b10' }}
               >
                 {message}
               </span>
@@ -3671,11 +3671,11 @@ export default function FishPrawnCrabGame() {
           <button
             onClick={() => { toggleSound() }}
             className="hidden sm:flex h-8 w-8 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-            style={{ background: '#4c1d95', border: '1px solid #6d28d9' }}
+            style={{ background: '#ffe4e6', border: '1px solid #e8949e' }}
             title={soundEnabled ? 'Mute sounds' : 'Enable sounds'}
           >
             {soundEnabled ? (
-              <Volume2 size={14} className='text-white' />
+              <Volume2 size={14} className='text-[#c8102e]' />
             ) : (
               <VolumeOff size={14} className='text-red-500' />
             )}
@@ -3698,12 +3698,12 @@ export default function FishPrawnCrabGame() {
               className="flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold transition-opacity hover:opacity-90"
               style={{
                 background: user.activeWallet === 'demo'
-                  ? 'linear-gradient(135deg, #4c1d95, #2d1b4e)'
+                  ? 'linear-gradient(135deg, #ffe4e6, #fff1f2)'
                   : user.activeWallet === 'real'
                     ? 'linear-gradient(135deg, #b45309, #78350f)'
                     : 'linear-gradient(135deg, #16a34a, #15803d)',
-                color: user.activeWallet === 'demo' ? '#c4b5fd' : '#fde68a',
-                border: `1px ${user.activeWallet === 'demo' ? 'dashed #a78bfa' : user.activeWallet === 'real' ? 'solid #fcd34d' : 'solid #4ade80'}`,
+                color: user.activeWallet === 'demo' ? '#6b4a4f' : '#c8102e',
+                border: `1px ${user.activeWallet === 'demo' ? 'dashed #e8949e' : user.activeWallet === 'real' ? 'solid #fcd34d' : 'solid #15803d'}`,
               }}
               title={t('menu.account')}
               aria-haspopup="menu"
@@ -3749,7 +3749,7 @@ export default function FishPrawnCrabGame() {
               )
             })()}
           </div>
-          <a href="/wallet" className="text-md font-bold tracking-wider" style={{ color: '#fde68a' }}>
+          <a href="/wallet" className="text-md font-bold tracking-wider" style={{ color: '#c8102e' }}>
             {formatAmount(balance)}
           </a>
           {user.activeWallet === 'demo' && (
@@ -3795,11 +3795,11 @@ export default function FishPrawnCrabGame() {
       <main className="flex h-[calc(100vh-52px)] overflow-hidden">
         <aside
           className="hidden md:flex flex-col w-[15%] overflow-y-auto"
-          style={{ background: '#4c1d95', borderRight: '1px solid #a78bfa' }}
+          style={{ background: '#ffe4e6', borderRight: '1px solid #e8949e' }}
         >
           <div
             className="py-2 text-center text-[10px] font-bold tracking-wider sticky top-0"
-            style={{ color: '#e9d5ff', borderBottom: '1px solid #6d28d9', background: '#4c1d95' }}
+            style={{ color: '#2b0b10', borderBottom: '1px solid #e8949e', background: '#ffe4e6' }}
           >
             {t('game.history')}
           </div>
@@ -3812,7 +3812,7 @@ export default function FishPrawnCrabGame() {
               const list = (authUser ? serverList : history).slice(0, 10)
               if (list.length === 0) {
                 return (
-                  <p className="text-center text-[9px] py-4" style={{ color: '#6d28d9' }}>
+                  <p className="text-center text-[9px] py-4" style={{ color: '#a50d26' }}>
                     {mode === 'live' ? t('game.noLiveRolls') : t('game.noRolls')}
                   </p>
                 )
@@ -3821,7 +3821,7 @@ export default function FishPrawnCrabGame() {
                 <div
                   key={idx}
                   className="flex gap-0.5 rounded p-1"
-                  style={{ background: '#5b21b6', border: '1px solid #7c3aed' }}
+                  style={{ background: '#fecdd3', border: '1px solid #e8949e' }}
                 >
                   {roll.map((sym, i) => (
                     <div key={i} className="relative mx-auto h-[56px] w-[56px] rounded-lg overflow-hidden bg-white">
@@ -3842,16 +3842,16 @@ export default function FishPrawnCrabGame() {
               {/* Desktop-only strip — hidden on mobile (overlay handles it).
                   When not betting, this fills all remaining height so there's no empty space below. */}
               <div className={`hidden md:flex items-stretch gap-0${livePhase !== 'betting' ? ' flex-1' : ''}`}
-                style={{ background: '#4c1d95', borderBottom: livePhase === 'betting' ? '1px solid #a78bfa' : 'none', minHeight: 320 }}>
+                style={{ background: '#ffe4e6', borderBottom: livePhase === 'betting' ? '1px solid #e8949e' : 'none', minHeight: 320 }}>
                 {/* Left 50%: video centred at natural size */}
                 <div className="w-1/2 flex items-start justify-center pt-4 px-3"
-                  style={{ borderRight: '1px solid #3730a3' }}>
+                  style={{ borderRight: '1px solid #eeb0b9' }}>
                   <div className="relative" style={{ width: 240 }}>
                     {activeStreamUrl ? (
                       <LiveStreamBox
                         rawUrl={activeStreamUrl}
                         waitingText={t('live.waitingHostStream')}
-                        bgColor="#4c1d95"
+                        bgColor="#ffe4e6"
                         autoStart
                       >
                         <div className="absolute top-2 left-2 flex items-center gap-1.5">
@@ -3862,7 +3862,7 @@ export default function FishPrawnCrabGame() {
                           </div>
                           <div className="flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-bold"
                             style={{ background: 'rgba(0,0,0,0.55)', color: '#fff', border: '1px solid rgba(255,255,255,0.15)' }}>
-                            <Eye size={9} style={{ color: '#f87171' }} />
+                            <Eye size={9} style={{ color: '#dc2626' }} />
                             {fakeViewers.toLocaleString()}
                           </div>
                         </div>
@@ -3870,7 +3870,7 @@ export default function FishPrawnCrabGame() {
                           style={{
                             background: livePhase === 'betting'
                               ? (liveTimer <= 10 ? 'rgba(220,38,38,0.9)' : 'rgba(22,163,74,0.9)')
-                              : livePhase === 'awaiting_result' ? 'rgba(234,88,12,0.9)' : 'rgba(76,29,149,0.9)',
+                              : livePhase === 'awaiting_result' ? 'rgba(234,88,12,0.9)' : 'rgba(200,16,46,0.9)',
                             color: '#fff',
                           }}>
                           {livePhase === 'betting'
@@ -3879,7 +3879,7 @@ export default function FishPrawnCrabGame() {
                         </div>
                       </LiveStreamBox>
                     ) : (
-                      <div className="flex items-center justify-center rounded-lg px-2 py-4" style={{ background: '#0a0014', minHeight: 180 }}>
+                      <div className="flex items-center justify-center rounded-lg px-2 py-4" style={{ background: '#ffffff', minHeight: 180 }}>
                         <LiveScheduleCard schedule={loaderData.schedule} compact />
                       </div>
                     )}
@@ -3895,7 +3895,7 @@ export default function FishPrawnCrabGame() {
                   )}
                   {myLiveBets.filter(b => !cancelledBetIds.has(b.id)).length > 0 ? (
                     <>
-                      <div className="mb-2 text-[10px] font-bold" style={{ color: '#a78bfa' }}>
+                      <div className="mb-2 text-[10px] font-bold" style={{ color: '#9c1024' }}>
                         {t('result.yourBetsThisRound')}
                       </div>
                       <div className="flex flex-col gap-1">
@@ -3904,7 +3904,7 @@ export default function FishPrawnCrabGame() {
                           const RangeIcon = b.range === 'LOW' ? ArrowDown : b.range === 'HIGH' ? ArrowUp : ArrowUpDown
                           return (
                             <div key={b.id} className="flex items-center justify-between rounded-md px-2 py-1.5 text-xs"
-                              style={{ background: '#2d1b4e', color: '#e9d5ff' }}>
+                              style={{ background: '#fff0f2', color: '#2b0b10' }}>
                               <span className="flex items-center gap-1.5 min-w-0 flex-1">
                                 {b.kind === 'SYMBOL' && b.symbol && <>
                                   <img src={`/symbols/${b.symbol.toLowerCase()}.png`} alt="" className="h-4 w-4 rounded object-contain bg-white shrink-0" />
@@ -3920,10 +3920,10 @@ export default function FishPrawnCrabGame() {
                                   <span style={{ color: rangeColor }}>{b.range === 'LOW' ? t('game.low') : b.range === 'HIGH' ? t('game.high') : t('game.middle')}</span>
                                 </>}
                                 {b.kind === 'SUM' && b.exactSum != null && <>
-                                  <span className="shrink-0 font-bold" style={{ color: '#fbbf24' }}>ເລກ {b.exactSum}</span>
+                                  <span className="shrink-0 font-bold" style={{ color: '#b45309' }}>ເລກ {b.exactSum}</span>
                                 </>}
                               </span>
-                              <span className="shrink-0 font-bold ml-2" style={{ color: '#fde68a' }}>{b.amount.toLocaleString()}₭</span>
+                              <span className="shrink-0 font-bold ml-2" style={{ color: '#c8102e' }}>{b.amount.toLocaleString()}₭</span>
                               {livePhase === 'betting' && (
                                 <button
                                   onClick={() => {
@@ -3943,7 +3943,7 @@ export default function FishPrawnCrabGame() {
                       </div>
                     </>
                   ) : (
-                    <div className="text-[10px]" style={{ color: '#6d28d9' }}>
+                    <div className="text-[10px]" style={{ color: '#a50d26' }}>
                       {livePhase === 'idle' ? t('live.waitingHostStart') : livePhase === 'betting' ? 'Place your bets below' : t('live.bettingClosed')}
                     </div>
                   )}
@@ -3953,7 +3953,7 @@ export default function FishPrawnCrabGame() {
           ) : (
             <div
               className="flex flex-col items-center justify-center gap-2 py-4"
-              style={{ background: '#4c1d95', borderBottom: '1px solid #a78bfa', minHeight: '148px' }}
+              style={{ background: '#ffe4e6', borderBottom: '1px solid #e8949e', minHeight: '148px' }}
             >
               {diceDisplay}
             </div>
@@ -3963,7 +3963,7 @@ export default function FishPrawnCrabGame() {
           <div
             className={`p-3 overflow-auto${mode === 'live' && livePhase !== 'betting' ? ' hidden' : ' flex-1'}`}
             style={{
-              background: '#7c3aed',
+              background: '#c8102e',
               filter: randomBoardLocked ? 'blur(2px) grayscale(0.8)' : 'none',
               opacity: randomBoardLocked ? 0.45 : 1,
               pointerEvents: randomBoardLocked ? 'none' : 'auto',
@@ -4004,15 +4004,15 @@ export default function FishPrawnCrabGame() {
                           <g key={`line-${pb.cellA}-${pb.cellB}`}>
                             <line
                               x1={c1.x} y1={c1.y} x2={c2.x} y2={c2.y}
-                              stroke={won ? '#facc15' : color}
+                              stroke={won ? '#a16207' : color}
                               strokeWidth={won ? 6 : 4}
                               strokeLinecap="round"
                               opacity={won ? 0.95 : 0.8}
                             />
                             <circle cx={c1.x} cy={c1.y} r={6}
-                              fill={won ? '#facc15' : color} opacity="0.95" />
+                              fill={won ? '#a16207' : color} opacity="0.95" />
                             <circle cx={c2.x} cy={c2.y} r={6}
-                              fill={won ? '#facc15' : color} opacity="0.95" />
+                              fill={won ? '#a16207' : color} opacity="0.95" />
                           </g>
                         )
                       })}
@@ -4038,8 +4038,8 @@ export default function FishPrawnCrabGame() {
                     borderColor = '#facc15'; borderWidth = 3
                     glow = '0 0 18px rgba(250,204,21,0.6)'
                   } else if (hasSingle && hasPair) {
-                    borderColor = '#a855f7'; borderWidth = 3  // purple = both
-                    glow = '0 0 14px rgba(168,85,247,0.55)'
+                    borderColor = '#e8949e'; borderWidth = 3  // pink = both
+                    glow = '0 0 14px rgba(216,27,63,0.5)'
                   } else if (hasSingle) {
                     borderColor = '#dc2626'; borderWidth = 3  // red = single
                     glow = '0 0 14px rgba(220,38,38,0.5)'
@@ -4062,7 +4062,7 @@ export default function FishPrawnCrabGame() {
                           : isPending
                             ? 'rgba(250,204,21,0.18)'
                             : hasPair && hasSingle
-                              ? 'rgba(216,180,254,0.3)'
+                              ? 'rgba(216,27,63,0.18)'
                               : hasPair
                                 ? 'rgba(250,204,21,0.15)'
                                 : hasSingle
@@ -4087,7 +4087,7 @@ export default function FishPrawnCrabGame() {
                           tile's "outside" corner. */}
                       <div
                         className={`absolute flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold ${idx < 4 ? 'top-1 right-1' : 'bottom-1 left-1'}`}
-                        style={{ background: 'rgba(76,29,149,0.92)', color: '#fde68a', border: '1px solid #a78bfa' }}
+                        style={{ background: 'rgba(200,16,46,0.92)', color: '#fde68a', border: '1px solid #e8949e' }}
                       >
                         {SYMBOL_VALUES[symbol]}
                       </div>
@@ -4141,9 +4141,9 @@ export default function FishPrawnCrabGame() {
                           key={`single-${b.cell}`}
                           className="flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold"
                           style={{
-                            background: won ? 'rgba(250,204,21,0.25)' : '#1e0040',
+                            background: won ? 'rgba(250,204,21,0.25)' : '#fff5f6',
                             border: `1px solid ${won ? '#facc15' : '#dc2626'}`,
-                            color: won ? '#fde68a' : '#e9d5ff',
+                            color: won ? '#b45309' : '#2b0b10',
                           }}
                         >
                           <span className="inline-flex items-center gap-1">
@@ -4168,9 +4168,9 @@ export default function FishPrawnCrabGame() {
                           key={`${p.cellA}-${p.cellB}`}
                           className="flex items-center gap-1.5 rounded-full px-3 py-1 text-[11px] font-bold"
                           style={{
-                            background: won ? 'rgba(250,204,21,0.25)' : '#1e0040',
+                            background: won ? 'rgba(250,204,21,0.25)' : '#fff5f6',
                             border: `1px solid ${won ? '#facc15' : color}`,
-                            color: won ? '#fde68a' : '#e9d5ff',
+                            color: won ? '#b45309' : '#2b0b10',
                           }}
                         >
                           <span className="inline-flex items-center gap-1">
@@ -4180,14 +4180,14 @@ export default function FishPrawnCrabGame() {
                             <img src={`/symbols/${p.b}.png`} alt={p.b} className="h-3 w-3 rounded object-contain bg-white" />
                             <span>{SYMBOL_VALUES[p.b]}</span>
                           </span>
-                          <span style={{ color: won ? '#fde68a' : color }}>×{loaderData.payoutConfig.pair}</span>
+                          <span style={{ color: won ? '#c8102e' : color }}>×{loaderData.payoutConfig.pair}</span>
                           <span>{p.amount.toLocaleString()}</span>
                         </div>
                       )
                     })}
                   </div>
                 )}
-                <div className="text-[14px] text-center" style={{ color: '#c4b5fd' }}>
+                <div className="text-[14px] text-center" style={{ color: '#6b4a4f' }}>
                   {t('game.tapAdjacent')}
                 </div>
               </div>
@@ -4195,8 +4195,8 @@ export default function FishPrawnCrabGame() {
               {/* Range/Sum betting — numbers 3-18 for LIVE, LOW/MID/HIGH for RANDOM */}
               {mode === 'live' ? (
                 <div className="mx-auto mt-3" style={{ maxWidth: 560 }}>
-                  <div className="mb-1 flex items-center justify-between text-[10px]" style={{ color: '#c4b5fd' }}>
-                    <span>ເລືອກໄດ້ສູງສຸດ 3 ເລກ · ຈ່າຍ ×3 (<span style={{ color: '#fca5a5' }}>3,7,11,15 = ×5</span>)</span>
+                  <div className="mb-1 flex items-center justify-between text-[10px]" style={{ color: '#6b4a4f' }}>
+                    <span>ເລືອກໄດ້ສູງສຸດ 3 ເລກ · ຈ່າຍ ×3 (<span style={{ color: '#dc2626' }}>3,7,11,15 = ×5</span>)</span>
                     <span>{currentSumBets.length}/3</span>
                   </div>
                   <div className="grid grid-cols-6 gap-1.5">
@@ -4213,10 +4213,10 @@ export default function FishPrawnCrabGame() {
                           disabled={bettingLocked || balance < selectedChip || maxReached}
                           className="relative flex flex-col items-center justify-center rounded py-1 transition-all disabled:opacity-40"
                           style={{
-                            background: isWinner ? 'rgba(250,204,21,0.35)' : isSelected ? 'rgba(124,58,237,0.5)' : isSpecial ? 'rgba(185,28,28,0.85)' : 'rgba(30,0,64,0.7)',
-                            border: `1px solid ${isWinner ? '#facc15' : isSelected ? '#a78bfa' : isSpecial ? '#ef4444' : '#4c1d95'}`,
-                            boxShadow: isWinner ? '0 0 16px rgba(250,204,21,0.55)' : isSelected ? '0 0 10px rgba(167,139,250,0.4)' : isSpecial ? '0 0 6px rgba(239,68,68,0.4)' : 'none',
-                            color: isWinner ? '#facc15' : '#fff',
+                            background: isWinner ? 'rgba(250,204,21,0.35)' : isSelected ? 'rgba(200,16,46,0.92)' : isSpecial ? 'rgba(185,28,28,0.9)' : '#ffffff',
+                            border: `1px solid ${isWinner ? '#facc15' : isSelected ? '#e8949e' : isSpecial ? '#ef4444' : '#f2ccd2'}`,
+                            boxShadow: isWinner ? '0 0 16px rgba(250,204,21,0.55)' : isSelected ? '0 0 10px rgba(200,16,46,0.4)' : isSpecial ? '0 0 6px rgba(239,68,68,0.4)' : 'none',
+                            color: isWinner ? '#b45309' : (isSelected || isSpecial) ? '#fff' : '#2b0b10',
                           }}
                         >
                           <div className="text-xs font-bold">{n}</div>
@@ -4274,7 +4274,7 @@ export default function FishPrawnCrabGame() {
 
           <div
             className={`flex flex-wrap items-center justify-between gap-4 px-4 py-6 pb-28 md:hidden ${mode === 'live' && livePhase !== 'betting' ? 'hidden' : ''}`}
-            style={{ background: '#1e0040', borderTop: '1px solid #a78bfa' }}
+            style={{ background: '#fff5f6', borderTop: '1px solid #e8949e' }}
           >
             {/* LEFT: chip / price input */}
             <div data-tour="chip-selector" className="flex items-center gap-1.5">
@@ -4301,7 +4301,7 @@ export default function FishPrawnCrabGame() {
               onClick={undoBet}
               disabled={bettingLocked || (!hasAnyBet && pendingCell === null)}
               className="rounded-xl px-5 py-2.5 text-sm font-bold  transition-opacity disabled:opacity-40"
-              style={{ background: 'linear-gradient(180deg, #f59e0b, #b45309)', color: '#1e0040', border: '1px solid #fcd34d' }}
+              style={{ background: 'linear-gradient(180deg, #f59e0b, #b45309)', color: '#3d040f', border: '1px solid #fcd34d' }}
             >
               {t('game.undo')}
             </button>
@@ -4313,13 +4313,13 @@ export default function FishPrawnCrabGame() {
           isRolling ? (
             // 8s processing — countdown ring replaces the button
             <div className="fixed bottom-4 right-4 z-40 flex h-16 w-16 items-center justify-center rounded-full md:hidden"
-              style={{ background: '#1e0040', border: '2px solid #facc15' }}>
+              style={{ background: '#fff5f6', border: '2px solid #facc15' }}>
               <ProcessingRing countdown={processingCountdown} size="sm" />
             </div>
           ) : isRoundOpen ? (
             // 15s betting window countdown
             <div className="fixed bottom-4 right-4 z-40 flex h-16 w-16 items-center justify-center rounded-full md:hidden"
-              style={{ background: '#1e0040', border: '2px solid #facc15' }}>
+              style={{ background: '#fff5f6', border: '2px solid #facc15' }}>
               <BetCountdownRing countdown={betCountdown} size="sm" />
             </div>
           ) : !resultModal && !isRevealingResult ? (
@@ -4355,21 +4355,21 @@ export default function FishPrawnCrabGame() {
 
         <aside
           className="hidden md:flex flex-col items-center py-4 px-2 gap-4 w-[15%] overflow-y-auto"
-          style={{ background: '#4c1d95', borderLeft: '1px solid #a78bfa' }}
+          style={{ background: '#ffe4e6', borderLeft: '1px solid #e8949e' }}
         >
           <div className="flex flex-col gap-3 w-full">
             {[
-              { label: t('stats.lastBet'), value: lastBetTotal.toLocaleString(), color: '#fde68a' },
-              { label: t('stats.lastWin'), value: lastWin.toLocaleString(), color: lastWin > 0 ? '#4ade80' : '#6d28d9' },
-              { label: t('stats.curBet'), value: totalBet.toLocaleString(), color: '#fde68a' },
-              { label: t('stats.balance'), value: balance.toLocaleString(), color: '#fde68a' },
+              { label: t('stats.lastBet'), value: lastBetTotal.toLocaleString(), color: '#c8102e' },
+              { label: t('stats.lastWin'), value: lastWin.toLocaleString(), color: lastWin > 0 ? '#15803d' : '#a50d26' },
+              { label: t('stats.curBet'), value: totalBet.toLocaleString(), color: '#c8102e' },
+              { label: t('stats.balance'), value: balance.toLocaleString(), color: '#c8102e' },
             ].map((stat, i, arr) => (
               <div key={stat.label}>
                 <div className="text-center">
-                  <div className="text-[9px] font-bold  mb-0.5" style={{ color: '#c4b5fd' }}>{stat.label}</div>
+                  <div className="text-[9px] font-bold  mb-0.5" style={{ color: '#6b4a4f' }}>{stat.label}</div>
                   <div className="text-sm font-bold" style={{ color: stat.color }}>{stat.value}</div>
                 </div>
-                {i < arr.length - 1 && <div className="h-px mt-2" style={{ background: '#6d28d9' }} />}
+                {i < arr.length - 1 && <div className="h-px mt-2" style={{ background: '#fecdd3' }} />}
               </div>
             ))}
           </div>
@@ -4377,7 +4377,7 @@ export default function FishPrawnCrabGame() {
           {/* Chips (price input) + UNDO — shown on md+ where the bottom bar is hidden */}
           {(mode === 'random' || livePhase === 'betting') && (
             <div className="flex w-full flex-col items-center gap-3">
-              <div className="h-px w-full" style={{ background: '#6d28d9' }} />
+              <div className="h-px w-full" style={{ background: '#fecdd3' }} />
               <div data-tour="chip-selector" className="grid w-full grid-cols-2 justify-items-center gap-2">
                 {CHIP_CONFIG.map(chip => (
                   <button
@@ -4410,12 +4410,12 @@ export default function FishPrawnCrabGame() {
             {mode === 'random' ? (
               isRolling ? (
                 // 8s processing — countdown ring (desktop)
-                <div className="flex h-20 w-20 items-center justify-center rounded-full" style={{ background: '#1e0040', border: '4px solid #facc15' }}>
+                <div className="flex h-20 w-20 items-center justify-center rounded-full" style={{ background: '#fff5f6', border: '4px solid #facc15' }}>
                   <ProcessingRing countdown={processingCountdown} size="lg" />
                 </div>
               ) : isRoundOpen ? (
                 // 15s betting window countdown ring (desktop)
-                <div className="flex h-20 w-20 items-center justify-center rounded-full" style={{ background: '#1e0040', border: '4px solid #facc15' }}>
+                <div className="flex h-20 w-20 items-center justify-center rounded-full" style={{ background: '#fff5f6', border: '4px solid #facc15' }}>
                   <BetCountdownRing countdown={betCountdown} size="lg" />
                 </div>
               ) : !resultModal && !isRevealingResult ? (
@@ -4476,7 +4476,7 @@ export default function FishPrawnCrabGame() {
         return (
           <div
             className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-            style={{ background: 'rgba(15,0,32,0.82)' }}
+            style={{ background: 'rgba(43,11,16,0.55)' }}
             onClick={() => setResultModal(null)}
           >
             <div
@@ -4494,9 +4494,9 @@ export default function FishPrawnCrabGame() {
                 {resultModal.dice.map((s, i) => (
                   <img key={i} src={`/symbols/${s}.png`} alt={s}
                     className="h-12 w-12 rounded object-contain"
-                    style={{ border: '1px solid #c4b5fd', background: '#f5f5f5' }} />
+                    style={{ border: '1px solid #eeb0b9', background: '#f5f5f5' }} />
                 ))}
-                <span className="ml-2 rounded-full px-3 py-1 text-xs font-bold" style={{ background: '#f3f4f6', color: '#1e0040' }}>
+                <span className="ml-2 rounded-full px-3 py-1 text-xs font-bold" style={{ background: '#f3f4f6', color: '#2b0b10' }}>
                   {t('result.sum')} {resultModal.diceSum}
                 </span>
               </div>
@@ -4545,7 +4545,7 @@ export default function FishPrawnCrabGame() {
         return (
           <div
             className="fixed inset-0 z-[100] flex items-center justify-center p-4"
-            style={{ background: 'rgba(15,0,32,0.82)' }}
+            style={{ background: 'rgba(43,11,16,0.55)' }}
             onClick={() => setLiveSettleModal(null)}
           >
             <div
@@ -4561,9 +4561,9 @@ export default function FishPrawnCrabGame() {
                 {m.dice.map((s, i) => (
                   <img key={i} src={`/symbols/${s.toLowerCase()}.png`} alt={s}
                     className="h-12 w-12 rounded object-contain"
-                    style={{ border: '1px solid #c4b5fd', background: '#f5f5f5' }} />
+                    style={{ border: '1px solid #eeb0b9', background: '#f5f5f5' }} />
                 ))}
-                <span className="ml-2 rounded-full px-3 py-1 text-xs font-bold" style={{ background: '#f3f4f6', color: '#1e0040' }}>
+                <span className="ml-2 rounded-full px-3 py-1 text-xs font-bold" style={{ background: '#f3f4f6', color: '#2b0b10' }}>
                   {t('result.sum')} {m.diceSum}
                 </span>
               </div>
@@ -4603,7 +4603,7 @@ export default function FishPrawnCrabGame() {
       {rewardModal && (
         <div
           className="fixed inset-0 z-[110] flex items-center justify-center p-4"
-          style={{ background: 'rgba(10,0,20,0.88)' }}
+          style={{ background: 'rgba(24,10,12,0.88)' }}
           onClick={() => setRewardModal(null)}
         >
           <div
@@ -4616,12 +4616,12 @@ export default function FishPrawnCrabGame() {
             }}
           >
             <div className="text-5xl mb-3">🎁</div>
-            <div className="text-xl font-bold" style={{ color: '#fbbf24' }}>ຂອງຂວັນພິເສດ!</div>
-            <div className="mt-1 text-sm font-semibold" style={{ color: '#fde68a' }}>{rewardModal.note}</div>
-            <div className="mt-5 text-5xl font-bold" style={{ color: '#4ade80' }}>
+            <div className="text-xl font-bold" style={{ color: '#b45309' }}>ຂອງຂວັນພິເສດ!</div>
+            <div className="mt-1 text-sm font-semibold" style={{ color: '#c8102e' }}>{rewardModal.note}</div>
+            <div className="mt-5 text-5xl font-bold" style={{ color: '#15803d' }}>
               +{rewardModal.amount.toLocaleString()} ₭
             </div>
-            <div className="mt-3 text-xs" style={{ color: '#94a3b8' }}>
+            <div className="mt-3 text-xs" style={{ color: '#8a6d71' }}>
               ຍອດເງິນ REAL: {rewardModal.newBalance.toLocaleString()} ₭
             </div>
             <button
@@ -4701,12 +4701,12 @@ function DiceReveal({ dice }: { dice: (SymbolKey | null)[] }) {
         <div
           key={i}
           className="relative flex items-center justify-center overflow-hidden rounded-xl bg-white shadow-xl"
-          style={{ width: 64, height: 64, border: `1px solid ${sym ? '#f59e0b' : '#7c3aed'}` }}
+          style={{ width: 64, height: 64, border: `1px solid ${sym ? '#f59e0b' : '#e8949e'}` }}
         >
           {sym ? (
             <img src={`/symbols/${sym}.png`} alt={sym} className="absolute inset-0 h-full w-full object-contain p-1" />
           ) : (
-            <span style={{ color: '#7c3aed', fontSize: 26 }}>?</span>
+            <span style={{ color: '#c8102e', fontSize: 26 }}>?</span>
           )}
         </div>
       ))}
@@ -4789,7 +4789,7 @@ function describeBetIcon(b: MyLiveBet, t: Translate) {
   }
   if (b.kind === 'RANGE' && b.range) {
     const Icon = b.range === 'LOW' ? ArrowDown : b.range === 'HIGH' ? ArrowUp : ArrowUpDown
-    const color = b.range === 'LOW' ? '#4ade80' : b.range === 'HIGH' ? '#f87171' : '#fbbf24'
+    const color = b.range === 'LOW' ? '#15803d' : b.range === 'HIGH' ? '#dc2626' : '#b45309'
     return (
       <span className="flex items-center gap-2 truncate">
         <Icon size={16} style={{ color }} className="shrink-0" />
@@ -4801,7 +4801,7 @@ function describeBetIcon(b: MyLiveBet, t: Translate) {
     return (
       <span className="flex items-center gap-2 truncate">
         <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full font-bold text-xs"
-          style={{ background: '#7c3aed', color: '#fde68a' }}>{b.exactSum}</span>
+          style={{ background: '#c8102e', color: '#fde68a' }}>{b.exactSum}</span>
         <span className="truncate">ເລກ {b.exactSum}</span>
       </span>
     )
@@ -4817,9 +4817,9 @@ function MyBetsList({ bets, glass = false }: { bets: MyLiveBet[]; glass?: boolea
       className="w-full max-w-sm rounded-xl p-4"
       style={glass
         ? { background: 'rgba(0,0,0,0.55)', border: '1px solid rgba(255,255,255,0.08)' }
-        : { background: '#1e0040', border: '1px solid #4c1d95' }}
+        : { background: '#fff5f6', border: '1px solid #f2ccd2' }}
     >
-      <div className="mb-2 text-[10px] font-bold" style={{ color: glass ? '#e9d5ff' : '#a78bfa' }}>
+      <div className="mb-2 text-[10px] font-bold" style={{ color: glass ? '#2b0b10' : '#9c1024' }}>
         {t('result.yourBetsThisRound')}
       </div>
       <ul className="flex flex-col gap-1">
@@ -4827,10 +4827,10 @@ function MyBetsList({ bets, glass = false }: { bets: MyLiveBet[]; glass?: boolea
           <li
             key={b.id}
             className="flex items-center justify-between rounded-md px-2 py-1.5 text-xs"
-            style={{ background: glass ? 'rgba(255,255,255,0.05)' : '#2d1b4e', color: '#e9d5ff' }}
+            style={{ background: glass ? 'rgba(255,255,255,0.05)' : '#fff0f2', color: '#2b0b10' }}
           >
             {describeBetIcon(b, t)}
-            <span className="ml-2 shrink-0 font-bold" style={{ color: '#fde68a' }}>
+            <span className="ml-2 shrink-0 font-bold" style={{ color: '#c8102e' }}>
               {b.amount.toLocaleString()} ₭
             </span>
           </li>
@@ -4838,7 +4838,7 @@ function MyBetsList({ bets, glass = false }: { bets: MyLiveBet[]; glass?: boolea
       </ul>
       <div
         className="mt-2 flex items-center justify-between border-t pt-2 text-xs font-bold"
-        style={{ borderColor: '#4c1d95', color: '#fde68a' }}
+        style={{ borderColor: '#f2ccd2', color: '#c8102e' }}
       >
         <span>{t('result.total')}</span>
         <span>{total.toLocaleString()} ₭</span>
@@ -4927,7 +4927,7 @@ function BetBreakdown({ symbolBets, rangeBets, pairBets, sumBets = [] }: BetBrea
       <div className="rounded-md px-3 py-2 text-[11px]" style={{ background: '#f3f4f6' }}>
         <div className="flex items-center justify-between">
           <span className="font-bold  text-gray-600">{t('result.totalStake')}</span>
-          <span className="font-bold" style={{ color: '#1e0040' }}>{totalStake.toLocaleString()}</span>
+          <span className="font-bold" style={{ color: '#2b0b10' }}>{totalStake.toLocaleString()}</span>
         </div>
         <div className="mt-1 flex items-center justify-between">
           <span className="font-bold  text-gray-600">{t('result.totalWon')}</span>

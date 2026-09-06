@@ -1415,11 +1415,11 @@ export default function AdminLive() {
     <div className="flex flex-col gap-4">
       {/* ─── Header ──────────────────────────────────────────────────── */}
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold" style={{ color: '#fde68a' }}>{t('admin.live.title')}</h1>
+        <h1 className="text-xl font-bold" style={{ color: '#c8102e' }}>{t('admin.live.title')}</h1>
         {current && (
           <span
             className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10px] font-bold"
-            style={{ background: 'rgba(220,38,38,0.2)', color: '#f87171', border: '1px solid #fca5a5' }}
+            style={{ background: 'rgba(220,38,38,0.2)', color: '#dc2626', border: '1px solid #fca5a5' }}
           >
             <Radio size={10} className="animate-pulse" /> {t('admin.live.roundInFlightBadge')}
           </span>
@@ -1427,12 +1427,12 @@ export default function AdminLive() {
       </div>
 
       {/* ─── Tabs ────────────────────────────────────────────────────── */}
-      <div className="flex overflow-hidden rounded-xl" style={{ border: '1px solid #4338ca' }}>
+      <div className="flex overflow-hidden rounded-xl" style={{ border: '1px solid #f2ccd2' }}>
         <button
           type="button"
           onClick={() => setActiveTab('live')}
           className="flex flex-1 items-center justify-center gap-1.5 py-2 text-xs font-bold transition-all"
-          style={{ background: activeTab === 'live' ? '#4338ca' : '#0f172a', color: activeTab === 'live' ? '#fff' : '#a5b4fc' }}
+          style={{ background: activeTab === 'live' ? '#c8102e' : '#fff5f6', color: activeTab === 'live' ? '#fff' : '#6b4a4f' }}
         >
           <Radio size={12} /> {t('admin.live.tab.livePlay')}
         </button>
@@ -1440,13 +1440,13 @@ export default function AdminLive() {
           type="button"
           onClick={() => setActiveTab('history')}
           className="flex flex-1 items-center justify-center gap-1.5 py-2 text-xs font-bold transition-all"
-          style={{ background: activeTab === 'history' ? '#4338ca' : '#0f172a', color: activeTab === 'history' ? '#fff' : '#a5b4fc' }}
+          style={{ background: activeTab === 'history' ? '#c8102e' : '#fff5f6', color: activeTab === 'history' ? '#fff' : '#6b4a4f' }}
         >
           {t('admin.live.tab.roundHistory')}
           {historyPages.length > 0 && (
             <span
               className="rounded-full px-1.5 py-0.5 text-[9px] font-bold"
-              style={{ background: activeTab === 'history' ? 'rgba(255,255,255,0.2)' : '#1e1b4b', color: activeTab === 'history' ? '#fff' : '#818cf8' }}
+              style={{ background: activeTab === 'history' ? 'rgba(255,255,255,0.2)' : '#ffffff', color: activeTab === 'history' ? '#fff' : '#9c1024' }}
             >
               {historyPages.length}{historyHasMore ? '+' : ''}
             </span>
@@ -1484,7 +1484,7 @@ export default function AdminLive() {
           {settledSummary && (
             <div
               className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto p-4"
-              style={{ background: 'rgba(15,15,30,0.85)' }}
+              style={{ background: 'rgba(24,10,12,0.85)' }}
               onClick={() => setSettledSummary(null)}
             >
               <div className="w-full max-w-2xl my-auto" onClick={e => e.stopPropagation()}>
@@ -1520,7 +1520,7 @@ export default function AdminLive() {
           {historyPages.length === 0 ? (
             <div
               className="rounded-xl p-6 text-center text-xs"
-              style={{ background: '#0f172a', color: '#818cf8', border: '1px solid #1e1b4b' }}
+              style={{ background: '#fff5f6', color: '#9c1024', border: '1px solid #f2ccd2' }}
             >
               {t('admin.live.noPreviousRounds')}
             </div>
@@ -1535,7 +1535,7 @@ export default function AdminLive() {
                   onClick={loadMoreHistory}
                   disabled={loadingMore}
                   className="mt-2 inline-flex items-center justify-center gap-1.5 self-center rounded-full px-4 py-1.5 text-[11px] font-bold disabled:opacity-50"
-                  style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}
+                  style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}
                 >
                   {loadingMore ? <Loader size={12} className="animate-spin" /> : null}
                   {loadingMore ? t('admin.live.loadingMore') : t('admin.live.loadMore')}
@@ -1564,16 +1564,16 @@ function SettledSummaryPanel({
 }) {
   const t = useT()
   return (
-    <div className="rounded-xl p-4" style={{ background: '#0f172a', border: '1px solid #4ade80' }}>
+    <div className="rounded-xl p-4" style={{ background: '#fff5f6', border: '1px solid #4ade80' }}>
       <div className="mb-3 flex items-center justify-between">
-        <span className="inline-flex items-center gap-2 text-[10px] font-bold " style={{ color: '#4ade80' }}>
+        <span className="inline-flex items-center gap-2 text-[10px] font-bold " style={{ color: '#15803d' }}>
           <Check size={12} /> {t('admin.live.settled.title')} · #{summary.roundId.slice(-6)}
         </span>
         <button
           type="button"
           onClick={onClose}
           className="rounded-md px-3 py-1 text-[10px] font-bold "
-          style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}
+          style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}
         >
           {t('admin.live.settled.close')}
         </button>
@@ -1586,10 +1586,10 @@ function SettledSummaryPanel({
             src={`/symbols/${s.toLowerCase()}.png`}
             alt={s}
             className="h-12 w-12 rounded object-contain"
-            style={{ border: '1px solid #312e81', background: '#1e1b4b' }}
+            style={{ border: '1px solid #eeb0b9', background: '#ffffff' }}
           />
         ))}
-        <span className="ml-2 rounded-md px-3 py-1 text-[11px] font-bold " style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}>
+        <span className="ml-2 rounded-md px-3 py-1 text-[11px] font-bold " style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}>
           {t('admin.live.settled.sum', { n: summary.diceSum })}
         </span>
       </div>
@@ -1599,30 +1599,30 @@ function SettledSummaryPanel({
           { label: t('admin.live.settled.players'), value: summary.totalPlayers.toLocaleString() },
           { label: t('admin.live.settled.totalStake'), value: summary.totalStake.toLocaleString() },
           { label: t('admin.live.settled.totalPayout'), value: summary.totalPayout.toLocaleString() },
-          { label: t('admin.live.settled.houseNet'), value: `${summary.houseNet >= 0 ? '+' : ''}${summary.houseNet.toLocaleString()}`, color: summary.houseNet >= 0 ? '#4ade80' : '#f87171' },
+          { label: t('admin.live.settled.houseNet'), value: `${summary.houseNet >= 0 ? '+' : ''}${summary.houseNet.toLocaleString()}`, color: summary.houseNet >= 0 ? '#15803d' : '#dc2626' },
         ].map(s => (
-          <div key={s.label} className="rounded-md px-2 py-2 text-center" style={{ background: '#1e1b4b' }}>
-            <div className="text-[9px] font-bold " style={{ color: '#a5b4fc' }}>{s.label}</div>
-            <div className="mt-0.5 text-sm font-bold" style={{ color: s.color ?? '#fde68a' }}>{s.value}</div>
+          <div key={s.label} className="rounded-md px-2 py-2 text-center" style={{ background: '#ffffff' }}>
+            <div className="text-[9px] font-bold " style={{ color: '#6b4a4f' }}>{s.label}</div>
+            <div className="mt-0.5 text-sm font-bold" style={{ color: s.color ?? '#c8102e' }}>{s.value}</div>
           </div>
         ))}
       </div>
 
       {summary.players.length === 0 ? (
-        <p className="text-center text-[11px]" style={{ color: '#475569' }}>{t('admin.live.settled.noBets')}</p>
+        <p className="text-center text-[11px]" style={{ color: '#6b4a4f' }}>{t('admin.live.settled.noBets')}</p>
       ) : (
         <ul className="mb-4 flex max-h-48 flex-col gap-1 overflow-y-auto">
           {summary.players.map(p => (
             <li
               key={p.userId}
               className="grid grid-cols-3 items-center gap-2 rounded-md px-2 py-1.5 text-xs"
-              style={{ background: '#1e1b4b', color: '#e9d5ff' }}
+              style={{ background: '#ffffff', color: '#2b0b10' }}
             >
               <span className="truncate">{p.userName ? `${p.userName} · ` : ''}{p.userTel}</span>
-              <span className="text-right font-bold" style={{ color: p.net > 0 ? '#4ade80' : p.net < 0 ? '#f87171' : '#fde68a' }}>
+              <span className="text-right font-bold" style={{ color: p.net > 0 ? '#15803d' : p.net < 0 ? '#dc2626' : '#c8102e' }}>
                 {p.net > 0 ? '+' : ''}{p.net.toLocaleString()}
               </span>
-              <span className="text-right text-[10px]" style={{ color: '#a5b4fc' }}>
+              <span className="text-right text-[10px]" style={{ color: '#6b4a4f' }}>
                 {t('admin.live.settled.bal', { n: p.newBalance.toLocaleString() })}
               </span>
             </li>
@@ -1632,24 +1632,24 @@ function SettledSummaryPanel({
 
       {/* ── Start next round ── */}
       <div className="mt-2 rounded-lg p-3" style={{ background: '#0a1a0f', border: '1px solid #166534' }}>
-        <div className="mb-3 flex items-center gap-2 text-[10px] font-bold" style={{ color: '#4ade80' }}>
+        <div className="mb-3 flex items-center gap-2 text-[10px] font-bold" style={{ color: '#15803d' }}>
           <Radio size={11} /> {t('admin.live.startNextRound')}
         </div>
         <Form method="post" className="flex flex-col gap-2" onSubmit={onClose}>
           <input type="hidden" name="op" value="startRound" />
 
-          <label className="text-[10px] font-semibold" style={{ color: '#86efac' }}>{t('admin.live.streamUrlLabel')}</label>
+          <label className="text-[10px] font-semibold" style={{ color: '#15803d' }}>{t('admin.live.streamUrlLabel')}</label>
           <input
             name="streamUrl"
             defaultValue={defaultStreamUrl}
             placeholder="YouTube, MP4, HLS, …"
             className="rounded-lg px-3 py-2 text-xs outline-none"
-            style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}
+            style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}
           />
 
           <div className="flex gap-3">
             <div className="flex flex-1 flex-col gap-2">
-              <label className="text-[10px] font-semibold" style={{ color: '#86efac' }}>{t('admin.live.bettingWindowLabel')}</label>
+              <label className="text-[10px] font-semibold" style={{ color: '#15803d' }}>{t('admin.live.bettingWindowLabel')}</label>
               <input
                 name="seconds"
                 type="number"
@@ -1657,7 +1657,7 @@ function SettledSummaryPanel({
                 max={600}
                 defaultValue={defaultSeconds}
                 className="rounded-lg px-3 py-2 text-xs outline-none"
-                style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}
+                style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}
               />
             </div>
           </div>
@@ -1680,27 +1680,27 @@ function SettledSummaryPanel({
 function ViewersPanel({ viewers, balances = {} }: { viewers: ReturnType<typeof usePresenceMembers>; balances?: Record<string, number> }) {
   const t = useT()
   return (
-    <div className="rounded-xl p-4" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+    <div className="rounded-xl p-4" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
       <div className="mb-3 flex items-center justify-between">
-        <span className="inline-flex items-center gap-2 text-[10px] font-bold " style={{ color: '#a5b4fc' }}>
+        <span className="inline-flex items-center gap-2 text-[10px] font-bold " style={{ color: '#6b4a4f' }}>
           <UsersIcon size={12} /> VIEWERS
         </span>
-        <span className="text-[10px] font-bold" style={{ color: '#fde68a' }}>{viewers.length}</span>
+        <span className="text-[10px] font-bold" style={{ color: '#c8102e' }}>{viewers.length}</span>
       </div>
       {viewers.length === 0 ? (
-        <p className="text-center text-[10px]" style={{ color: '#475569' }}>{t('admin.live.noViewers')}</p>
+        <p className="text-center text-[10px]" style={{ color: '#6b4a4f' }}>{t('admin.live.noViewers')}</p>
       ) : (
         <ul className="flex max-h-64 flex-col gap-1 overflow-y-auto">
           {viewers.map(v => (
             <li
               key={v.id}
               className="flex items-center justify-between rounded-md px-2 py-1.5 text-xs"
-              style={{ background: '#1e1b4b' }}
+              style={{ background: '#ffffff' }}
             >
-              <span className="truncate" style={{ color: '#e9d5ff' }}>
+              <span className="truncate" style={{ color: '#2b0b10' }}>
                 {v.info.kind === 'admin' ? (v.info.name ?? 'Admin') : (v.info.tel ?? v.id)}
               </span>
-              <span className="text-[10px] font-bold" style={{ color: '#fde68a' }}>
+              <span className="text-[10px] font-bold" style={{ color: '#c8102e' }}>
                 {v.info.kind === 'user'
                   ? `${(balances[v.id.replace(/^user:/, '')] ?? v.info.balance ?? 0).toLocaleString()} ₭`
                   : ''}
@@ -1763,40 +1763,40 @@ function LiveBetsPanel({
   const totalStake = bets.reduce((sum, b) => sum + b.amount, 0)
   const grouped = useMemo(() => groupLiveBets(bets), [bets])
   return (
-    <div className="rounded-xl p-4" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+    <div className="rounded-xl p-4" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
       <div className="mb-3 flex items-center justify-between">
-        <span className="inline-flex items-center gap-2 text-[10px] font-bold " style={{ color: '#a5b4fc' }}>
-          <Radio size={12} /> LIVE BETS{roundId && <span className="text-[9px] font-mono" style={{ color: '#475569' }}>#{roundId.slice(-6)}</span>}
+        <span className="inline-flex items-center gap-2 text-[10px] font-bold " style={{ color: '#6b4a4f' }}>
+          <Radio size={12} /> LIVE BETS{roundId && <span className="text-[9px] font-mono" style={{ color: '#6b4a4f' }}>#{roundId.slice(-6)}</span>}
         </span>
-        <span className="text-[10px]" style={{ color: '#fde68a' }}>
+        <span className="text-[10px]" style={{ color: '#c8102e' }}>
           {t('admin.live.betsStake', { n: bets.length, stake: totalStake.toLocaleString() })}
         </span>
       </div>
       {!hasOpenRound ? (
-        <p className="text-center text-[10px]" style={{ color: '#475569' }}>{t('admin.live.startLiveRoundHint')}</p>
+        <p className="text-center text-[10px]" style={{ color: '#6b4a4f' }}>{t('admin.live.startLiveRoundHint')}</p>
       ) : grouped.length === 0 ? (
-        <p className="text-center text-[10px]" style={{ color: '#475569' }}>{t('admin.live.noBetsThisRound')}</p>
+        <p className="text-center text-[10px]" style={{ color: '#6b4a4f' }}>{t('admin.live.noBetsThisRound')}</p>
       ) : (
         <ul className="flex flex-col gap-1 overflow-y-auto" style={{ maxHeight }}>
           {grouped.map(g => (
             <li
               key={g.key}
               className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-xs"
-              style={{ background: '#1e1b4b' }}
+              style={{ background: '#ffffff' }}
             >
               <div className="min-w-0">
-                <div className="truncate font-semibold" style={{ color: '#e9d5ff' }}>
+                <div className="truncate font-semibold" style={{ color: '#2b0b10' }}>
                   {/* Single bettor → name (fall back to tel). Multiple bettors
                       on the same selection → every phone number, comma-joined. */}
                   {g.bettors.length === 1
                     ? (g.bettors[0].name ?? g.bettors[0].tel)
                     : g.bettors.map(p => p.tel).join(', ')}
                 </div>
-                <div className="mt-0.5" style={{ color: '#a5b4fc' }}>
+                <div className="mt-0.5" style={{ color: '#6b4a4f' }}>
                   <LiveBetDescription bet={g} />
                 </div>
               </div>
-              <span className="shrink-0 font-bold" style={{ color: '#fde68a' }}>{g.amount.toLocaleString()}</span>
+              <span className="shrink-0 font-bold" style={{ color: '#c8102e' }}>{g.amount.toLocaleString()}</span>
             </li>
           ))}
         </ul>
@@ -1836,7 +1836,7 @@ function LiveBetDescription({ bet }: { bet: Pick<LiveBet, 'kind' | 'symbol' | 'r
   }
   if (bet.kind === 'RANGE' && bet.range) {
     const Icon = bet.range === 'LOW' ? ArrowDown : bet.range === 'HIGH' ? ArrowUp : ArrowUpDown
-    const color = bet.range === 'LOW' ? '#4ade80' : bet.range === 'HIGH' ? '#f87171' : '#fbbf24'
+    const color = bet.range === 'LOW' ? '#15803d' : bet.range === 'HIGH' ? '#dc2626' : '#b45309'
     const bounds = bet.range === 'LOW' ? '3-8' : bet.range === 'HIGH' ? '11-18' : '9-10'
     return (
       <span className="flex items-center gap-1.5 text-[10px]">
@@ -1846,7 +1846,7 @@ function LiveBetDescription({ bet }: { bet: Pick<LiveBet, 'kind' | 'symbol' | 'r
     )
   }
   if (bet.kind === 'SUM' && bet.exactSum != null) {
-    return <span className="text-[10px] font-bold" style={{ color: '#fbbf24' }}>{t('admin.live.sumExact', { n: bet.exactSum })}</span>
+    return <span className="text-[10px] font-bold" style={{ color: '#b45309' }}>{t('admin.live.sumExact', { n: bet.exactSum })}</span>
   }
   return <span className="text-[10px]">{bet.kind}</span>
 }
@@ -1949,10 +1949,10 @@ function ActiveRoundPanel({
   return (
     <div className="flex flex-col gap-4">
       {/* Compact result-control bar — opens the result-entry modal */}
-      <div className="rounded-xl p-4" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+      <div className="rounded-xl p-4" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-[10px] font-bold " style={{ color: '#a5b4fc' }}>{t('admin.live.roundResult')}</span>
-          <span className="text-[10px]" style={{ color: '#818cf8' }}>{t('admin.live.betsShort', { n: round.bets })} · #{round.id.slice(-6)}</span>
+          <span className="text-[10px] font-bold " style={{ color: '#6b4a4f' }}>{t('admin.live.roundResult')}</span>
+          <span className="text-[10px]" style={{ color: '#9c1024' }}>{t('admin.live.betsShort', { n: round.bets })} · #{round.id.slice(-6)}</span>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {round.status === 'BETTING' && (
@@ -1963,7 +1963,7 @@ function ActiveRoundPanel({
                 type="submit"
                 disabled={loading}
                 className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-[10px] font-bold  disabled:opacity-50"
-                style={{ background: '#1e1b4b', color: '#fdba74', border: '1px solid #fb923c' }}
+                style={{ background: '#ffffff', color: '#c2410c', border: '1px solid #fb923c' }}
               >
                 {loading ? <Loader size={10} className="animate-spin" /> : <Lock size={10} />}
                 {t('admin.live.lockBetting')}
@@ -1974,13 +1974,13 @@ function ActiveRoundPanel({
             type="button"
             onClick={() => setResultModalOpen(true)}
             className="inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-[10px] font-bold "
-            style={{ background: '#4338ca', color: '#fff', border: '1px solid #818cf8' }}
+            style={{ background: '#c8102e', color: '#fff', border: '1px solid #e8949e' }}
           >
             {t('admin.live.openResultBoard')}
           </button>
           {allPicked && (
-            <span className="text-[10px]" style={{ color: '#a5b4fc' }}>
-              {t('admin.live.sumInline')} <span className="font-bold" style={{ color: '#fde68a' }}>{liveSum}</span>
+            <span className="text-[10px]" style={{ color: '#6b4a4f' }}>
+              {t('admin.live.sumInline')} <span className="font-bold" style={{ color: '#c8102e' }}>{liveSum}</span>
             </span>
           )}
           <Form method="post" className="ml-auto inline">
@@ -2084,17 +2084,17 @@ function ResultEntryModal({
       <div
         onClick={e => e.stopPropagation()}
         className="my-auto w-full max-w-2xl rounded-xl p-4"
-        style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}
+        style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}
       >
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-sm font-bold " style={{ color: '#a5b4fc' }}>
+          <span className="text-sm font-bold " style={{ color: '#6b4a4f' }}>
             {t('admin.live.roundResultHash', { id: round.id.slice(-6) })}
           </span>
           <button
             type="button"
             onClick={onClose}
             className="rounded-full p-1"
-            style={{ color: '#a5b4fc', background: '#1e1b4b' }}
+            style={{ color: '#6b4a4f', background: '#ffffff' }}
             aria-label={t('admin.live.settled.close')}
           >
             <X size={16} />
@@ -2102,10 +2102,10 @@ function ResultEntryModal({
         </div>
 
         {stillBetting ? (
-          <div className="mb-3 rounded-xl px-4 py-2.5 text-center text-xs" style={{ background: '#1e1b4b' }}>
-            <span style={{ color: '#cbd5e1' }}>{t('admin.live.bettingWindowOpen')}</span>
+          <div className="mb-3 rounded-xl px-4 py-2.5 text-center text-xs" style={{ background: '#ffffff' }}>
+            <span style={{ color: '#8a6d71' }}>{t('admin.live.bettingWindowOpen')}</span>
             {remainingSeconds != null && (
-              <span style={{ color: '#fde68a' }}>{t('admin.live.remainingSeconds', { n: remainingSeconds })}</span>
+              <span style={{ color: '#c8102e' }}>{t('admin.live.remainingSeconds', { n: remainingSeconds })}</span>
             )}
           </div>
         ) : (
@@ -2122,13 +2122,13 @@ function ResultEntryModal({
             </div>
 
             {allPicked && (
-              <div className="mt-3 text-center text-xs" style={{ color: '#a5b4fc' }}>
-                {t('admin.live.sumInline')} <span className="font-bold" style={{ color: '#fde68a' }}>{liveSum}</span>
+              <div className="mt-3 text-center text-xs" style={{ color: '#6b4a4f' }}>
+                {t('admin.live.sumInline')} <span className="font-bold" style={{ color: '#c8102e' }}>{liveSum}</span>
               </div>
             )}
 
             {settleError && (
-              <div className="mt-3 rounded-md px-3 py-2 text-center text-[11px]" style={{ background: 'rgba(220,38,38,0.2)', color: '#fca5a5', border: '1px solid #fca5a5' }}>
+              <div className="mt-3 rounded-md px-3 py-2 text-center text-[11px]" style={{ background: 'rgba(220,38,38,0.2)', color: '#dc2626', border: '1px solid #fca5a5' }}>
                 {settleError}
               </div>
             )}
@@ -2147,14 +2147,14 @@ function ResultEntryModal({
               </button>
 
               {/* Low-payout suggestions: 3 distinct-dice results, cheapest first. */}
-              <span className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: '#64748b' }}>
+              <span className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: '#8a6d71' }}>
                 {t('admin.live.lowPayoutPicks')}
               </span>
               {lowPicks.map((s, i) => (
                 <div
                   key={s.dice.join('-')}
                   className="inline-flex items-center gap-1.5 rounded-md px-2 py-1"
-                  style={{ background: '#1e1b4b', border: `1px solid ${s.payout === 0 ? '#16a34a' : '#4338ca'}` }}
+                  style={{ background: '#ffffff', border: `1px solid ${s.payout === 0 ? '#16a34a' : '#f2ccd2'}` }}
                   title={t('admin.live.lowPayoutHint', { rank: i + 1, sum: s.diceSum, payout: s.payout.toLocaleString() })}
                 >
                   <div className="flex gap-0.5">
@@ -2162,7 +2162,7 @@ function ResultEntryModal({
                       <img key={di} src={symbolSrc(d)} alt={d} className="h-5 w-5 shrink-0 rounded object-contain" style={{ background: '#fff' }} />
                     ))}
                   </div>
-                  <span className="text-[10px] font-bold tabular-nums" style={{ color: s.payout === 0 ? '#4ade80' : '#fde68a' }}>
+                  <span className="text-[10px] font-bold tabular-nums" style={{ color: s.payout === 0 ? '#15803d' : '#c8102e' }}>
                     {s.payout.toLocaleString()}
                   </span>
                 </div>
@@ -2172,10 +2172,10 @@ function ResultEntryModal({
               {zeroSymbols.length > 0 && (
                 <div
                   className="inline-flex items-center gap-1.5 rounded-md px-2 py-1"
-                  style={{ background: '#1e1b4b', border: '1px solid #16a34a' }}
+                  style={{ background: '#ffffff', border: '1px solid #16a34a' }}
                   title={t('admin.live.zeroBetDieHint')}
                 >
-                  <span className="text-[9px] font-bold uppercase tracking-wide" style={{ color: '#4ade80' }}>
+                  <span className="text-[9px] font-bold uppercase tracking-wide" style={{ color: '#15803d' }}>
                     {t('admin.live.zeroBetDie')}
                   </span>
                   <div className="flex gap-0.5">
@@ -2203,14 +2203,14 @@ function ResultEntryModal({
         {bets.length > 0 && (
           <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: '#64748b' }}>
+              <span className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: '#8a6d71' }}>
                 {t('admin.live.highPayoutPicks')}
               </span>
               {highPicks.map((s, i) => (
                 <div
                   key={s.dice.join('-')}
                   className="inline-flex items-center gap-1.5 rounded-md px-2 py-1"
-                  style={{ background: '#1e1b4b', border: '1px solid #7f1d1d' }}
+                  style={{ background: '#ffffff', border: '1px solid #7f1d1d' }}
                   title={t('admin.live.highPayoutHint', { rank: i + 1, sum: s.diceSum, payout: s.payout.toLocaleString() })}
                 >
                   <div className="flex gap-0.5">
@@ -2218,7 +2218,7 @@ function ResultEntryModal({
                       <img key={di} src={symbolSrc(d)} alt={d} className="h-5 w-5 shrink-0 rounded object-contain" style={{ background: '#fff' }} />
                     ))}
                   </div>
-                  <span className="text-[10px] font-bold tabular-nums" style={{ color: '#f87171' }}>
+                  <span className="text-[10px] font-bold tabular-nums" style={{ color: '#dc2626' }}>
                     {s.payout.toLocaleString()}
                   </span>
                 </div>
@@ -2227,16 +2227,16 @@ function ResultEntryModal({
 
             {topSymbol && (
               <div className="inline-flex items-center gap-1.5">
-                <span className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: '#64748b' }}>
+                <span className="text-[10px] font-semibold uppercase tracking-wide" style={{ color: '#8a6d71' }}>
                   {t('admin.live.mostBetDie')}
                 </span>
                 <div
                   className="inline-flex items-center gap-1.5 rounded-md px-2 py-1"
-                  style={{ background: '#1e1b4b', border: '1px solid #b45309' }}
+                  style={{ background: '#ffffff', border: '1px solid #b45309' }}
                   title={t('admin.live.mostBetDieHint', { total: topSymbol.total.toLocaleString() })}
                 >
                   <img src={symbolSrc(topSymbol.symbol)} alt={topSymbol.symbol} className="h-5 w-5 shrink-0 rounded object-contain" style={{ background: '#fff' }} />
-                  <span className="text-[10px] font-bold tabular-nums" style={{ color: '#fbbf24' }}>
+                  <span className="text-[10px] font-bold tabular-nums" style={{ color: '#b45309' }}>
                     {topSymbol.total.toLocaleString()}
                   </span>
                 </div>
@@ -2331,16 +2331,16 @@ function LiveStreamPanel({
   const hasSchedule = !!schedule.start
 
   return (
-    <div className="rounded-xl p-4" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+    <div className="rounded-xl p-4" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
       <div className="mb-2 flex items-center justify-between gap-2">
-        <span className="text-[10px] font-bold shrink-0" style={{ color: '#a5b4fc' }}>{t('admin.live.liveStreamTitle')}</span>
+        <span className="text-[10px] font-bold shrink-0" style={{ color: '#6b4a4f' }}>{t('admin.live.liveStreamTitle')}</span>
         <div className="flex flex-wrap items-center justify-end gap-2">
           {round && remainingSeconds != null && (
             <span
               className="rounded-full px-2.5 py-0.5 text-[10px] font-bold"
               style={{
                 background: bettingExpired ? 'rgba(234,88,12,0.2)' : remainingSeconds <= 10 ? 'rgba(220,38,38,0.2)' : 'rgba(22,163,74,0.2)',
-                color: bettingExpired ? '#fdba74' : remainingSeconds <= 10 ? '#fca5a5' : '#4ade80',
+                color: bettingExpired ? '#c2410c' : remainingSeconds <= 10 ? '#dc2626' : '#15803d',
                 border: `1px solid ${bettingExpired ? '#fb923c' : remainingSeconds <= 10 ? '#fca5a5' : '#4ade80'}`,
               }}
             >
@@ -2371,9 +2371,9 @@ function LiveStreamPanel({
                 onClick={() => setShowScheduleModal(true)}
                 className="inline-flex items-center gap-1 rounded-md px-3 py-1 text-[10px] font-bold"
                 style={{
-                  background: hasSchedule ? 'rgba(67,56,202,0.4)' : '#1e1b4b',
-                  color: hasSchedule ? '#a5b4fc' : '#818cf8',
-                  border: `1px solid ${hasSchedule ? '#4338ca' : '#312e81'}`,
+                  background: hasSchedule ? 'rgba(200,16,46,0.4)' : '#ffffff',
+                  color: hasSchedule ? '#6b4a4f' : '#8a6d71',
+                  border: `1px solid ${hasSchedule ? '#f2ccd2' : '#eeb0b9'}`,
                 }}
               >
                 <CalendarClock size={10} />
@@ -2381,7 +2381,7 @@ function LiveStreamPanel({
               </button>
               {!liveStreamUrl && (
                 <span className="rounded-full px-2.5 py-0.5 text-[10px] font-bold"
-                  style={{ background: 'rgba(76,29,149,0.4)', color: '#c4b5fd', border: '1px solid #6d28d9' }}>
+                  style={{ background: 'rgba(200,16,46,0.4)', color: '#6b4a4f', border: '1px solid #e8949e' }}>
                   {t('admin.live.noActiveRound')}
                 </span>
               )}
@@ -2401,13 +2401,13 @@ function LiveStreamPanel({
             defaultValue={round.streamUrl ?? ''}
             placeholder={t('admin.live.streamUrlPlaceholder')}
             className="min-w-0 flex-1 rounded-lg px-3 py-1.5 text-xs outline-none"
-            style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}
+            style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}
           />
           <button
             type="submit"
             disabled={loading}
             className="rounded-md px-3 py-1.5 text-[10px] font-bold disabled:opacity-50"
-            style={{ background: '#4338ca', color: '#fff', border: '1px solid #818cf8' }}
+            style={{ background: '#c8102e', color: '#fff', border: '1px solid #e8949e' }}
           >
             {t('admin.live.updateStream')}
           </button>
@@ -2439,10 +2439,10 @@ function AdminOfflineCard({ schedule }: { schedule: { start: string | null; end:
   if (!schedule.start) {
     return (
       <div className="flex aspect-video flex-col items-center justify-center gap-3 rounded-lg"
-        style={{ background: '#0a0014', border: '1px dashed #4338ca' }}>
+        style={{ background: '#ffffff', border: '1px dashed #f2ccd2' }}>
         <span style={{ fontSize: 40 }}>📴</span>
-        <p className="text-xs font-semibold" style={{ color: '#6d28d9' }}>{t('admin.live.liveEndedNoSchedule')}</p>
-        <p className="text-[10px]" style={{ color: '#475569' }}>{t('admin.live.offlineHint')}</p>
+        <p className="text-xs font-semibold" style={{ color: '#a50d26' }}>{t('admin.live.liveEndedNoSchedule')}</p>
+        <p className="text-[10px]" style={{ color: '#6b4a4f' }}>{t('admin.live.offlineHint')}</p>
       </div>
     )
   }
@@ -2463,17 +2463,17 @@ function AdminOfflineCard({ schedule }: { schedule: { start: string | null; end:
 
   return (
     <div className="flex aspect-video flex-col items-center justify-center gap-4 rounded-lg"
-      style={{ background: '#0a0014', border: '1px dashed #4338ca' }}>
+      style={{ background: '#ffffff', border: '1px dashed #f2ccd2' }}>
       <span style={{ fontSize: 36 }}>{isPast ? '📴' : isLive ? '🔴' : '📅'}</span>
       <div className="text-center">
-        <p className="text-xs font-bold" style={{ color: '#fde68a' }}>
+        <p className="text-xs font-bold" style={{ color: '#c8102e' }}>
           {isPast ? t('admin.live.broadcastEnded') : isLive ? t('admin.live.broadcastWindow') : t('admin.live.nextBroadcast')}
         </p>
-        <p className="mt-0.5 text-[10px]" style={{ color: '#818cf8' }}>
+        <p className="mt-0.5 text-[10px]" style={{ color: '#9c1024' }}>
           {fmtGMT7(schedule.start!)}{schedule.end ? ` — ${fmtGMT7(schedule.end, { hour: '2-digit', minute: '2-digit', hour12: false })}` : ''} (GMT+7)
         </p>
         {schedule.notice && (
-          <p className="mt-1 text-[10px] italic" style={{ color: '#c4b5fd' }}>{schedule.notice}</p>
+          <p className="mt-1 text-[10px] italic" style={{ color: '#6b4a4f' }}>{schedule.notice}</p>
         )}
       </div>
       {!isPast && !isLive && (
@@ -2481,15 +2481,15 @@ function AdminOfflineCard({ schedule }: { schedule: { start: string | null; end:
           {units.map(({ l, v }) => (
             <div key={l} className="flex flex-col items-center">
               <span className="rounded-lg px-3 py-1.5 text-lg font-bold tabular-nums"
-                style={{ background: 'rgba(76,29,149,0.5)', color: '#fde68a', minWidth: 48, textAlign: 'center' }}>
+                style={{ background: 'rgba(200,16,46,0.92)', color: '#ffffff', minWidth: 48, textAlign: 'center' }}>
                 {String(v).padStart(2, '0')}
               </span>
-              <span className="mt-0.5 text-[9px]" style={{ color: '#818cf8' }}>{l}</span>
+              <span className="mt-0.5 text-[9px]" style={{ color: '#9c1024' }}>{l}</span>
             </div>
           ))}
         </div>
       )}
-      <p className="text-[10px]" style={{ color: '#475569' }}>{t('admin.live.countdownHint')}</p>
+      <p className="text-[10px]" style={{ color: '#6b4a4f' }}>{t('admin.live.countdownHint')}</p>
     </div>
   )
 }
@@ -2513,18 +2513,18 @@ function ScheduleModal({
     >
       <div
         className="w-full max-w-sm rounded-2xl p-5"
-        style={{ background: '#0f172a', border: '1px solid #4338ca' }}
+        style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}
         onClick={e => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">
-          <span className="inline-flex items-center gap-2 text-sm font-bold" style={{ color: '#a5b4fc' }}>
+          <span className="inline-flex items-center gap-2 text-sm font-bold" style={{ color: '#6b4a4f' }}>
             <CalendarClock size={14} /> {t('admin.live.nextLiveSchedule')}
           </span>
           <button
             type="button"
             onClick={onClose}
             className="rounded-full p-1"
-            style={{ color: '#a5b4fc', background: '#1e1b4b' }}
+            style={{ color: '#6b4a4f', background: '#ffffff' }}
           >
             <X size={14} />
           </button>
@@ -2532,12 +2532,12 @@ function ScheduleModal({
 
         {/* Current schedule */}
         {hasSchedule && (
-          <div className="mb-4 rounded-lg px-3 py-2.5" style={{ background: '#1e1b4b', border: '1px solid #312e81' }}>
-            <div className="text-[10px] font-bold mb-1" style={{ color: '#818cf8' }}>{t('admin.live.current')}</div>
-            <div className="text-xs font-semibold" style={{ color: '#fde68a' }}>
+          <div className="mb-4 rounded-lg px-3 py-2.5" style={{ background: '#ffffff', border: '1px solid #eeb0b9' }}>
+            <div className="text-[10px] font-bold mb-1" style={{ color: '#9c1024' }}>{t('admin.live.current')}</div>
+            <div className="text-xs font-semibold" style={{ color: '#c8102e' }}>
               {fmtGMT7(schedule.start!)} — {schedule.end ? fmtGMT7(schedule.end, { hour: '2-digit', minute: '2-digit', hour12: false }) : '?'}
             </div>
-            <div className="text-[10px] mt-0.5" style={{ color: '#818cf8' }}>{t('admin.live.gmt7Laos')}</div>
+            <div className="text-[10px] mt-0.5" style={{ color: '#9c1024' }}>{t('admin.live.gmt7Laos')}</div>
           </div>
         )}
 
@@ -2546,51 +2546,51 @@ function ScheduleModal({
           <input type="hidden" name="op" value="setSchedule" />
 
           <div className="flex flex-col gap-1">
-            <label className="text-[10px] font-semibold" style={{ color: '#a5b4fc' }}>{t('admin.live.dateLabel')}</label>
+            <label className="text-[10px] font-semibold" style={{ color: '#6b4a4f' }}>{t('admin.live.dateLabel')}</label>
             <input
               name="scheduleDate"
               type="date"
               defaultValue={schedule.start ? isoToGMT7DateInput(schedule.start) : ''}
               required
               className="rounded-lg px-3 py-2 text-xs outline-none"
-              style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}
+              style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col gap-1">
-              <label className="text-[10px] font-semibold" style={{ color: '#a5b4fc' }}>{t('admin.live.startLabel')}</label>
+              <label className="text-[10px] font-semibold" style={{ color: '#6b4a4f' }}>{t('admin.live.startLabel')}</label>
               <input
                 name="scheduleStart"
                 type="time"
                 defaultValue={schedule.start ? isoToGMT7TimeInput(schedule.start) : ''}
                 required
                 className="rounded-lg px-3 py-2 text-xs outline-none"
-                style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}
+                style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}
               />
             </div>
             <div className="flex flex-col gap-1">
-              <label className="text-[10px] font-semibold" style={{ color: '#a5b4fc' }}>{t('admin.live.endLabel')}</label>
+              <label className="text-[10px] font-semibold" style={{ color: '#6b4a4f' }}>{t('admin.live.endLabel')}</label>
               <input
                 name="scheduleEnd"
                 type="time"
                 defaultValue={schedule.end ? isoToGMT7TimeInput(schedule.end) : ''}
                 required
                 className="rounded-lg px-3 py-2 text-xs outline-none"
-                style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}
+                style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}
               />
             </div>
           </div>
 
           <div className="flex flex-col gap-1">
-            <label className="text-[10px] font-semibold" style={{ color: '#a5b4fc' }}>{t('admin.live.noticeLabel')}</label>
+            <label className="text-[10px] font-semibold" style={{ color: '#6b4a4f' }}>{t('admin.live.noticeLabel')}</label>
             <textarea
               name="scheduleNotice"
               defaultValue={schedule.notice ?? ''}
               placeholder={t('admin.live.noticePlaceholder')}
               rows={2}
               className="rounded-lg px-3 py-2 text-xs outline-none resize-none"
-              style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}
+              style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}
             />
           </div>
 
@@ -2602,7 +2602,7 @@ function ScheduleModal({
                   type="submit"
                   disabled={loading}
                   className="w-full rounded-xl py-2.5 text-xs font-bold disabled:opacity-50"
-                  style={{ background: 'rgba(127,29,29,0.4)', color: '#fca5a5', border: '1px solid rgba(239,68,68,0.4)' }}
+                  style={{ background: 'rgba(220,38,38,0.12)', color: '#b91c1c', border: '1px solid rgba(239,68,68,0.4)' }}
                 >
                   {t('admin.live.clear')}
                 </button>
@@ -2613,7 +2613,7 @@ function ScheduleModal({
               type="submit"
               disabled={loading}
               className="flex flex-1 items-center justify-center gap-1.5 rounded-xl py-2.5 text-xs font-bold disabled:opacity-50"
-              style={{ background: 'linear-gradient(135deg,#4338ca,#312e81)', color: '#fff', border: '1px solid #818cf8' }}
+              style={{ background: 'linear-gradient(135deg,#c8102e,#a50d26)', color: '#fff', border: '1px solid #e8949e' }}
             >
               {loading ? <Loader size={12} className="animate-spin" /> : <Check size={12} />}
               {t('admin.live.save')}
@@ -2630,23 +2630,23 @@ function StartRoundPanel({ defaultStreamUrl, defaultSeconds, loading }: { defaul
   const notifyFetcher = useFetcher<{ ok?: boolean; push?: { sent: number; failed: number; pruned: number } }>()
   const notifying = notifyFetcher.state !== 'idle'
   return (
-    <div className="rounded-xl p-4" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
-      <div className="mb-3 flex items-center gap-2 text-[10px] font-bold " style={{ color: '#a5b4fc' }}>
+    <div className="rounded-xl p-4" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
+      <div className="mb-3 flex items-center gap-2 text-[10px] font-bold " style={{ color: '#6b4a4f' }}>
         <Radio size={12} /> {t('admin.live.startNewLiveRound')}
       </div>
       <Form method="post" className="flex flex-col gap-3">
         <input type="hidden" name="op" value="startRound" />
 
-        <label className="text-[10px] font-semibold " style={{ color: '#a5b4fc' }}>{t('admin.live.streamUrlLabel')}</label>
+        <label className="text-[10px] font-semibold " style={{ color: '#6b4a4f' }}>{t('admin.live.streamUrlLabel')}</label>
         <input
           name="streamUrl"
           defaultValue={defaultStreamUrl}
           placeholder="YouTube, MP4, HLS, …"
           className="rounded-lg px-3 py-2 text-xs outline-none"
-          style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}
+          style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}
         />
 
-        <label className="text-[10px] font-semibold " style={{ color: '#a5b4fc' }}>{t('admin.live.bettingWindowLabel')}</label>
+        <label className="text-[10px] font-semibold " style={{ color: '#6b4a4f' }}>{t('admin.live.bettingWindowLabel')}</label>
         <input
           name="seconds"
           type="number"
@@ -2654,7 +2654,7 @@ function StartRoundPanel({ defaultStreamUrl, defaultSeconds, loading }: { defaul
           max={600}
           defaultValue={defaultSeconds}
           className="rounded-lg px-3 py-2 text-xs outline-none"
-          style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}
+          style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}
         />
 
         <button
@@ -2669,26 +2669,26 @@ function StartRoundPanel({ defaultStreamUrl, defaultSeconds, loading }: { defaul
       </Form>
 
       {/* Broadcast a PWA push notification to every opted-in device. */}
-      <div className="mt-3 border-t pt-3" style={{ borderColor: '#1e1b4b' }}>
+      <div className="mt-3 border-t pt-3" style={{ borderColor: '#f2ccd2' }}>
         <notifyFetcher.Form method="post" className="flex flex-col gap-2">
           <input type="hidden" name="op" value="notifyLive" />
           <input
             name="message"
             placeholder={t('admin.live.notifyPlaceholder')}
             className="rounded-lg px-3 py-2 text-xs outline-none"
-            style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}
+            style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}
           />
           <button
             type="submit"
             disabled={notifying}
             className="inline-flex items-center justify-center gap-1.5 rounded-lg py-2.5 text-xs font-bold disabled:opacity-50"
-            style={{ background: 'linear-gradient(135deg,#7c3aed,#4c1d95)', color: '#fff', border: '1px solid #a78bfa' }}
+            style={{ background: 'linear-gradient(135deg,#c8102e,#a50d26)', color: '#fff', border: '1px solid #e8949e' }}
           >
             {notifying ? <Loader size={14} className="animate-spin" /> : <Radio size={14} />}
             {t('admin.live.notifyLive')}
           </button>
           {notifyFetcher.data?.push && (
-            <p className="text-center text-[10px]" style={{ color: '#a5b4fc' }}>
+            <p className="text-center text-[10px]" style={{ color: '#6b4a4f' }}>
               {t('admin.live.notifySent', { sent: String(notifyFetcher.data.push.sent), failed: String(notifyFetcher.data.push.failed) })}
             </p>
           )}
@@ -2711,9 +2711,9 @@ function DiceSlot({
   return (
     <div
       className="flex flex-col gap-2 rounded-lg p-2"
-      style={{ background: '#1e1b4b', border: '1px solid #312e81' }}
+      style={{ background: '#ffffff', border: '1px solid #eeb0b9' }}
     >
-      <div className="text-center text-[10px] font-bold " style={{ color: '#a5b4fc' }}>{label}</div>
+      <div className="text-center text-[10px] font-bold " style={{ color: '#6b4a4f' }}>{label}</div>
       {/* Mobile: 6 symbols in a single row. md+: 2 rows of 3 (preserves prior compact look). */}
       <div className="grid grid-cols-6 gap-1 md:grid-cols-3">
         {SYMBOLS.map(s => {
@@ -2725,8 +2725,8 @@ function DiceSlot({
               onClick={() => onChange(s)}
               className="flex flex-col items-center justify-center rounded-md p-1 transition-colors"
               style={{
-                background: selected ? '#4338ca' : '#0f172a',
-                border: `1px solid ${selected ? '#fde68a' : '#312e81'}`,
+                background: selected ? '#c8102e' : '#fff5f6',
+                border: `1px solid ${selected ? '#fde68a' : '#eeb0b9'}`,
               }}
               title={s}
             >
@@ -2735,7 +2735,7 @@ function DiceSlot({
                 alt={s}
                 className="aspect-square w-full max-w-[44px] rounded object-contain"
               />
-              <span className="mt-0.5 text-[9px] font-bold " style={{ color: selected ? '#fde68a' : '#818cf8' }}>
+              <span className="mt-0.5 text-[9px] font-bold " style={{ color: selected ? '#c8102e' : '#9c1024' }}>
                 {SYMBOL_VALUE[s]}
               </span>
             </button>
@@ -2796,7 +2796,7 @@ function StreamEmbed({ url }: { url: string | null }) {
       <div
         ref={containerRef}
         className="flex aspect-video items-center justify-center rounded-lg text-xs"
-        style={{ background: '#1e1b4b', color: '#818cf8', border: '1px dashed #4338ca' }}
+        style={{ background: '#ffffff', color: '#9c1024', border: '1px dashed #f2ccd2' }}
       >
         {t('admin.live.noStreamUrl')}
       </div>
@@ -2814,8 +2814,8 @@ function StreamEmbed({ url }: { url: string | null }) {
       : url
 
   const containerStyle: React.CSSProperties = isFb
-    ? { height: '50vh', aspectRatio: '9/16', border: '1px solid #4338ca' }
-    : { border: '1px solid #4338ca' }
+    ? { height: '50vh', aspectRatio: '9/16', border: '1px solid #f2ccd2' }
+    : { border: '1px solid #f2ccd2' }
 
   // Cloudflare Stream iframe src (admin keeps controls=true)
   function cfSrc(raw: string) {
@@ -2875,17 +2875,17 @@ function HistoryRow({ r }: { r: HistoryRound }) {
   return (
     <div
       className="flex flex-col gap-1 rounded-xl px-4 py-3 md:flex-row md:items-center md:justify-between"
-      style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}
+      style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}
     >
       <div className="min-w-0">
         <div className="flex flex-wrap items-center gap-2">
           <StatusPill status={r.status} />
-          <span className="text-xs" style={{ color: '#818cf8' }}>{new Date(r.bettingOpensAt).toLocaleString()}</span>
-          <span className="text-xs" style={{ color: '#a5b4fc' }}>· {t('admin.live.betsShort', { n: r.bets })}</span>
-          <span className="text-[10px]" style={{ color: '#475569' }}>#{r.id.slice(-6)}</span>
+          <span className="text-xs" style={{ color: '#9c1024' }}>{new Date(r.bettingOpensAt).toLocaleString()}</span>
+          <span className="text-xs" style={{ color: '#6b4a4f' }}>· {t('admin.live.betsShort', { n: r.bets })}</span>
+          <span className="text-[10px]" style={{ color: '#6b4a4f' }}>#{r.id.slice(-6)}</span>
         </div>
-        <div className="mt-0.5 text-xs" style={{ color: '#e9d5ff' }}>
-          {t('admin.live.host')} {r.host ?? <span style={{ color: '#64748b' }}>—</span>}
+        <div className="mt-0.5 text-xs" style={{ color: '#2b0b10' }}>
+          {t('admin.live.host')} {r.host ?? <span style={{ color: '#8a6d71' }}>—</span>}
         </div>
       </div>
       <div className="flex items-center gap-2">
@@ -2898,23 +2898,23 @@ function HistoryRow({ r }: { r: HistoryRound }) {
                   src={symbolSrc(s)}
                   alt={s}
                   className="h-7 w-7 rounded object-contain"
-                  style={{ border: '1px solid #312e81', background: '#1e1b4b' }}
+                  style={{ border: '1px solid #eeb0b9', background: '#ffffff' }}
                 />
               ))}
             </div>
-            <span className="rounded-md px-2 py-0.5 text-[10px] font-bold " style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}>
+            <span className="rounded-md px-2 py-0.5 text-[10px] font-bold " style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}>
               {t('admin.live.settled.sum', { n: r.diceSum ?? '—' })}
             </span>
           </div>
         ) : (
-          <span className="text-[10px]" style={{ color: '#64748b' }}>{t('admin.live.noResult')}</span>
+          <span className="text-[10px]" style={{ color: '#8a6d71' }}>{t('admin.live.noResult')}</span>
         )}
         {canCorrect && (
           <button
             type="button"
             onClick={() => setCorrecting(true)}
             className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-[10px] font-bold"
-            style={{ background: '#1e1b4b', color: '#fdba74', border: '1px solid #ea580c' }}
+            style={{ background: '#ffffff', color: '#c2410c', border: '1px solid #ea580c' }}
           >
             {t('admin.live.correct.btn')}
           </button>
@@ -2964,56 +2964,56 @@ function CorrectResultModal({ r, onClose }: { r: HistoryRound; onClose: () => vo
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4"
-      style={{ background: 'rgba(2,6,23,0.8)' }}
+      style={{ background: 'rgba(24,10,12,0.8)' }}
       onClick={onClose}
     >
       <div
         className="w-full max-w-lg rounded-2xl p-5"
-        style={{ background: '#0b1120', border: '1px solid #ea580c', maxHeight: '90vh', overflowY: 'auto' }}
+        style={{ background: '#ffffff', border: '1px solid #ea580c', maxHeight: '90vh', overflowY: 'auto' }}
         onClick={e => e.stopPropagation()}
       >
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-sm font-bold" style={{ color: '#fdba74' }}>
+          <span className="text-sm font-bold" style={{ color: '#c2410c' }}>
             {t('admin.live.correct.title')} · #{r.id.slice(-6)}
           </span>
-          <button type="button" onClick={onClose} className="rounded-md p-1" style={{ color: '#a5b4fc' }} aria-label={t('admin.live.correct.close')}>
+          <button type="button" onClick={onClose} className="rounded-md p-1" style={{ color: '#6b4a4f' }} aria-label={t('admin.live.correct.close')}>
             <X size={16} />
           </button>
         </div>
 
         {applied ? (
           <div className="flex flex-col items-center gap-3 py-4">
-            <div className="inline-flex items-center gap-2 text-sm font-bold" style={{ color: '#4ade80' }}>
+            <div className="inline-flex items-center gap-2 text-sm font-bold" style={{ color: '#15803d' }}>
               <Check size={16} /> {t('admin.live.correct.applied')}
             </div>
             <div className="flex items-center gap-1">
               {applied.newDice.map((s, i) => (
-                <img key={i} src={symbolSrc(s as DiceSymbol)} alt={s} className="h-10 w-10 rounded object-contain" style={{ border: '1px solid #312e81', background: '#1e1b4b' }} />
+                <img key={i} src={symbolSrc(s as DiceSymbol)} alt={s} className="h-10 w-10 rounded object-contain" style={{ border: '1px solid #eeb0b9', background: '#ffffff' }} />
               ))}
-              <span className="ml-1 rounded-md px-2 py-1 text-[11px] font-bold" style={{ background: '#1e1b4b', color: '#fde68a', border: '1px solid #4338ca' }}>
+              <span className="ml-1 rounded-md px-2 py-1 text-[11px] font-bold" style={{ background: '#ffffff', color: '#c8102e', border: '1px solid #f2ccd2' }}>
                 {t('admin.live.settled.sum', { n: applied.newDiceSum })}
               </span>
             </div>
-            <button type="button" onClick={onClose} className="mt-1 rounded-md px-4 py-1.5 text-[11px] font-bold" style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}>
+            <button type="button" onClick={onClose} className="mt-1 rounded-md px-4 py-1.5 text-[11px] font-bold" style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}>
               {t('admin.live.correct.close')}
             </button>
           </div>
         ) : (
           <>
             {/* Current result reference */}
-            <div className="mb-3 flex items-center gap-2 text-[11px]" style={{ color: '#818cf8' }}>
+            <div className="mb-3 flex items-center gap-2 text-[11px]" style={{ color: '#9c1024' }}>
               <span>{t('admin.live.correct.currentResult')}:</span>
               {current.map((s, i) => (
-                <img key={i} src={symbolSrc(s)} alt={s} className="h-6 w-6 rounded object-contain" style={{ border: '1px solid #312e81', background: '#1e1b4b' }} />
+                <img key={i} src={symbolSrc(s)} alt={s} className="h-6 w-6 rounded object-contain" style={{ border: '1px solid #eeb0b9', background: '#ffffff' }} />
               ))}
             </div>
 
             {/* Dice pickers */}
             <div className="mb-3 flex flex-col gap-2">
-              <span className="text-[11px] font-bold" style={{ color: '#fdba74' }}>{t('admin.live.correct.newResult')} · {t('admin.live.settled.sum', { n: newSum })}</span>
+              <span className="text-[11px] font-bold" style={{ color: '#c2410c' }}>{t('admin.live.correct.newResult')} · {t('admin.live.settled.sum', { n: newSum })}</span>
               {[0, 1, 2].map(idx => (
                 <div key={idx} className="flex items-center gap-1.5">
-                  <span className="w-12 text-[10px]" style={{ color: '#64748b' }}>{t('admin.live.correct.die', { n: idx + 1 })}</span>
+                  <span className="w-12 text-[10px]" style={{ color: '#8a6d71' }}>{t('admin.live.correct.die', { n: idx + 1 })}</span>
                   {SYMBOLS.map(s => (
                     <button
                       key={s}
@@ -3021,8 +3021,8 @@ function CorrectResultModal({ r, onClose }: { r: HistoryRound; onClose: () => vo
                       onClick={() => setDice(prev => prev.map((d, i) => (i === idx ? s : d)))}
                       className="rounded-md p-0.5"
                       style={{
-                        border: dice[idx] === s ? '2px solid #fbbf24' : '1px solid #312e81',
-                        background: dice[idx] === s ? '#312e81' : '#1e1b4b',
+                        border: dice[idx] === s ? '2px solid #fbbf24' : '1px solid #eeb0b9',
+                        background: dice[idx] === s ? '#ffe4e6' : '#ffffff',
                       }}
                     >
                       <img src={symbolSrc(s)} alt={s} className="h-7 w-7 rounded object-contain" />
@@ -3033,52 +3033,52 @@ function CorrectResultModal({ r, onClose }: { r: HistoryRound; onClose: () => vo
             </div>
 
             {fetcher.data?.error && (
-              <p className="mb-2 text-[11px]" style={{ color: '#f87171' }}>{fetcher.data.error}</p>
+              <p className="mb-2 text-[11px]" style={{ color: '#dc2626' }}>{fetcher.data.error}</p>
             )}
 
             {/* Impact preview */}
             {preview && previewMatches && (
-              <div className="mb-3 rounded-lg p-3" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+              <div className="mb-3 rounded-lg p-3" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
                 <div className="mb-2 grid grid-cols-3 gap-2 text-center">
                   {[
-                    { label: t('admin.live.correct.totalCredit'), value: `+${preview.totalCredit.toLocaleString()}`, color: '#4ade80' },
-                    { label: t('admin.live.correct.totalDebit'), value: `-${preview.totalDebit.toLocaleString()}`, color: '#f87171' },
-                    { label: t('admin.live.correct.houseImpact'), value: `${preview.houseImpact >= 0 ? '+' : ''}${preview.houseImpact.toLocaleString()}`, color: preview.houseImpact >= 0 ? '#4ade80' : '#f87171' },
+                    { label: t('admin.live.correct.totalCredit'), value: `+${preview.totalCredit.toLocaleString()}`, color: '#15803d' },
+                    { label: t('admin.live.correct.totalDebit'), value: `-${preview.totalDebit.toLocaleString()}`, color: '#dc2626' },
+                    { label: t('admin.live.correct.houseImpact'), value: `${preview.houseImpact >= 0 ? '+' : ''}${preview.houseImpact.toLocaleString()}`, color: preview.houseImpact >= 0 ? '#15803d' : '#dc2626' },
                   ].map(s => (
-                    <div key={s.label} className="rounded-md px-2 py-1.5" style={{ background: '#1e1b4b' }}>
-                      <div className="text-[9px] font-bold" style={{ color: '#a5b4fc' }}>{s.label}</div>
+                    <div key={s.label} className="rounded-md px-2 py-1.5" style={{ background: '#ffffff' }}>
+                      <div className="text-[9px] font-bold" style={{ color: '#6b4a4f' }}>{s.label}</div>
                       <div className="mt-0.5 text-xs font-bold" style={{ color: s.color }}>{s.value}</div>
                     </div>
                   ))}
                 </div>
                 {preview.players.length === 0 ? (
-                  <p className="text-center text-[11px]" style={{ color: '#475569' }}>{t('admin.live.correct.noImpact')}</p>
+                  <p className="text-center text-[11px]" style={{ color: '#6b4a4f' }}>{t('admin.live.correct.noImpact')}</p>
                 ) : (
                   <>
-                    <div className="mb-1 text-[10px] font-bold" style={{ color: '#a5b4fc' }}>{t('admin.live.correct.affected')} ({preview.players.length})</div>
+                    <div className="mb-1 text-[10px] font-bold" style={{ color: '#6b4a4f' }}>{t('admin.live.correct.affected')} ({preview.players.length})</div>
                     <ul className="flex max-h-40 flex-col gap-1 overflow-y-auto">
                       {preview.players.map(p => (
-                        <li key={`${p.userId}:${p.walletType}`} className="flex items-center justify-between rounded-md px-2 py-1 text-[11px]" style={{ background: '#1e1b4b' }}>
-                          <span style={{ color: '#e9d5ff' }}>
+                        <li key={`${p.userId}:${p.walletType}`} className="flex items-center justify-between rounded-md px-2 py-1 text-[11px]" style={{ background: '#ffffff' }}>
+                          <span style={{ color: '#2b0b10' }}>
                             {p.userName ? `${p.userName} · ` : ''}{p.userTel}
-                            <span className="ml-1 text-[9px]" style={{ color: '#64748b' }}>{p.walletType}</span>
+                            <span className="ml-1 text-[9px]" style={{ color: '#8a6d71' }}>{p.walletType}</span>
                           </span>
                           <span className="flex items-center gap-2">
-                            <span className="font-bold" style={{ color: p.delta > 0 ? '#4ade80' : '#f87171' }}>
+                            <span className="font-bold" style={{ color: p.delta > 0 ? '#15803d' : '#dc2626' }}>
                               {p.delta > 0 ? '+' : ''}{p.delta.toLocaleString()}
                             </span>
-                            <span style={{ color: p.balanceAfter < 0 ? '#f87171' : '#64748b' }}>
+                            <span style={{ color: p.balanceAfter < 0 ? '#dc2626' : '#8a6d71' }}>
                               → {p.balanceAfter.toLocaleString()}
                             </span>
-                            {p.missing && <span style={{ color: '#f87171' }}>({t('admin.live.correct.walletMissing')})</span>}
+                            {p.missing && <span style={{ color: '#dc2626' }}>({t('admin.live.correct.walletMissing')})</span>}
                           </span>
                         </li>
                       ))}
                     </ul>
                     {preview.players.some(p => p.balanceAfter < 0) && (
-                      <p className="mt-1.5 text-[10px]" style={{ color: '#fdba74' }}>⚠ {t('admin.live.correct.negWarning')}</p>
+                      <p className="mt-1.5 text-[10px]" style={{ color: '#c2410c' }}>⚠ {t('admin.live.correct.negWarning')}</p>
                     )}
-                    <p className="mt-1 text-[10px]" style={{ color: '#818cf8' }}>{t('admin.live.correct.streakWarning')}</p>
+                    <p className="mt-1 text-[10px]" style={{ color: '#9c1024' }}>{t('admin.live.correct.streakWarning')}</p>
                   </>
                 )}
               </div>
@@ -3087,7 +3087,7 @@ function CorrectResultModal({ r, onClose }: { r: HistoryRound; onClose: () => vo
             {/* Confirmation code required only for the money-moving Apply step. */}
             {preview && previewMatches && (
               <label className="mb-2 flex flex-col gap-1">
-                <span className="text-[11px] font-bold" style={{ color: '#a5b4fc' }}>{t('admin.live.correct.codeLabel')}</span>
+                <span className="text-[11px] font-bold" style={{ color: '#6b4a4f' }}>{t('admin.live.correct.codeLabel')}</span>
                 <input
                   type="text"
                   autoComplete="off"
@@ -3095,13 +3095,13 @@ function CorrectResultModal({ r, onClose }: { r: HistoryRound; onClose: () => vo
                   onChange={e => setConfirmCode(e.target.value)}
                   placeholder={t('admin.live.correct.codePlaceholder')}
                   className="rounded-md px-3 py-2 text-sm font-bold outline-none"
-                  style={{ background: '#0f172a', color: '#fde68a', border: '1.5px solid #4338ca' }}
+                  style={{ background: '#fff5f6', color: '#c8102e', border: '1.5px solid #f2ccd2' }}
                 />
               </label>
             )}
 
             <div className="flex items-center justify-end gap-2">
-              <button type="button" onClick={onClose} className="rounded-md px-3 py-1.5 text-[11px] font-bold" style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}>
+              <button type="button" onClick={onClose} className="rounded-md px-3 py-1.5 text-[11px] font-bold" style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}>
                 {t('admin.live.correct.cancel')}
               </button>
               {preview && previewMatches ? (
@@ -3121,7 +3121,7 @@ function CorrectResultModal({ r, onClose }: { r: HistoryRound; onClose: () => vo
                   disabled={busy || !changed}
                   onClick={() => submit(true)}
                   className="inline-flex items-center gap-1 rounded-md px-4 py-1.5 text-[11px] font-bold disabled:opacity-50"
-                  style={{ background: '#4338ca', color: '#fff', border: '1px solid #6366f1' }}
+                  style={{ background: '#c8102e', color: '#fff', border: '1px solid #e8949e' }}
                 >
                   {busy ? <Loader size={12} className="animate-spin" /> : null}
                   {t('admin.live.correct.preview')}
@@ -3159,11 +3159,11 @@ function isoToGMT7TimeInput(iso: string): string {
 
 function StatusPill({ status }: { status: string }) {
   const map: Record<string, { bg: string; color: string }> = {
-    BETTING: { bg: 'rgba(22,163,74,0.2)', color: '#4ade80' },
-    LOCKED: { bg: 'rgba(234,88,12,0.2)', color: '#fdba74' },
-    AWAITING_RESULT: { bg: 'rgba(234,179,8,0.2)', color: '#fde68a' },
-    RESOLVED: { bg: 'rgba(99,102,241,0.2)', color: '#a5b4fc' },
-    CANCELLED: { bg: 'rgba(220,38,38,0.2)', color: '#f87171' },
+    BETTING: { bg: 'rgba(22,163,74,0.2)', color: '#15803d' },
+    LOCKED: { bg: 'rgba(234,88,12,0.2)', color: '#c2410c' },
+    AWAITING_RESULT: { bg: 'rgba(234,179,8,0.2)', color: '#b45309' },
+    RESOLVED: { bg: 'rgba(200,16,46,0.2)', color: '#6b4a4f' },
+    CANCELLED: { bg: 'rgba(220,38,38,0.2)', color: '#dc2626' },
   }
   const s = map[status] ?? map.RESOLVED
   return (

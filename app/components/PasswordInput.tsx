@@ -31,13 +31,13 @@ export function PasswordInput({
         minLength={minLength}
         placeholder={placeholder}
         className="w-full rounded-lg px-3 py-2.5 pr-11 text-sm font-semibold outline-none"
-        style={{ background: '#2d1b4e', color: '#fde68a', border: '2px solid #7c3aed' }}
+        style={{ background: '#fff0f2', color: '#c8102e', border: '2px solid #e8949e' }}
       />
       <button
         type="button"
         onClick={() => setShow(v => !v)}
         className="absolute right-1.5 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-md transition-opacity hover:opacity-80"
-        style={{ color: '#c4b5fd' }}
+        style={{ color: '#6b4a4f' }}
         aria-label={show ? 'Hide password' : 'Show password'}
         // tabIndex=-1 keeps tab order: phone → password → submit (skipping the eye toggle)
         tabIndex={-1}

@@ -62,30 +62,30 @@ export function JoinGroupModal({ open, onClose }: JoinGroupModalProps) {
           'md:h-auto md:w-full md:max-w-md md:rounded-xl md:pb-6 md:animate-in md:fade-in md:zoom-in-95 md:duration-200',
         ].join(' ')}
         style={{
-          background: 'linear-gradient(135deg, #4c1d95, #1e0040)',
+          background: 'linear-gradient(135deg, #ffffff, #fff5f6)',
           boxShadow: '0 10px 60px rgba(0,0,0,0.7)',
         }}
       >
         <div
           aria-hidden
           className="mx-auto mb-3 h-1 w-10 rounded-full md:hidden"
-          style={{ background: '#7c3aed' }}
+          style={{ background: '#c8102e' }}
         />
 
         <button
           onClick={onClose}
           type="button"
           className="absolute right-3 top-3 z-10 flex h-9 w-9 items-center justify-center rounded-full transition-opacity hover:opacity-80"
-          style={{ background: '#4c1d95', border: '1px solid #7c3aed', color: '#e9d5ff' }}
+          style={{ background: '#ffe4e6', border: '1px solid #e8949e', color: '#2b0b10' }}
           aria-label={t('common.close')}
         >
           <X size={18} />
         </button>
 
-        <h2 className="mb-1 text-center text-2xl font-bold" style={{ color: '#fde68a' }}>
+        <h2 className="mb-1 text-center text-2xl font-bold" style={{ color: '#c8102e' }}>
           {t('joinGroup.title')}
         </h2>
-        <p className="mb-5 text-center text-[13px]" style={{ color: '#c4b5fd' }}>
+        <p className="mb-5 text-center text-[13px]" style={{ color: '#6b4a4f' }}>
           {t('joinGroup.subtitle')}
         </p>
 

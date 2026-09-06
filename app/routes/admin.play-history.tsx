@@ -251,16 +251,16 @@ export default function AdminPlayHistory() {
   }
 
   const filterStyle = (active: boolean, accent?: string) => ({
-    background: active ? '#1e1b4b' : 'transparent',
-    color: active ? (accent ?? '#fde68a') : '#818cf8',
-    border: `1px solid ${active ? '#4338ca' : '#1e1b4b'}`,
+    background: active ? '#ffffff' : 'transparent',
+    color: active ? (accent ?? '#c8102e') : '#9c1024',
+    border: `1px solid ${active ? '#f2ccd2' : '#f2ccd2'}`,
   })
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-bold" style={{ color: '#fde68a' }}>{t('admin.playHistory.title')}</h1>
-        <span className="text-xs" style={{ color: '#a5b4fc' }}>{t('admin.playHistory.betsCount', { n: data.total.toLocaleString() })}</span>
+        <h1 className="text-xl font-bold" style={{ color: '#c8102e' }}>{t('admin.playHistory.title')}</h1>
+        <span className="text-xs" style={{ color: '#6b4a4f' }}>{t('admin.playHistory.betsCount', { n: data.total.toLocaleString() })}</span>
       </div>
 
       {data.sleepMode && (
@@ -270,15 +270,15 @@ export default function AdminPlayHistory() {
         >
           <span className="text-base">🌙</span>
           <div className="min-w-0">
-            <div className="text-xs font-bold" style={{ color: '#f87171' }}>{t('admin.playHistory.sleepMode.title')}</div>
-            <div className="text-[10px]" style={{ color: '#fca5a5' }}>
+            <div className="text-xs font-bold" style={{ color: '#dc2626' }}>{t('admin.playHistory.sleepMode.title')}</div>
+            <div className="text-[10px]" style={{ color: '#dc2626' }}>
               {t('admin.playHistory.sleepMode.desc')}
             </div>
           </div>
           <a
             href="/admin"
             className="ml-auto shrink-0 rounded-lg px-3 py-1.5 text-[10px] font-bold"
-            style={{ background: 'rgba(220,38,38,0.2)', color: '#fca5a5', border: '1px solid #ef4444' }}
+            style={{ background: 'rgba(220,38,38,0.2)', color: '#dc2626', border: '1px solid #ef4444' }}
           >
             {t('admin.playHistory.sleepMode.manage')}
           </a>
@@ -286,12 +286,12 @@ export default function AdminPlayHistory() {
       )}
 
       {/* ─── Wallet tabs ─────────────────────────────────────────────── */}
-      <div className="flex overflow-hidden rounded-xl" style={{ border: '1px solid #4338ca' }}>
+      <div className="flex overflow-hidden rounded-xl" style={{ border: '1px solid #f2ccd2' }}>
         {WALLET_TABS.map(w => {
           const active = data.walletType === w
           return (
             <Link key={w} to={walletHref(w)} className="flex-1 py-2 text-center text-xs font-bold transition-all"
-              style={{ background: active ? '#4338ca' : '#0f172a', color: active ? '#fff' : '#a5b4fc' }}>
+              style={{ background: active ? '#c8102e' : '#fff5f6', color: active ? '#fff' : '#6b4a4f' }}>
               {w === 'REAL' ? t('admin.playHistory.wallet.real') : t('admin.playHistory.wallet.demo')}
             </Link>
           )
@@ -305,7 +305,7 @@ export default function AdminPlayHistory() {
           <div className="flex gap-1.5">
             {(['ALL', 'RANDOM', 'LIVE'] as const).map(m => (
               <Link key={m} to={modeHref(m)} className="rounded-md px-3 py-1 text-xs font-bold"
-                style={filterStyle(data.mode === m, '#c4b5fd')}>
+                style={filterStyle(data.mode === m, '#6b4a4f')}>
                 {m === 'ALL' ? t('admin.playHistory.mode.all') : m === 'RANDOM' ? t('admin.playHistory.mode.random') : t('admin.playHistory.mode.live')}
               </Link>
             ))}
@@ -314,7 +314,7 @@ export default function AdminPlayHistory() {
           <div className="flex gap-1.5">
             {(['ALL', 'WIN', 'LOSS'] as const).map(r => (
               <Link key={r} to={resultHref(r)} className="rounded-md px-3 py-1 text-xs font-bold"
-                style={filterStyle(data.result === r, r === 'WIN' ? '#4ade80' : r === 'LOSS' ? '#f87171' : '#fde68a')}>
+                style={filterStyle(data.result === r, r === 'WIN' ? '#15803d' : r === 'LOSS' ? '#dc2626' : '#c8102e')}>
                 {r === 'ALL' ? t('admin.playHistory.result.all') : r}
               </Link>
             ))}
@@ -339,23 +339,23 @@ export default function AdminPlayHistory() {
           <select name="pageSize" defaultValue={data.pageSize}
             onChange={e => { e.currentTarget.form?.requestSubmit() }}
             className="rounded-lg px-2 py-2 text-xs font-bold outline-none shrink-0"
-            style={{ background: '#0f172a', color: '#a5b4fc', border: '1.5px solid #4338ca' }}>
+            style={{ background: '#fff5f6', color: '#6b4a4f', border: '1.5px solid #f2ccd2' }}>
             {PAGE_SIZES.map(s => <option key={s} value={s}>{t('admin.playHistory.pageSizeOption', { n: s })}</option>)}
           </select>
           <div className="relative flex-1">
-            <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#818cf8' }} />
+            <Search size={14} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2" style={{ color: '#9c1024' }} />
             <input name="q" defaultValue={data.q} placeholder={t('admin.playHistory.searchPlaceholder')}
               className="w-full rounded-lg py-2 pl-9 pr-3 text-sm outline-none"
-              style={{ background: '#0f172a', color: '#fde68a', border: '1.5px solid #4338ca' }} />
+              style={{ background: '#fff5f6', color: '#c8102e', border: '1.5px solid #f2ccd2' }} />
           </div>
           <button type="submit" className="rounded-lg px-3 py-2 text-xs font-bold"
-            style={{ background: '#4338ca', color: '#fff', border: '1.5px solid #818cf8' }}>
+            style={{ background: '#c8102e', color: '#fff', border: '1.5px solid #e8949e' }}>
             {loading ? <Loader size={14} className="animate-spin" /> : t('admin.playHistory.search')}
           </button>
           {data.q && (
             <Link to={(() => { const n = new URLSearchParams(params); n.delete('q'); n.delete('page'); return `?${n}` })()}
               className="rounded-lg px-3 py-2 text-xs font-bold"
-              style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1.5px solid #4338ca' }}>
+              style={{ background: '#ffffff', color: '#6b4a4f', border: '1.5px solid #f2ccd2' }}>
               {t('admin.playHistory.clear')}
             </Link>
           )}
@@ -363,7 +363,7 @@ export default function AdminPlayHistory() {
       </div>
 
       {data.bets.length === 0 && (
-        <div className="rounded-xl p-8 text-center text-xs" style={{ background: '#0f172a', color: '#818cf8', border: '1px solid #1e1b4b' }}>
+        <div className="rounded-xl p-8 text-center text-xs" style={{ background: '#fff5f6', color: '#9c1024', border: '1px solid #f2ccd2' }}>
           {t('admin.playHistory.empty')}
         </div>
       )}
@@ -385,11 +385,11 @@ export default function AdminPlayHistory() {
 
       {/* Desktop: table */}
       {data.bets.length > 0 && (
-        <div className="hidden overflow-x-auto rounded-xl md:block" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+        <div className="hidden overflow-x-auto rounded-xl md:block" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
           <table className="w-full text-left text-sm">
-            <thead style={{ color: '#a5b4fc' }}>
-              <tr className="text-[10px] font-bold" style={{ background: '#1e1b4b' }}>
-                <th className="w-8 px-3 py-2 text-right" style={{ color: '#64748b' }}>#</th>
+            <thead style={{ color: '#6b4a4f' }}>
+              <tr className="text-[10px] font-bold" style={{ background: '#ffffff' }}>
+                <th className="w-8 px-3 py-2 text-right" style={{ color: '#8a6d71' }}>#</th>
                 <th className="px-3 py-2">{t('admin.playHistory.col.when')}</th>
                 <th className="px-3 py-2">{t('admin.playHistory.col.player')}</th>
                 <th className="px-3 py-2">{t('admin.playHistory.col.bet')}</th>
@@ -404,29 +404,29 @@ export default function AdminPlayHistory() {
               {data.bets.map((b, i) => {
                 const isLocked = b.user.selfPlayPhase === 'ADMIN_LOCKED'
                 return (
-                  <tr key={b.id} style={{ borderTop: '1px solid #1e1b4b', color: '#e9d5ff' }}>
-                    <td className="px-3 py-2 text-right text-[10px] font-bold tabular-nums" style={{ color: '#64748b' }}>
+                  <tr key={b.id} style={{ borderTop: '1px solid #f2ccd2', color: '#2b0b10' }}>
+                    <td className="px-3 py-2 text-right text-[10px] font-bold tabular-nums" style={{ color: '#8a6d71' }}>
                       {(data.page - 1) * data.pageSize + i + 1}
                     </td>
-                    <td className="whitespace-nowrap px-3 py-2 text-xs" style={{ color: '#818cf8' }}>
+                    <td className="whitespace-nowrap px-3 py-2 text-xs" style={{ color: '#9c1024' }}>
                       {new Date(b.createdAt).toLocaleString()}
                     </td>
                     <td className="px-3 py-2 text-xs">
                       <a
                         href={`/admin/customers?q=${encodeURIComponent(b.user.tel)}`}
                         className="font-semibold hover:underline"
-                        style={{ color: isLocked ? '#fca5a5' : '#fde68a' }}
+                        style={{ color: isLocked ? '#dc2626' : '#c8102e' }}
                         title={isLocked ? t('admin.playHistory.locked') : undefined}
                       >
                         {b.user.tel}
                         {isLocked && <span className="ml-1 text-[9px]">🔒</span>}
                       </a>
                       {b.user.name && (
-                        <div className="text-[10px]" style={{ color: '#818cf8' }}>{b.user.name}</div>
+                        <div className="text-[10px]" style={{ color: '#9c1024' }}>{b.user.name}</div>
                       )}
                     </td>
                     <td className="px-3 py-2"><BetDescription b={b} /></td>
-                    <td className="px-3 py-2 text-xs" style={{ color: '#a5b4fc' }}>
+                    <td className="px-3 py-2 text-xs" style={{ color: '#6b4a4f' }}>
                       {b.round ? (
                         <div className="flex flex-col gap-0.5">
                           <span>{b.round.mode.charAt(0) + b.round.mode.slice(1).toLowerCase()} · {b.round.diceSum != null ? b.round.diceSum : b.round.status}</span>
@@ -438,8 +438,8 @@ export default function AdminPlayHistory() {
                         </div>
                       ) : '—'}
                     </td>
-                    <td className="px-3 py-2 text-right" style={{ color: '#fde68a' }}>{b.amount.toLocaleString()}</td>
-                    <td className="px-3 py-2 text-right" style={{ color: b.payout && b.payout > 0 ? '#4ade80' : '#818cf8' }}>
+                    <td className="px-3 py-2 text-right" style={{ color: '#c8102e' }}>{b.amount.toLocaleString()}</td>
+                    <td className="px-3 py-2 text-right" style={{ color: b.payout && b.payout > 0 ? '#15803d' : '#9c1024' }}>
                       {b.payout != null ? b.payout.toLocaleString() : '—'}
                     </td>
                     <td className="px-3 py-2"><ResultPill result={b.result} /></td>
@@ -451,7 +451,7 @@ export default function AdminPlayHistory() {
                           onClick={() => setWalletModal({ userId: b.user.id, tel: b.user.tel })}
                           title={t('admin.playHistory.viewWallet')}
                           className="flex h-7 w-7 items-center justify-center rounded-md transition-opacity hover:opacity-80"
-                          style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}
+                          style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}
                         >
                           <Eye size={12} />
                         </button>
@@ -464,7 +464,7 @@ export default function AdminPlayHistory() {
                           className="flex h-7 w-7 items-center justify-center rounded-md transition-opacity hover:opacity-80 disabled:opacity-50"
                           style={{
                             background: isLocked ? 'rgba(22,163,74,0.2)' : 'rgba(220,38,38,0.15)',
-                            color: isLocked ? '#4ade80' : '#f87171',
+                            color: isLocked ? '#15803d' : '#dc2626',
                             border: `1px solid ${isLocked ? '#16a34a' : '#dc2626'}`,
                           }}
                         >
@@ -485,14 +485,14 @@ export default function AdminPlayHistory() {
           <div className="flex items-center gap-2">
             {data.page > 1 && (
               <Link to={pageHref(data.page - 1)} className="rounded-md px-3 py-1.5 text-xs font-bold"
-                style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}>{t('admin.playHistory.prev')}</Link>
+                style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}>{t('admin.playHistory.prev')}</Link>
             )}
             {data.page < totalPages && (
               <Link to={pageHref(data.page + 1)} className="rounded-md px-3 py-1.5 text-xs font-bold"
-                style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}>{t('admin.playHistory.next')}</Link>
+                style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}>{t('admin.playHistory.next')}</Link>
             )}
           </div>
-          <span className="text-xs tabular-nums" style={{ color: '#a5b4fc' }}>
+          <span className="text-xs tabular-nums" style={{ color: '#6b4a4f' }}>
             {t('admin.playHistory.pageSummary', {
               from: Math.min((data.page - 1) * data.pageSize + 1, data.total),
               to: Math.min(data.page * data.pageSize, data.total).toLocaleString(),
@@ -545,7 +545,7 @@ function BetDescription({ b }: { b: Bet }) {
     return (
       <span className="flex items-center gap-1 text-xs">
         <SymbolImg symbol={b.symbol} />
-        <span style={{ color: '#a5b4fc' }}>{t('admin.playHistory.betType.single')}</span>
+        <span style={{ color: '#6b4a4f' }}>{t('admin.playHistory.betType.single')}</span>
       </span>
     )
   }
@@ -554,26 +554,26 @@ function BetDescription({ b }: { b: Bet }) {
       <span className="flex items-center gap-1 text-xs">
         <SymbolImg symbol={b.pairA} />
         <SymbolImg symbol={b.pairB} />
-        <span style={{ color: '#a5b4fc' }}>{t('admin.playHistory.betType.pair')}</span>
+        <span style={{ color: '#6b4a4f' }}>{t('admin.playHistory.betType.pair')}</span>
       </span>
     )
   }
   if (b.kind === 'RANGE' && b.range) {
     const icon = b.range === 'LOW'
-      ? <ArrowDown size={14} style={{ color: '#60a5fa' }} />
+      ? <ArrowDown size={14} style={{ color: '#2563eb' }} />
       : b.range === 'HIGH'
-        ? <ArrowUp size={14} style={{ color: '#f87171' }} />
-        : <ArrowUpDown size={14} style={{ color: '#a78bfa' }} />
+        ? <ArrowUp size={14} style={{ color: '#dc2626' }} />
+        : <ArrowUpDown size={14} style={{ color: '#9c1024' }} />
     const label = b.range === 'LOW' ? t('admin.playHistory.betType.low') : b.range === 'HIGH' ? t('admin.playHistory.betType.high') : t('admin.playHistory.betType.middle')
     return (
       <span className="flex items-center gap-1 text-xs">
         {icon}
-        <span style={{ color: '#a5b4fc' }}>{label}</span>
+        <span style={{ color: '#6b4a4f' }}>{label}</span>
       </span>
     )
   }
   if (b.kind === 'SUM' && b.exactSum != null) {
-    return <span className="text-xs font-bold" style={{ color: '#fbbf24' }}>{t('admin.playHistory.bet.sumExact', { n: b.exactSum })}</span>
+    return <span className="text-xs font-bold" style={{ color: '#b45309' }}>{t('admin.playHistory.bet.sumExact', { n: b.exactSum })}</span>
   }
   return <span className="text-xs">{b.kind}</span>
 }
@@ -582,25 +582,25 @@ function BetCard({ b, rowNum, onView, onLock, lockProcessing }: { b: Bet; rowNum
   const t = useT()
   const isLocked = b.user.selfPlayPhase === 'ADMIN_LOCKED'
   return (
-    <div className="rounded-xl p-3" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+    <div className="rounded-xl p-3" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <div className="flex items-center gap-1.5">
-            <span className="text-[10px] font-bold tabular-nums" style={{ color: '#64748b' }}>#{rowNum}</span>
+            <span className="text-[10px] font-bold tabular-nums" style={{ color: '#8a6d71' }}>#{rowNum}</span>
             <a href={`/admin/customers?q=${encodeURIComponent(b.user.tel)}`}
               className="hover:underline"
-              style={{ color: isLocked ? '#fca5a5' : '#fde68a' }}>
+              style={{ color: isLocked ? '#dc2626' : '#c8102e' }}>
               <div className="text-sm font-semibold">{b.user.tel}{isLocked ? ' 🔒' : ''}</div>
               {b.user.name && (
-                <div className="text-[10px]" style={{ color: '#818cf8' }}>{b.user.name}</div>
+                <div className="text-[10px]" style={{ color: '#9c1024' }}>{b.user.name}</div>
               )}
             </a>
           </div>
-          <div className="mt-0.5 text-xs" style={{ color: '#818cf8' }}>{new Date(b.createdAt).toLocaleString()}</div>
+          <div className="mt-0.5 text-xs" style={{ color: '#9c1024' }}>{new Date(b.createdAt).toLocaleString()}</div>
         </div>
         <ResultPill result={b.result} />
       </div>
-      <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs" style={{ color: '#a5b4fc' }}>
+      <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs" style={{ color: '#6b4a4f' }}>
         <BetDescription b={b} />
         {b.round && (
           <span className="flex items-center gap-1">
@@ -610,13 +610,13 @@ function BetCard({ b, rowNum, onView, onLock, lockProcessing }: { b: Bet; rowNum
         )}
       </div>
       <div className="mt-2 grid grid-cols-2 gap-2">
-        <div className="rounded-md px-2 py-1.5" style={{ background: '#1e1b4b' }}>
-          <div className="text-[9px] font-bold" style={{ color: '#a5b4fc' }}>{t('admin.playHistory.col.stake')}</div>
-          <div className="font-semibold" style={{ color: '#fde68a' }}>{b.amount.toLocaleString()}</div>
+        <div className="rounded-md px-2 py-1.5" style={{ background: '#ffffff' }}>
+          <div className="text-[9px] font-bold" style={{ color: '#6b4a4f' }}>{t('admin.playHistory.col.stake')}</div>
+          <div className="font-semibold" style={{ color: '#c8102e' }}>{b.amount.toLocaleString()}</div>
         </div>
-        <div className="rounded-md px-2 py-1.5" style={{ background: '#1e1b4b' }}>
-          <div className="text-[9px] font-bold" style={{ color: '#a5b4fc' }}>{t('admin.playHistory.col.payout')}</div>
-          <div className="font-semibold" style={{ color: b.payout && b.payout > 0 ? '#4ade80' : '#a5b4fc' }}>
+        <div className="rounded-md px-2 py-1.5" style={{ background: '#ffffff' }}>
+          <div className="text-[9px] font-bold" style={{ color: '#6b4a4f' }}>{t('admin.playHistory.col.payout')}</div>
+          <div className="font-semibold" style={{ color: b.payout && b.payout > 0 ? '#15803d' : '#6b4a4f' }}>
             {b.payout != null ? b.payout.toLocaleString() : '—'}
           </div>
         </div>
@@ -624,14 +624,14 @@ function BetCard({ b, rowNum, onView, onLock, lockProcessing }: { b: Bet; rowNum
       <div className="mt-2 flex gap-2">
         <button type="button" onClick={onView}
           className="flex flex-1 items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-bold"
-          style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}>
+          style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}>
           <Eye size={12} /> {t('admin.playHistory.viewWallet')}
         </button>
         <button type="button" onClick={onLock} disabled={lockProcessing}
           className="flex flex-1 items-center justify-center gap-1.5 rounded-lg py-1.5 text-xs font-bold disabled:opacity-50"
           style={{
             background: isLocked ? 'rgba(22,163,74,0.2)' : 'rgba(220,38,38,0.15)',
-            color: isLocked ? '#4ade80' : '#f87171',
+            color: isLocked ? '#15803d' : '#dc2626',
             border: `1px solid ${isLocked ? '#16a34a' : '#dc2626'}`,
           }}>
           {lockProcessing ? <Loader size={12} className="animate-spin" /> : <Lock size={12} />}
@@ -643,11 +643,11 @@ function BetCard({ b, rowNum, onView, onLock, lockProcessing }: { b: Bet; rowNum
 }
 
 function ResultPill({ result }: { result: string | null }) {
-  if (!result) return <span className="text-[10px]" style={{ color: '#818cf8' }}>—</span>
+  if (!result) return <span className="text-[10px]" style={{ color: '#9c1024' }}>—</span>
   if (result === 'REFUNDED') {
     return (
       <span className="inline-block rounded-full px-2 py-0.5 text-[10px] font-bold"
-        style={{ background: 'rgba(217,119,6,0.2)', color: '#fbbf24' }}>
+        style={{ background: 'rgba(217,119,6,0.2)', color: '#b45309' }}>
         REFUNDED
       </span>
     )
@@ -655,7 +655,7 @@ function ResultPill({ result }: { result: string | null }) {
   const isWin = result === 'WIN'
   return (
     <span className="inline-block rounded-full px-2 py-0.5 text-[10px] font-bold"
-      style={{ background: isWin ? 'rgba(22,163,74,0.2)' : 'rgba(220,38,38,0.2)', color: isWin ? '#4ade80' : '#f87171' }}>
+      style={{ background: isWin ? 'rgba(22,163,74,0.2)' : 'rgba(220,38,38,0.2)', color: isWin ? '#15803d' : '#dc2626' }}>
       {result}
     </span>
   )
@@ -663,12 +663,12 @@ function ResultPill({ result }: { result: string | null }) {
 
 function TxStatusPill({ status }: { status: string }) {
   const map: Record<string, { bg: string; color: string }> = {
-    COMPLETED: { bg: 'rgba(22,163,74,0.2)', color: '#4ade80' },
-    PENDING:   { bg: 'rgba(234,179,8,0.2)', color: '#fde68a' },
-    FAILED:    { bg: 'rgba(220,38,38,0.2)', color: '#f87171' },
-    CANCELLED: { bg: 'rgba(100,116,139,0.2)', color: '#94a3b8' },
+    COMPLETED: { bg: 'rgba(22,163,74,0.2)', color: '#15803d' },
+    PENDING:   { bg: 'rgba(234,179,8,0.2)', color: '#b45309' },
+    FAILED:    { bg: 'rgba(220,38,38,0.2)', color: '#dc2626' },
+    CANCELLED: { bg: 'rgba(100,116,139,0.2)', color: '#8a6d71' },
   }
-  const s = map[status] ?? { bg: 'rgba(100,116,139,0.2)', color: '#94a3b8' }
+  const s = map[status] ?? { bg: 'rgba(100,116,139,0.2)', color: '#8a6d71' }
   return (
     <span className="inline-block rounded-full px-2 py-0.5 text-[10px] font-bold" style={{ background: s.bg, color: s.color }}>
       {status}
@@ -692,15 +692,15 @@ function LockConfirmModal({
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-6"
       style={{ background: 'rgba(0,0,0,0.8)' }} onClick={onClose}>
       <div className="w-full max-w-sm rounded-2xl p-6"
-        style={{ background: '#1e0040', border: `2px solid ${isLocked ? '#16a34a' : '#dc2626'}` }}
+        style={{ background: '#fff5f6', border: `2px solid ${isLocked ? '#16a34a' : '#dc2626'}` }}
         onClick={e => e.stopPropagation()}>
         <div className="mb-1 flex items-center gap-2">
-          <Lock size={18} style={{ color: isLocked ? '#4ade80' : '#f87171' }} />
-          <h2 className="text-base font-bold" style={{ color: isLocked ? '#4ade80' : '#f87171' }}>
+          <Lock size={18} style={{ color: isLocked ? '#15803d' : '#dc2626' }} />
+          <h2 className="text-base font-bold" style={{ color: isLocked ? '#15803d' : '#dc2626' }}>
             {isLocked ? t('admin.playHistory.lockModal.unlockTitle') : t('admin.playHistory.lockModal.lockTitle')}
           </h2>
         </div>
-        <p className="mt-3 text-sm" style={{ color: '#e9d5ff' }}>
+        <p className="mt-3 text-sm" style={{ color: '#2b0b10' }}>
           {isLocked
             ? t('admin.playHistory.lockModal.unlockDesc', { tel })
             : <>{t('admin.playHistory.lockModal.lockDescPrefix', { tel })} <strong className="text-red-400">{t('admin.playHistory.lockModal.lockDescBold')}</strong> {t('admin.playHistory.lockModal.lockDescSuffix')}</>
@@ -709,7 +709,7 @@ function LockConfirmModal({
         <div className="mt-5 flex gap-3">
           <button type="button" onClick={onClose}
             className="flex-1 rounded-xl py-2.5 text-sm font-bold"
-            style={{ background: '#2d1b4e', color: '#a78bfa', border: '1px solid #4c1d95' }}>
+            style={{ background: '#fff0f2', color: '#9c1024', border: '1px solid #f2ccd2' }}>
             {t('admin.playHistory.lockModal.cancel')}
           </button>
           <button type="button" onClick={onConfirm} disabled={processing}
@@ -773,7 +773,7 @@ function PlayerWalletModal({ userId, tel, onClose }: { userId: string; tel: stri
     }
   }
 
-  const walletColor: Record<string, string> = { REAL: '#fde68a', DEMO: '#a5b4fc', PROMO: '#fcd34d' }
+  const walletColor: Record<string, string> = { REAL: '#c8102e', DEMO: '#6b4a4f', PROMO: '#b45309' }
   const walletLabel: Record<string, string> = { REAL: t('admin.playHistory.walletModal.real'), DEMO: t('admin.playHistory.walletModal.demo'), PROMO: t('admin.playHistory.walletModal.promo') }
 
   return (
@@ -781,42 +781,42 @@ function PlayerWalletModal({ userId, tel, onClose }: { userId: string; tel: stri
       style={{ background: 'rgba(0,0,0,0.75)' }} onClick={onClose} role="dialog" aria-modal="true">
       <div onClick={e => e.stopPropagation()}
         className="relative flex h-[92vh] w-full flex-col overflow-hidden rounded-t-2xl md:h-auto md:max-h-[90vh] md:max-w-3xl md:rounded-2xl"
-        style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+        style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
 
         {/* Header */}
-        <div className="flex items-center justify-between gap-3 border-b px-5 py-4" style={{ borderColor: '#1e1b4b', background: '#1e1b4b' }}>
+        <div className="flex items-center justify-between gap-3 border-b px-5 py-4" style={{ borderColor: '#f2ccd2', background: '#ffffff' }}>
           <div className="min-w-0">
-            <div className="flex items-center gap-1.5 text-xs font-bold" style={{ color: '#a5b4fc' }}>
+            <div className="flex items-center gap-1.5 text-xs font-bold" style={{ color: '#6b4a4f' }}>
               <Wallet size={12} /> {t('admin.playHistory.walletModal.header')}
             </div>
-            <div className="text-sm font-bold" style={{ color: '#fde68a' }}>
+            <div className="text-sm font-bold" style={{ color: '#c8102e' }}>
               <a href={`/admin/customers?q=${encodeURIComponent(tel)}`} className="hover:underline">{tel}</a>
             </div>
           </div>
           <div className="flex items-center gap-2 flex-wrap justify-end">
             {/* Wallet tabs */}
-            <div className="flex overflow-hidden rounded-md text-[11px] font-bold" style={{ border: '1px solid #4338ca' }}>
+            <div className="flex overflow-hidden rounded-md text-[11px] font-bold" style={{ border: '1px solid #f2ccd2' }}>
               {(['REAL', 'DEMO', 'PROMO'] as const).map(w => (
                 <button key={w} type="button" onClick={() => { setWallet(w); setKind('detail') }}
                   className="px-2.5 py-1 transition-colors"
-                  style={{ background: wallet === w ? walletColor[w] : 'transparent', color: wallet === w ? '#0f172a' : '#a5b4fc' }}>
+                  style={{ background: wallet === w ? walletColor[w] : 'transparent', color: wallet === w ? '#2b0b10' : '#6b4a4f' }}>
                   {walletLabel[w]}
                 </button>
               ))}
             </div>
             {/* View tabs */}
-            <div className="flex overflow-hidden rounded-md text-[11px] font-bold" style={{ border: '1px solid #4338ca' }}>
+            <div className="flex overflow-hidden rounded-md text-[11px] font-bold" style={{ border: '1px solid #f2ccd2' }}>
               {(['detail', 'summary'] as const).map(k => (
                 <button key={k} type="button" onClick={() => setKind(k)}
                   className="px-2.5 py-1 transition-colors"
-                  style={{ background: kind === k ? '#4338ca' : 'transparent', color: kind === k ? '#fff' : '#a5b4fc' }}>
+                  style={{ background: kind === k ? '#c8102e' : 'transparent', color: kind === k ? '#fff' : '#6b4a4f' }}>
                   {k === 'detail' ? t('admin.playHistory.walletModal.detailTab') : t('admin.playHistory.walletModal.summaryTab')}
                 </button>
               ))}
             </div>
             <button onClick={onClose} type="button"
               className="flex h-8 w-8 items-center justify-center rounded-full"
-              style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}>
+              style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}>
               <X size={14} />
             </button>
           </div>
@@ -825,12 +825,12 @@ function PlayerWalletModal({ userId, tel, onClose }: { userId: string; tel: stri
         {/* Body */}
         <div className="flex-1 overflow-y-auto px-5 py-4">
           {active.state !== 'idle' && !active.data && (
-            <div className="flex h-32 items-center justify-center" style={{ color: '#a5b4fc' }}>
+            <div className="flex h-32 items-center justify-center" style={{ color: '#6b4a4f' }}>
               <Loader size={18} className="animate-spin" />
             </div>
           )}
           {error && (
-            <div className="rounded-lg px-3 py-2 text-xs" style={{ background: 'rgba(220,38,38,0.15)', color: '#f87171', border: '1px solid #f87171' }}>
+            <div className="rounded-lg px-3 py-2 text-xs" style={{ background: 'rgba(220,38,38,0.15)', color: '#dc2626', border: '1px solid #f87171' }}>
               {error}
             </div>
           )}
@@ -844,28 +844,28 @@ function PlayerWalletModal({ userId, tel, onClose }: { userId: string; tel: stri
 
 function DetailView({ data }: { data: DetailData }) {
   const t = useT()
-  const walletColor: Record<string, string> = { REAL: '#fde68a', DEMO: '#a5b4fc', PROMO: '#fcd34d' }
-  const color = walletColor[data.wallet.type] ?? '#e9d5ff'
+  const walletColor: Record<string, string> = { REAL: '#c8102e', DEMO: '#6b4a4f', PROMO: '#b45309' }
+  const color = walletColor[data.wallet.type] ?? '#2b0b10'
   return (
     <div className="flex flex-col gap-4">
-      <div className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #1e1b4b, #0f172a)', border: '1px solid #4338ca' }}>
-        <div className="text-[10px] font-bold tracking-wider" style={{ color: '#a5b4fc' }}>{t('admin.playHistory.detail.balance', { type: data.wallet.type })}</div>
+      <div className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #ffffff, #fff5f6)', border: '1px solid #f2ccd2' }}>
+        <div className="text-[10px] font-bold tracking-wider" style={{ color: '#6b4a4f' }}>{t('admin.playHistory.detail.balance', { type: data.wallet.type })}</div>
         <div className="mt-1 text-xl font-bold md:text-3xl" style={{ color }}>{data.wallet.balance.toLocaleString()} ₭</div>
       </div>
       <div>
         <div className="mb-2 flex items-end justify-between gap-3">
-          <div className="text-[10px] font-bold" style={{ color: '#a5b4fc' }}>{t('admin.playHistory.detail.recentTx')}</div>
+          <div className="text-[10px] font-bold" style={{ color: '#6b4a4f' }}>{t('admin.playHistory.detail.recentTx')}</div>
           <div className="text-right">
-            <div className="text-[9px]" style={{ color: '#64748b' }}>{t('admin.playHistory.detail.balanceAfter')}</div>
+            <div className="text-[9px]" style={{ color: '#8a6d71' }}>{t('admin.playHistory.detail.balanceAfter')}</div>
             <div className="text-xs font-bold" style={{ color }}>
               {(data.recent[0]?.balanceAfter ?? data.wallet.balance).toLocaleString()} ₭
             </div>
           </div>
         </div>
-        <div className="overflow-x-auto rounded-lg" style={{ border: '1px solid #1e1b4b' }}>
+        <div className="overflow-x-auto rounded-lg" style={{ border: '1px solid #f2ccd2' }}>
           <table className="w-full min-w-[480px] text-left text-xs">
-            <thead style={{ color: '#a5b4fc' }}>
-              <tr style={{ background: '#1e1b4b' }}>
+            <thead style={{ color: '#6b4a4f' }}>
+              <tr style={{ background: '#ffffff' }}>
                 <th className="px-3 py-2">{t('admin.playHistory.col.when')}</th>
                 <th className="px-3 py-2">{t('admin.playHistory.detail.col.type')}</th>
                 <th className="px-3 py-2 text-right">{t('admin.playHistory.detail.col.amount')}</th>
@@ -874,15 +874,15 @@ function DetailView({ data }: { data: DetailData }) {
             </thead>
             <tbody>
               {data.recent.length === 0 && (
-                <tr><td colSpan={4} className="px-3 py-3 text-center" style={{ color: '#64748b' }}>{t('admin.playHistory.detail.noTx')}</td></tr>
+                <tr><td colSpan={4} className="px-3 py-3 text-center" style={{ color: '#8a6d71' }}>{t('admin.playHistory.detail.noTx')}</td></tr>
               )}
               {data.recent.map(tx => {
                 const isOut = tx.type === 'WITHDRAW' || tx.type === 'LOSS' || tx.type === 'TRANSFER_OUT'
                 return (
-                  <tr key={tx.id} style={{ borderTop: '1px solid #1e1b4b', color: '#e9d5ff' }}>
-                    <td className="px-3 py-2 whitespace-nowrap" style={{ color: '#a5b4fc' }}>{new Date(tx.createdAt).toLocaleString()}</td>
+                  <tr key={tx.id} style={{ borderTop: '1px solid #f2ccd2', color: '#2b0b10' }}>
+                    <td className="px-3 py-2 whitespace-nowrap" style={{ color: '#6b4a4f' }}>{new Date(tx.createdAt).toLocaleString()}</td>
                     <td className="px-3 py-2">{typeLabel(t, tx.type)}</td>
-                    <td className="px-3 py-2 text-right" style={{ color: isOut ? '#f87171' : '#4ade80' }}>
+                    <td className="px-3 py-2 text-right" style={{ color: isOut ? '#dc2626' : '#15803d' }}>
                       {isOut ? '−' : '+'}{tx.amount.toLocaleString()}
                     </td>
                     <td className="px-3 py-2"><TxStatusPill status={tx.status} /></td>
@@ -895,7 +895,7 @@ function DetailView({ data }: { data: DetailData }) {
         <div className="mt-3 flex justify-center">
           <a href={`/admin/transactions?q=${encodeURIComponent(data.user.tel)}`}
             className="rounded-md px-4 py-1.5 text-xs font-bold hover:opacity-80"
-            style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}>
+            style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}>
             {t('admin.playHistory.detail.viewMore')}
           </a>
         </div>
@@ -906,8 +906,8 @@ function DetailView({ data }: { data: DetailData }) {
 
 function SummaryView({ data }: { data: SummaryData }) {
   const t = useT()
-  const walletColor: Record<string, string> = { REAL: '#fde68a', DEMO: '#a5b4fc', PROMO: '#fcd34d' }
-  const color = walletColor[data.wallet.type] ?? '#e9d5ff'
+  const walletColor: Record<string, string> = { REAL: '#c8102e', DEMO: '#6b4a4f', PROMO: '#b45309' }
+  const color = walletColor[data.wallet.type] ?? '#2b0b10'
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
@@ -916,11 +916,11 @@ function SummaryView({ data }: { data: SummaryData }) {
         <LedgerColumn tone="out" title={t('admin.playHistory.summary.withdrawalsLosses')} icon={<ArrowUpCircle size={14} />}
           rows={data.outgoing} total={data.outgoingTotal} />
       </div>
-      <div className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #1e1b4b, #0f172a)', border: '1px solid #4338ca' }}>
-        <div className="text-[10px] font-bold tracking-wider" style={{ color: '#a5b4fc' }}>{t('admin.playHistory.summary.calculatedAvailable')}</div>
-        <div className="mt-1 text-xl font-bold md:text-3xl" style={{ color: '#fde68a' }}>{data.calculatedAvailable.toLocaleString()} ₭</div>
+      <div className="rounded-xl p-4" style={{ background: 'linear-gradient(135deg, #ffffff, #fff5f6)', border: '1px solid #f2ccd2' }}>
+        <div className="text-[10px] font-bold tracking-wider" style={{ color: '#6b4a4f' }}>{t('admin.playHistory.summary.calculatedAvailable')}</div>
+        <div className="mt-1 text-xl font-bold md:text-3xl" style={{ color: '#c8102e' }}>{data.calculatedAvailable.toLocaleString()} ₭</div>
         <div className="mt-3 flex items-center justify-between text-xs">
-          <span style={{ color: '#64748b' }}>{t('admin.playHistory.summary.currentBalance', { type: data.wallet.type })}</span>
+          <span style={{ color: '#8a6d71' }}>{t('admin.playHistory.summary.currentBalance', { type: data.wallet.type })}</span>
           <span className="font-bold" style={{ color }}>{data.wallet.balance.toLocaleString()} ₭</span>
         </div>
       </div>
@@ -935,20 +935,20 @@ function LedgerColumn({ tone, title, icon, rows, total }: {
   const t = useT()
   const accent = tone === 'in' ? '#4ade80' : '#f87171'
   return (
-    <div className="rounded-xl" style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
+    <div className="rounded-xl" style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
       <div className="flex items-center justify-between gap-2 px-4 py-3"
-        style={{ background: tone === 'in' ? 'rgba(74,222,128,0.08)' : 'rgba(248,113,113,0.08)', borderBottom: '1px solid #1e1b4b' }}>
+        style={{ background: tone === 'in' ? 'rgba(74,222,128,0.08)' : 'rgba(248,113,113,0.08)', borderBottom: '1px solid #f2ccd2' }}>
         <div className="flex items-center gap-1.5 text-[11px] font-bold" style={{ color: accent }}>{icon}{title}</div>
         <div className="text-xs font-bold" style={{ color: accent }}>{tone === 'in' ? '+' : '−'}{total.toLocaleString()}</div>
       </div>
       <ul>
         {rows.map(r => (
-          <li key={r.type} className="flex items-center justify-between gap-3 px-4 py-2 text-xs" style={{ borderTop: '1px solid #1e1b4b' }}>
+          <li key={r.type} className="flex items-center justify-between gap-3 px-4 py-2 text-xs" style={{ borderTop: '1px solid #f2ccd2' }}>
             <div className="flex flex-col">
-              <span style={{ color: '#e9d5ff' }}>{typeLabel(t, r.type)}</span>
-              <span className="text-[10px]" style={{ color: '#64748b' }}>{t('admin.playHistory.ledger.entries', { n: r.count })}</span>
+              <span style={{ color: '#2b0b10' }}>{typeLabel(t, r.type)}</span>
+              <span className="text-[10px]" style={{ color: '#8a6d71' }}>{t('admin.playHistory.ledger.entries', { n: r.count })}</span>
             </div>
-            <span style={{ color: r.total > 0 ? accent : '#64748b' }} className="font-semibold">{r.total.toLocaleString()}</span>
+            <span style={{ color: r.total > 0 ? accent : '#8a6d71' }} className="font-semibold">{r.total.toLocaleString()}</span>
           </li>
         ))}
       </ul>
@@ -960,11 +960,11 @@ export function ErrorBoundary() {
   const t = useT()
   return (
     <div className="flex flex-col items-center justify-center gap-3 rounded-xl p-10 text-center"
-      style={{ background: '#0f172a', border: '1px solid #1e1b4b' }}>
-      <p className="text-sm font-semibold" style={{ color: '#f87171' }}>{t('admin.playHistory.errorBoundary.message')}</p>
+      style={{ background: '#fff5f6', border: '1px solid #f2ccd2' }}>
+      <p className="text-sm font-semibold" style={{ color: '#dc2626' }}>{t('admin.playHistory.errorBoundary.message')}</p>
       <a href="/admin/play-history"
         className="rounded-lg px-4 py-2 text-xs font-bold"
-        style={{ background: '#1e1b4b', color: '#a5b4fc', border: '1px solid #4338ca' }}>
+        style={{ background: '#ffffff', color: '#6b4a4f', border: '1px solid #f2ccd2' }}>
         {t('admin.playHistory.errorBoundary.tryAgain')}
       </a>
     </div>
