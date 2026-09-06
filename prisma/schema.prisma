@@ -1,0 +1,595 @@
+// Pupatao — Fish Prawn Crab
+// Prisma schema targeting MongoDB.
+//
+// ⚠ IMPORTANT: Balance-mutating operations (bet settlement, transfer, deposit, withdraw)
+// MUST run inside `prisma.$transaction([...])` AND MongoDB MUST be deployed as a
+// replica set (or Atlas) for those transactions to be ACID. Single-node local
+// MongoDB without `--replSet` does NOT give you atomicity.
+//
+// Amounts are stored as `Int` representing whole ₭ (Kip has no fractional unit in
+// practice here, and MongoDB+Prisma has no native Decimal type). Switch to `BigInt`
+// and store "milli-kip" (×1000) if you ever need fractions.
+//
+// Auth model:
+//   - Register:  tel + password (everything else optional, user fills later)
+//   - Login:     tel + password
+//   - Forgot pw: user messages admin on WhatsApp (+856 20 7885 6194); admin
+//                updates `passwordHash` manually via admin panel; action logged
+//                in AuditLog.
+
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUTH + PROFILE
+//   · User  = customer   — phone+password, plays games, holds wallets
+//   · Admin = staff      — email+password, manages users/rounds/payouts
+//   · `Role` enum is shared by both tables for permission checks
+// ─────────────────────────────────────────────────────────────────────────────
+
+// Shared role enum — applied to User.role AND Admin.role.
+enum Role {
+  // User-side roles
+  PLAYER
+
+  // Admin-side roles
+  SUPPORT // read-only CS — view users, transactions, no mutations
+  ADMIN // host LIVE rounds, enter dice, reset passwords, adjust wallets
+  SUPERADMIN // full access including admin management
+}
+
+// Shared account status — applied to User.status AND Admin.status.
+enum AccountStatus {
+  ACTIVE
+  SUSPENDED
+  BANNED
+}
+
+// Tracks which self-play adversarial tier a user is in.
+// Transitions: NORMAL → PHASE_A → PHASE_B → PHASE_C (natural loss spiral)
+//              Any phase → ADMIN_LOCKED (admin override; never auto-resets)
+enum SelfPlayPhase {
+  NORMAL // 50 % win / 50 % lose (base tier)
+  PHASE_A // 10 % win / 90 % lose — triggered when profit doubles deposit
+  PHASE_B // 30 % win / 70 % lose — triggered when balance ≤ 10 % of phase-entry balance
+  PHASE_C //  5 % win / 95 % lose — triggered when balance recovers to 50 % of phase-entry balance
+  ADMIN_LOCKED //  0 % win (always lose) — manual admin override; never auto-resets
+}
+
+model User {
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  tel          String        @unique // required — login identifier (e.g. "+8562078959344")
+  passwordHash String // argon2id (preferred) or bcrypt — never store raw password
+  firstName    String?
+  lastName     String?
+  profile      String? // avatar URL or initials
+  dob          DateTime?
+  role         Role          @default(PLAYER) // customers are always PLAYER
+  status       AccountStatus @default(ACTIVE)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  // Self-play adversarial phase tracking
+  selfPlayPhase        SelfPlayPhase @default(NORMAL)
+  selfPlayPhaseBalance Int? // wallet balance (₭) when Phase A was entered; reference for 10 %/50 % thresholds
+
+  // When true, the LIVE betting board is hidden from this user — they can watch
+  // a round but cannot place bets, even when the admin opens a new round.
+  // Independent of selfPlayPhase (set via the Customers page "Bet-lock" action).
+  betLocked Boolean @default(false)
+
+  // Referral — every user gets a short unique code at registration. New
+  // sign-ups arriving from /register?ref=CODE attach `referredById`.
+  // Nullable on the schema so an initial `db push` against an existing
+  // database doesn't fail; the seed script backfills codes, and new
+  // registrations always set it. App code treats it as required.
+  referralCode String? @unique
+  referredById String? @db.ObjectId
+  referredBy   User?   @relation("UserReferrals", fields: [referredById], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  referrals    User[]  @relation("UserReferrals")
+
+  // Set the first time the admin approves any DEPOSIT for this user. Drives
+  // the new-user PROMO tier bonus (one-time). The referrer's REAL commission
+  // (see REFERRAL_BONUS) is separate — it pays on EVERY approved deposit,
+  // controlled by the referralCommissionEnabled/Percent SystemSetting.
+  firstTopupApprovedAt DateTime?
+
+  wallets              Wallet[]
+  bets                 Bet[]
+  sessions             Session[]
+  transactions         Transaction[] @relation("UserTx")
+  receivedTransactions Transaction[] @relation("ReceivedTx")
+  bank                 Bank?
+  sentTransfers        Transfer[]    @relation("SenderTransfers")
+  receivedTransfers    Transfer[]    @relation("ReceiverTransfers")
+  competitionParticipant CompetitionParticipant?
+
+  // Live win-streak counter — incremented on net-positive live rounds,
+  // reset to 0 on a loss or after a 5-win streak reward is issued.
+  liveWinStreak Int @default(0)
+
+  // Set once the feature-discovery tour auto-plays to completion (or is
+  // skipped) for this account. Server-side so it stays "seen" across
+  // devices/browsers — unlike a localStorage flag, clearing the browser or
+  // logging in elsewhere won't bring the tour back.
+  hasSeenTour Boolean @default(false)
+
+  @@index([role])
+  @@index([status])
+  @@index([referredById])
+}
+
+// Stores users who have opted in to the current competition (Type B or C only).
+// Cleared when admin ends the competition. One record per user at most.
+model CompetitionParticipant {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String   @unique @db.ObjectId
+  joinedAt DateTime @default(now())
+
+  user     User     @relation(fields: [userId], references: [id])
+
+  @@index([joinedAt(sort: Desc)])
+}
+
+// Web Push subscriptions (PWA notifications). One row per browser/device that
+// opted in. `endpoint` is the push service URL and is globally unique. `userId`
+// is optional so an anonymous visitor who installed the PWA can still be
+// notified. Dead subscriptions (404/410 from the push service) are pruned on send.
+model PushSubscription {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  endpoint  String   @unique
+  p256dh    String // subscription.keys.p256dh (client public key)
+  auth      String // subscription.keys.auth (client auth secret)
+  userId    String?  @db.ObjectId
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// Audience filters for a push campaign. Resolved against completed DEPOSIT /
+// WITHDRAW transactions (see app/lib/notifications.server.ts). "LT/GT_100K"
+// match users who have *at least one* deposit/withdraw crossing the threshold.
+enum NotificationAudience {
+  ALL // every opted-in device
+  NEVER_DEPOSIT // no completed deposit ever
+  NEVER_WITHDRAW // no completed withdrawal ever
+  DEPOSIT_LAST_7D // a completed deposit in the last 7 days
+  DEPOSIT_LT_100K // has a deposit < 100,000 ₭
+  DEPOSIT_GT_100K // has a deposit > 100,000 ₭
+  WITHDRAW_LT_100K // has a withdrawal < 100,000 ₭
+  WITHDRAW_GT_100K // has a withdrawal > 100,000 ₭
+}
+
+enum NotificationMode {
+  ONCE // fire once (immediately, or at `scheduledAt`)
+  DAILY // fire every day at `timeOfDay` (GMT+7) while `active`
+}
+
+// A push-notification campaign the admin composes on /admin/notifications.
+// `message` may contain {{phone_number}} / {{first_name}} / {{last_name}} /
+// {{name}} placeholders, rendered per-recipient at send time.
+model NotificationCampaign {
+  id          String               @id @default(auto()) @map("_id") @db.ObjectId
+  title       String? // optional notification title (defaults to app name)
+  message     String // body template with {{placeholders}}
+  audience    NotificationAudience @default(ALL)
+  mode        NotificationMode     @default(ONCE)
+  timeOfDay   String? // "HH:mm" in GMT+7 — DAILY only
+  scheduledAt DateTime? // UTC — a future ONCE send (null = send immediately)
+  active      Boolean              @default(true) // DAILY on/off; set false after a ONCE fires
+  lastRunAt   DateTime? // last time it was dispatched
+  lastSent    Int? // recipients reached on the last run
+  createdById String               @db.ObjectId
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+
+  @@index([mode, active])
+}
+
+// Staff account. Separate from User for auth segregation (email+2FA) and
+// because hosting rounds / resolving payouts is an operator activity.
+model Admin {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  email           String        @unique // login identifier for admins
+  passwordHash    String
+  firstName       String
+  lastName        String
+  profile         String?
+  role            Role          @default(ADMIN) // SUPPORT | ADMIN | SUPERADMIN
+  status          AccountStatus @default(ACTIVE)
+  twoFactorSecret String? // optional TOTP secret — admins should have 2FA
+  lastLoginAt     DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  sessions             AdminSession[]
+  hostedRounds         GameRound[]    @relation("HostRounds")
+  auditLogs            AuditLog[]     @relation("AuditActor")
+  approvedTransactions Transaction[]  @relation("ApprovedBy")
+  rejectedTransactions Transaction[]  @relation("RejectedBy")
+
+  @@index([role])
+  @@index([status])
+}
+
+// Refresh-token sessions for customers (User). DB stores hash; cookie holds raw.
+model Session {
+  id         String    @id @default(auto()) @map("_id") @db.ObjectId
+  userId     String    @db.ObjectId
+  tokenHash  String    @unique
+  expiresAt  DateTime
+  createdAt  DateTime  @default(now())
+  lastUsedAt DateTime  @default(now())
+  userAgent  String?
+  ip         String?
+  revokedAt  DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+// Separate session table for staff. Lets you revoke admin sessions independently,
+// enforce shorter TTLs, attach extra context (permissions snapshot, 2FA passed flag).
+model AdminSession {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  adminId     String    @db.ObjectId
+  tokenHash   String    @unique
+  expiresAt   DateTime
+  createdAt   DateTime  @default(now())
+  lastUsedAt  DateTime  @default(now())
+  userAgent   String?
+  ip          String?
+  twoFAPassed Boolean   @default(false)
+  revokedAt   DateTime?
+
+  admin Admin @relation(fields: [adminId], references: [id], onDelete: Cascade)
+
+  @@index([adminId])
+  @@index([expiresAt])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TRANSFER — only LOCKED transfers persist as a Transfer row. General
+// (instant) transfers just fire two Transaction rows (TRANSFER_OUT/IN) and
+// never touch this table.
+//
+// Locked-transfer lifecycle:
+//   1. Sender submits → debit sender wallet immediately, create Transfer
+//      with status=PENDING and codeHash. A TRANSFER_OUT Transaction row is
+//      written for the audit trail.
+//   2. Receiver enters the 6-digit code on their wallet → wallet credit
+//      + status=COMPLETED + TRANSFER_IN Transaction row.
+//   3. After 5 wrong attempts the Transfer flips to LOCKED so the receiver
+//      can't keep guessing. Sender can still cancel it for a refund.
+//   4. Sender cancels at any time before COMPLETED → wallet refund
+//      (ADJUSTMENT Transaction row, note "Locked transfer cancelled").
+// ─────────────────────────────────────────────────────────────────────────────
+
+enum TransferStatus {
+  PENDING // awaiting receiver to enter code
+  COMPLETED // receiver claimed
+  CANCELLED // sender cancelled, refunded
+  LOCKED // 5+ wrong attempts; sender can still cancel for refund
+}
+
+model Transfer {
+  id             String         @id @default(auto()) @map("_id") @db.ObjectId
+  senderId       String         @db.ObjectId
+  receiverId     String         @db.ObjectId
+  amount         Int // whole ₭
+  codeHash       String // bcrypt hash of the 6-digit code
+  status         TransferStatus @default(PENDING)
+  failedAttempts Int            @default(0)
+  lockedAt       DateTime? // set when failedAttempts hits the cap
+  claimedAt      DateTime?
+  cancelledAt    DateTime?
+  note           String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  sender   User @relation("SenderTransfers", fields: [senderId], references: [id])
+  receiver User @relation("ReceiverTransfers", fields: [receiverId], references: [id])
+
+  @@index([senderId, createdAt(sort: Desc)])
+  @@index([receiverId, status, createdAt(sort: Desc)])
+  @@index([status])
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BANK — receiving QR a customer attaches once and reuses for every withdraw.
+// One-to-one with User. Replaceable from the withdraw modal or profile page.
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Bank {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @unique @db.ObjectId
+  qrUrl     String // CDN URL of the bank receiving-QR image
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// WALLETS — every user gets both DEMO and REAL wallets created at registration
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Wallet {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String     @db.ObjectId
+  type      WalletType
+  balance   Int        @default(0) // whole ₭
+  currency  String     @default("LAK")
+  version   Int        @default(0) // optimistic-locking counter — increment on every write
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+  bets         Bet[]
+
+  @@unique([userId, type]) // at most one wallet per (user, type) — also serves userId-prefix queries
+}
+
+enum WalletType {
+  DEMO // reset-to-1M allowed; play-money only — no deposit/withdraw/transfer
+  REAL // deposit/withdraw/transfer; never reset
+  PROMO // bonus credit — bettable but never withdrawable. On a winning PROMO
+  //   bet, the stake stays in PROMO and the profit credits REAL. On a
+  //   losing PROMO bet, the stake is forfeit. Funded by first-topup tier
+  //   bonus and admin adjustments only.
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// LEDGER — every balance change. Append-only. NEVER delete rows.
+// Set status to FAILED / CANCELLED for voided operations and emit a REFUND.
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Transaction {
+  id             String            @id @default(auto()) @map("_id") @db.ObjectId
+  userId         String            @db.ObjectId
+  walletId       String            @db.ObjectId
+  type           TransactionType
+  amount         Int // always positive; sign is implied by `type`
+  balanceBefore  Int // wallet balance BEFORE this tx (audit + reconstruction)
+  balanceAfter   Int // wallet balance AFTER
+  status         TransactionStatus @default(COMPLETED)
+  note           String?
+  idempotencyKey String?           @unique // deduplicates retries (PWA / flaky mobile)
+  targetUserId   String?           @db.ObjectId // transfer recipient (TRANSFER_* types)
+  roundId        String?           @db.ObjectId // link to GameRound (WIN / LOSS)
+  betId          String?           @db.ObjectId // link to specific bet (WIN / LOSS)
+  slipUrl        String? // payment-slip image URL (DEPOSIT / WITHDRAW with manual verification)
+  approvedById   String?           @db.ObjectId // admin who approved this tx
+  rejectedById   String?           @db.ObjectId // admin who rejected this tx
+  rejectReasonCode String?                      // code from RejectReasonCode (lib/reject-reasons.ts) — drives the translated message shown to the customer
+  reviewedAt     DateTime?                      // when approved or rejected
+  createdAt      DateTime          @default(now())
+
+  user       User       @relation("UserTx", fields: [userId], references: [id])
+  wallet     Wallet     @relation(fields: [walletId], references: [id])
+  targetUser User?      @relation("ReceivedTx", fields: [targetUserId], references: [id])
+  round      GameRound? @relation(fields: [roundId], references: [id])
+  approvedBy Admin?     @relation("ApprovedBy", fields: [approvedById], references: [id])
+  rejectedBy Admin?     @relation("RejectedBy", fields: [rejectedById], references: [id])
+
+  @@index([userId, createdAt(sort: Desc)]) // full user history
+  @@index([userId, type, createdAt(sort: Desc)]) // per-tab history on /wallet
+  @@index([walletId, createdAt(sort: Desc)])
+  @@index([roundId])
+  @@index([type])
+  // Financial reports & dashboard filter by type + status (+ createdAt range).
+  // Without this only [type] was usable, forcing a status/date scan per query.
+  @@index([type, status, createdAt(sort: Desc)])
+}
+
+// Types you asked for: DEPOSIT, WITHDRAW, TRANSFER, WIN, LOSS.
+// Split TRANSFER into _OUT/_IN so each side has its own ledger row
+// (cleaner for reconciliation and per-tab history queries).
+enum TransactionType {
+  DEPOSIT
+  WITHDRAW
+  TRANSFER_OUT // sender row — debit
+  TRANSFER_IN // recipient row — credit
+  WIN // bet won — credit
+  LOSS // bet lost — debit (stake forfeit)
+  DEMO_RESET // audit entry when demo wallet reset to 1M (not strictly a balance op)
+  ADJUSTMENT // manual admin correction (+ or - per sign of `amount` if you relax the rule)
+  PROMO_BONUS // first-topup tier bonus credited to PROMO wallet
+  REFERRAL_BONUS // recurring commission (admin-set %) credited to a referrer's REAL wallet on every approved deposit made by a referred user, while the referral campaign is enabled
+  SYSTEM_REWARD  // automated promotion bonus (win streak, triple, etc.) credited to REAL wallet
+}
+
+enum TransactionStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// GAME ROUNDS
+// ─────────────────────────────────────────────────────────────────────────────
+
+model GameRound {
+  id     String      @id @default(auto()) @map("_id") @db.ObjectId
+  mode   GameMode
+  status RoundStatus @default(BETTING)
+  hostId String?     @db.ObjectId // admin who ran a LIVE round
+
+  // Dice results (null until resolved)
+  dice1   DiceSymbol?
+  dice2   DiceSymbol?
+  dice3   DiceSymbol?
+  diceSum Int?
+
+  // Timings
+  bettingOpensAt  DateTime  @default(now())
+  bettingClosesAt DateTime?
+  resolvedAt      DateTime?
+
+  streamUrl String? // LIVE mode only — the live feed URL shown to viewers
+
+  createdAt DateTime @default(now())
+
+  host         Admin?        @relation("HostRounds", fields: [hostId], references: [id])
+  bets         Bet[]
+  transactions Transaction[]
+
+  @@index([mode, status])
+  @@index([mode, status, resolvedAt(sort: Desc)]) // customer home: live results history
+  @@index([createdAt(sort: Desc)])
+  @@index([hostId])
+}
+
+enum GameMode {
+  RANDOM // single-player self-play — each round has one user's bets
+  LIVE // multi-player — host rolls, many users bet on the same round
+}
+
+enum RoundStatus {
+  BETTING // open for bets
+  LOCKED // timer expired OR admin locked
+  AWAITING_RESULT // LIVE — host entering dice
+  RESOLVED // dice set, payouts applied
+  CANCELLED // refunded
+}
+
+enum DiceSymbol {
+  FISH // value 2
+  PRAWN // value 1
+  CRAB // value 3
+  ROOSTER // value 4
+  GOURD // value 6
+  FROG // value 5
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BETS — one row per individual wager. Backs the /history page.
+// ─────────────────────────────────────────────────────────────────────────────
+
+model Bet {
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  roundId  String  @db.ObjectId
+  userId   String  @db.ObjectId
+  walletId String  @db.ObjectId
+  // Denormalized copy of the source wallet's type (REAL/DEMO/PROMO). Lets the
+  // admin play-history filter by wallet type with ONE indexed lookup instead of
+  // loading all ~1,151 wallet ids and doing a huge `walletId IN (…)` scan (which
+  // was taking 100+ seconds). Nullable so historical rows are valid until the
+  // one-time backfill runs.
+  walletType WalletType?
+  kind     BetKind
+
+  amount Int // stake (already debited from wallet when placed)
+  payout Int? // total returned on WIN (stake + profit); 0 on LOSS; null until resolved
+  result BetResult? // null until resolved
+
+  // SYMBOL bet
+  symbol DiceSymbol?
+  cell   Int? // board index 0..7 — distinguishes the two GOURDs / two PRAWNs
+
+  // RANGE bet
+  range RangeKey?
+
+  // PAIR bet — the two cells the user tapped (already normalized so cellA < cellB)
+  pairA DiceSymbol?
+  pairB DiceSymbol?
+  cellA Int?
+  cellB Int?
+
+  // SUM bet — exact dice-sum value (3–18), live mode only
+  exactSum Int?
+
+  createdAt  DateTime  @default(now())
+  resolvedAt DateTime?
+
+  round  GameRound @relation(fields: [roundId], references: [id], onDelete: Cascade)
+  user   User      @relation(fields: [userId], references: [id])
+  wallet Wallet    @relation(fields: [walletId], references: [id])
+
+  @@index([roundId])
+  @@index([userId, createdAt(sort: Desc)])
+  @@index([userId, walletId, createdAt(sort: Desc)]) // /history filter: real wallet only
+  @@index([walletId, createdAt(sort: Desc)])          // admin play-history: wallet filter + sort
+  @@index([createdAt(sort: Desc)])                    // dashboard: bets-in-last-24h count
+  @@index([walletType, createdAt(sort: Desc)])        // admin play-history: fast wallet-type filter
+}
+
+enum BetKind {
+  SYMBOL
+  RANGE
+  PAIR
+  SUM // exact dice-sum bet (3–18), live mode only
+}
+
+enum RangeKey {
+  LOW // dice sum 3..8
+  MIDDLE // dice sum 9..10
+  HIGH // dice sum 11..18
+}
+
+enum BetResult {
+  WIN
+  LOSS
+  REFUNDED // bet voided at settle (locked user, high-value win) — stake returned, no win/loss
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SYSTEM SETTINGS — global key/value store for operator flags (e.g. sleep mode)
+// ─────────────────────────────────────────────────────────────────────────────
+
+model SystemSetting {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+  updatedBy String?  @db.ObjectId // admin who last changed it
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// AUDIT — admin actions, including password resets done via WhatsApp support
+// ─────────────────────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  actorId   String?  @db.ObjectId // admin who performed the action
+  action    String // e.g. "user.password_reset", "user.suspend", "wallet.adjust", "round.resolve"
+  target    String? // e.g. "user:abc123", "round:xyz789"
+  metadata  Json? // { via: "whatsapp", newPasswordSetAt: "2026-04-19T...", note: "..." }
+  createdAt DateTime @default(now())
+
+  actor Admin? @relation("AuditActor", fields: [actorId], references: [id])
+
+  @@index([actorId, createdAt(sort: Desc)])
+  @@index([action])
+  @@index([target])
+}
+
+// Saved after each competition ends. `winners` is a JSON array of up to 3
+// CompetitionWinner objects: { rank, userId, name, tel, profile, demoBalance }.
+model CompetitionHistory {
+  id                String    @id @default(auto()) @map("_id") @db.ObjectId
+  type              String    @default("DEMO_LIVE") // DEMO_LIVE | REAL_LIVE | REAL_ALL
+  rules             String?
+  startDate         DateTime?
+  endDate           DateTime  @default(now())
+  winners           Json      // CompetitionWinner[]
+  totalParticipants Int       @default(0)
+  configuredBy      String?   @db.ObjectId // admin who created/configured the competition
+  startedBy         String?   @db.ObjectId // admin who clicked Start
+  endedBy           String?   @db.ObjectId // admin who clicked End Competition
+  createdAt         DateTime  @default(now())
+
+  @@index([createdAt(sort: Desc)])
+}

@@ -1,0 +1,13 @@
+# Never copy host-built binaries or secrets into the image.
+node_modules
+.git
+.gitignore
+build
+.env
+.env.*
+npm-debug.log*
+Dockerfile
+.dockerignore
+.vercel
+.react-router
+README.md

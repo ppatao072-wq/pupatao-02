@@ -1,0 +1,38 @@
+// Admin → Notifications page strings.
+export const ADMIN_NOTIFICATIONS_STRINGS = {
+  "admin.notifications.title": { lo: "ການແຈ້ງເຕືອນ", en: "Notifications" },
+  "admin.notifications.subtitle": { lo: "ສົ່ງການແຈ້ງເຕືອນ (push) ຫາລູກຄ້າທີ່ຕິດຕັ້ງແອັບ", en: "Send push notifications to customers who installed the app" },
+  "admin.notifications.subscribers": { lo: "ອຸປະກອນທີ່ເປີດແຈ້ງເຕືອນ", en: "Opted-in devices" },
+
+  "admin.notifications.compose": { lo: "ສ້າງການແຈ້ງເຕືອນ", en: "Compose" },
+  "admin.notifications.titleLabel": { lo: "ຫົວຂໍ້ (ວ່າງໄວ້ກໍໄດ້)", en: "Title (optional)" },
+  "admin.notifications.titlePlaceholder": { lo: "ເຊັ່ນ: 🔴 ພວກເຮົາໄລສົດ", en: "e.g. 🔴 We're live" },
+  "admin.notifications.audience": { lo: "ກຸ່ມເປົ້າໝາຍ", en: "Audience" },
+  "admin.notifications.message": { lo: "ຂໍ້ຄວາມ", en: "Message" },
+  "admin.notifications.messagePlaceholder": { lo: "ສະບາຍດີລູກຄ້າ {{phone_number}}, ມື້ນີ້ພວກເຮົາຈະໄລ້ສົດຕັ້ງແຕ່ 9:00 ເປັນຕົ້ນໄປ.", en: "Hello {{phone_number}}, we go live today from 9:00." },
+  "admin.notifications.params": { lo: "ໃສ່ຕົວແປ:", en: "Insert:" },
+  "admin.notifications.preview": { lo: "ຕົວຢ່າງ", en: "Preview" },
+
+  "admin.notifications.schedule": { lo: "ການກຳນົດເວລາ", en: "Schedule" },
+  "admin.notifications.sendNow": { lo: "ສົ່ງດຽວນີ້", en: "Send now" },
+  "admin.notifications.scheduleOnce": { lo: "ກຳນົດເວລາ (ຄັ້ງດຽວ)", en: "Schedule once" },
+  "admin.notifications.daily": { lo: "ທຸກໆມື້ (ເວລາດຽວກັນ)", en: "Every day (same time)" },
+  "admin.notifications.dateTime": { lo: "ວັນທີ ແລະ ເວລາ (GMT+7)", en: "Date & time (GMT+7)" },
+  "admin.notifications.timeOfDay": { lo: "ເວລາ (GMT+7)", en: "Time (GMT+7)" },
+  "admin.notifications.create": { lo: "ສ້າງ / ສົ່ງ", en: "Create / Send" },
+  "admin.notifications.sending": { lo: "ກຳລັງສົ່ງ…", en: "Sending…" },
+
+  "admin.notifications.campaigns": { lo: "ລາຍການ", en: "Campaigns" },
+  "admin.notifications.none": { lo: "ຍັງບໍ່ມີການແຈ້ງເຕືອນ", en: "No notifications yet" },
+  "admin.notifications.runNow": { lo: "ສົ່ງດຽວນີ້", en: "Run now" },
+  "admin.notifications.pause": { lo: "ຢຸດ", en: "Pause" },
+  "admin.notifications.resume": { lo: "ເປີດ", en: "Resume" },
+  "admin.notifications.delete": { lo: "ລຶບ", en: "Delete" },
+  "admin.notifications.active": { lo: "ກຳລັງເຮັດວຽກ", en: "Active" },
+  "admin.notifications.paused": { lo: "ຢຸດຢູ່", en: "Paused" },
+  "admin.notifications.done": { lo: "ສົ່ງແລ້ວ", en: "Sent" },
+  "admin.notifications.lastSent": { lo: "ຄັ້ງລ່າສຸດ: {n} ຄົນ", en: "Last: {n} recipients" },
+  "admin.notifications.sentToast": { lo: "ສົ່ງແລ້ວ {n} ຄົນ", en: "Sent to {n} recipients" },
+  "admin.notifications.createdToast": { lo: "ສ້າງການແຈ້ງເຕືອນແລ້ວ", en: "Notification scheduled" },
+  "admin.notifications.deleteConfirm": { lo: "ລຶບການແຈ້ງເຕືອນນີ້?", en: "Delete this notification?" },
+} as const

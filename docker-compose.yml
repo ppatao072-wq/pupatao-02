@@ -1,0 +1,60 @@
+services:
+  pupatao-client:
+    build:
+      context: .
+      # Public client vars — baked into the browser bundle at build time so
+      # Pusher realtime works. Values come from .env in this directory.
+      args:
+        VITE_PUSHER_KEY: ${VITE_PUSHER_KEY}
+        VITE_PUSHER_CLUSTER: ${VITE_PUSHER_CLUSTER}
+        VITE_MESSENGER_GROUP_URL: ${VITE_MESSENGER_GROUP_URL}
+        VITE_WHATSAPP_GROUP_URL: ${VITE_WHATSAPP_GROUP_URL}
+    restart: always
+    # 2 replicas — one per vCPU (Node is single-threaded, so this actually uses
+    # both cores). nginx load-balances across them. NOTE: no container_name here
+    # — each replica must get its own auto-generated name.
+    deploy:
+      replicas: 2
+    networks:
+      - pupatao-share-network
+    env_file:
+      - .env
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+    # Each replica is published to a host port from this range (5176, 5177);
+    # the host nginx `upstream` block below load-balances across both.
+    ports:
+      - "5176-5177:3000"
+    # If the event loop is blocked (e.g. a bcrypt/registration flood), this HTTP
+    # probe times out → the container is marked unhealthy → autoheal restarts it.
+    # The probe runs as its own node process, so a blocked server still fails it.
+    # Lenient on purpose: restart ONLY on a true hang, never on transient
+    # slowness. Restarting a slow-but-alive replica drops all its connections and
+    # triggers a reconnection "thundering herd" that makes things worse. We give
+    # the probe 10s and require ~6 consecutive failures (~90s) before restarting.
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "const http=require('http');const req=http.get('http://localhost:3000/api/warm',r=>process.exit(r.statusCode<500?0:1));req.setTimeout(10000,()=>{req.destroy();process.exit(1)});req.on('error',()=>process.exit(1))"
+      interval: 15s
+      timeout: 12s
+      retries: 6
+      start_period: 60s
+
+  # Watches all containers and restarts any that go "unhealthy" (plain Docker
+  # Compose does NOT auto-restart on unhealthy by itself — this sidecar does).
+  autoheal:
+    image: willfarrell/autoheal
+    restart: always
+    environment:
+      AUTOHEAL_CONTAINER_LABEL: all
+      AUTOHEAL_INTERVAL: 10
+      AUTOHEAL_START_PERIOD: 30
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+networks:
+  pupatao-share-network:
+    external: true
