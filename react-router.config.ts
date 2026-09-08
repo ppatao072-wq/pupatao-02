@@ -1,5 +1,5 @@
-import type { Config } from "@react-router/dev/config"
-import { vercelPreset } from "@vercel/react-router/vite"
+import type { Config } from "@react-router/dev/config";
+import { vercelPreset } from "@vercel/react-router/vite";
 
 export default {
   ssr: true,
@@ -23,5 +23,10 @@ export default {
   // observed specifically on live betting (/api/play-round) from a
   // home-screen-installed instance of this app. React Router treats that
   // string as a real (mismatching) origin, not as "no origin sent".
-  allowedActionOrigins: ["pupatao.com", "www.pupatao.com", "null"],
-} satisfies Config
+  allowedActionOrigins: [
+    "pupatao.com",
+    "www.pupatao.com",
+    "branch.pupatao.com",
+    "null",
+  ],
+} satisfies Config;
