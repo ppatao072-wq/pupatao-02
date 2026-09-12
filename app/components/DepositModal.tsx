@@ -15,7 +15,7 @@ type DepositResponse = { ok?: boolean; op?: string; error?: string }
 
 type Step = 'warn' | 'qr' | 'slip'
 
-const QR_SRC = '/images/qr-code.jpeg'
+const QR_SRC = '/images/qr-code.png'
 const SLIP_EXAMPLE_SRC = '/images/payment-slip.jpg'
 
 // Two-step deposit flow:
@@ -259,7 +259,7 @@ export function DepositModal({ open, onClose, amount, onSuccess }: DepositModalP
               <div className="flex items-center justify-center gap-3">
                 <a
                   href={QR_SRC}
-                  download="pupatao-qr-code.jpeg"
+                  download="pupatao-qr-code.png"
                   className="flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-xs font-bold transition-opacity hover:opacity-90"
                   style={{ background: '#ffe4e6', color: '#c8102e', border: '1.5px solid #e8949e' }}
                 >
