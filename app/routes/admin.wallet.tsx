@@ -176,6 +176,7 @@ const TYPE_LABEL_KEYS: Record<string, StringKey> = {
   TRANSFER_OUT: 'admin.wallet.type.transferOut',
   DEMO_RESET: 'admin.wallet.type.demoReset',
   ADJUSTMENT: 'admin.wallet.type.adjustment',
+  PROMO_FORFEIT: 'admin.wallet.type.promoForfeit',
 }
 
 function typeLabel(t: ReturnType<typeof useT>, type: string): string {

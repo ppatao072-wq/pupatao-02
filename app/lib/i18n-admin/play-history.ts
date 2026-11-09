@@ -17,6 +17,7 @@ export const ADMIN_PLAY_HISTORY_STRINGS = {
   "admin.playHistory.txType.transferIn": { lo: "ໂອນເຂົ້າ", en: "Transfer received" },
   "admin.playHistory.txType.promoBonus": { lo: "ໂປຣໂມຊັນ", en: "Promo bonus" },
   "admin.playHistory.txType.referralBonus": { lo: "ໂບນັດແນະນຳ", en: "Referral bonus" },
+  "admin.playHistory.txType.promoForfeit": { lo: "ຍົກເລີກ Promo (ຖອນເງິນ)", en: "Promo forfeited" },
   "admin.playHistory.txType.withdraw": { lo: "ຖອນເງິນ", en: "Withdraw" },
   "admin.playHistory.txType.loss": { lo: "ເສຍ (ແທ້ງ)", en: "Loss (lost bets)" },
   "admin.playHistory.txType.transferOut": { lo: "ໂອນອອກ", en: "Transfer sent" },

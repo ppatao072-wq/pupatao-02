@@ -16,7 +16,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     getReferralConfig(),
     prisma.transaction.groupBy({
       by: ['userId'],
-      where: { type: 'REFERRAL_BONUS' },
+      where: { type: 'REFERRAL_BONUS', status: 'COMPLETED' }, // PENDING = held until referee meets turnover
       _sum: { amount: true },
       _count: { _all: true },
     }),

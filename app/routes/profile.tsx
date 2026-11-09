@@ -12,6 +12,7 @@ import { ArrowLeft, Camera, Gift, Loader, Phone, Save, Share2, Upload, UserRound
 import { toast } from 'sonner'
 import { requireUser } from '~/lib/auth.server'
 import { prisma } from '~/lib/prisma.server'
+import { releaseReferralCommissionsAndNotify } from '~/lib/turnover.server'
 import { buildReferralShareUrl, generateUniqueReferralCode } from '~/lib/referral.server'
 import { getReferralConfig } from '~/lib/system-settings.server'
 import { playClick } from '~/hooks/use-sound-engine'
@@ -43,6 +44,8 @@ export async function loader({ request }: Route.LoaderArgs) {
   // Everyone this user has invited, plus how much commission each has earned
   // this user so far — the campaign pays on EVERY approved deposit the
   // referee makes, not just the first.
+  // Credit held commission whose referee has met turnover before totalling.
+  await releaseReferralCommissionsAndNotify(user.id)
   const [referrals, commissionAgg, referralCampaign] = await Promise.all([
     prisma.user.findMany({
       where: { referredById: user.id },
@@ -51,7 +54,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     }),
     prisma.transaction.groupBy({
       by: ['targetUserId'],
-      where: { type: 'REFERRAL_BONUS', userId: user.id },
+      where: { type: 'REFERRAL_BONUS', status: 'COMPLETED', userId: user.id },
       _sum: { amount: true },
     }),
     getReferralConfig(),

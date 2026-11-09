@@ -483,8 +483,8 @@ export const STRINGS = {
     en: "Share your referral link with friends. When the commission campaign is active, you'll earn a share of every deposit they make.",
   },
   "referral.descriptionCommission": {
-    lo: "ຮັບ {percent}% ຈາກທຸກຄັ້ງທີ່ໝູ່ຂອງທ່ານຝາກເງິນສຳເລັດ — ຮັບຕໍ່ເນື່ອງໄປເລື່ອຍໆ!",
-    en: "Earn {percent}% of every deposit your invited friends make — recurring, forever!",
+    lo: "ຮັບ {percent}% ຈາກທຸກຄັ້ງທີ່ໝູ່ຂອງທ່ານຝາກເງິນ — ເຂົ້າກະເປົ໋າ Promo ຫຼັງຈາກໝູ່ຫຼິ້ນໝົດຍອດຝາກນັ້ນແລ້ວ.",
+    en: "Earn {percent}% of every deposit your invited friends make — paid to your Promo wallet once they've played through that deposit.",
   },
   "referral.codeLabel": { lo: "ລະຫັດແນະນໍາ", en: "Code" },
   "referral.copy": { lo: "ສຳເນົາ", en: "Copy" },
@@ -504,8 +504,8 @@ export const STRINGS = {
   // ─── Referral-campaign promo modal (shown once per login, root.tsx) ───
   "campaign.modal.title": { lo: "ໂປຣໂມຊັນແນະນໍາເພື່ອນ!", en: "Referral Campaign!" },
   "campaign.modal.body": {
-    lo: "ຮັບ {percent}% ຄອມມິຊັນ ຈາກທຸກຄັ້ງທີ່ໝູ່ຂອງທ່ານຝາກເງິນສຳເລັດ — ຮັບຕໍ່ເນື່ອງໄປເລື່ອຍໆ! ແບ່ງປັນລິ້ງແນະນໍາຂອງທ່ານດຽວນີ້.",
-    en: "Earn {percent}% commission on every deposit your invited friends make — recurring, forever! Share your referral link now.",
+    lo: "ຮັບ {percent}% ຄອມມິຊັນ (ເຂົ້າກະເປົ໋າ Promo) ຈາກທຸກຄັ້ງທີ່ໝູ່ຂອງທ່ານຝາກເງິນ ແລະ ຫຼິ້ນໝົດຍອດຝາກນັ້ນ! ແບ່ງປັນລິ້ງແນະນໍາຂອງທ່ານດຽວນີ້.",
+    en: "Earn {percent}% commission (to your Promo wallet) on every deposit your invited friends make and play through! Share your referral link now.",
   },
   "campaign.modal.cta": { lo: "ແບ່ງປັນລິ້ງແນະນໍາ", en: "Share my referral link" },
 

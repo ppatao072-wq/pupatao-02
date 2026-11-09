@@ -101,6 +101,12 @@ model User {
   // controlled by the referralCommissionEnabled/Percent SystemSetting.
   firstTopupApprovedAt DateTime?
 
+  // IP the account was registered from (x-forwarded-for). Accounts sharing a
+  // registerIp cannot transfer to each other (linked-accounts.server.ts).
+  // Null for users created before this field — resolved lazily from their
+  // earliest Session.ip.
+  registerIp String?
+
   wallets              Wallet[]
   bets                 Bet[]
   sessions             Session[]
@@ -124,6 +130,8 @@ model User {
   @@index([role])
   @@index([status])
   @@index([referredById])
+
+  @@index([registerIp])
 }
 
 // Stores users who have opted in to the current competition (Type B or C only).
@@ -406,8 +414,9 @@ enum TransactionType {
   DEMO_RESET // audit entry when demo wallet reset to 1M (not strictly a balance op)
   ADJUSTMENT // manual admin correction (+ or - per sign of `amount` if you relax the rule)
   PROMO_BONUS // first-topup tier bonus credited to PROMO wallet
-  REFERRAL_BONUS // recurring commission (admin-set %) credited to a referrer's REAL wallet on every approved deposit made by a referred user, while the referral campaign is enabled
+  REFERRAL_BONUS // PENDING = held until the referee wagers AND loses the deposit (turnover.server.ts); COMPLETED = credited to the referrer's PROMO wallet (legacy rows: REAL). Recurring per-deposit commission while the referral campaign is enabled
   SYSTEM_REWARD  // automated promotion bonus (win streak, triple, etc.) credited to REAL wallet
+  PROMO_FORFEIT // remaining PROMO balance voided when the user requests a REAL withdrawal (restored if that withdrawal is rejected/reversed)
 }
 
 enum TransactionStatus {

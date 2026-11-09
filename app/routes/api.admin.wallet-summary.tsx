@@ -15,7 +15,7 @@ const INCOMING: TransactionType[] = [
 ]
 
 // Money flowing OUT of the user's wallet — right column.
-const OUTGOING: TransactionType[] = ['WITHDRAW', 'LOSS', 'TRANSFER_OUT']
+const OUTGOING: TransactionType[] = ['WITHDRAW', 'LOSS', 'TRANSFER_OUT', 'PROMO_FORFEIT']
 
 function isWalletType(v: string | null): v is WalletType {
   return v === 'REAL' || v === 'DEMO' || v === 'PROMO'

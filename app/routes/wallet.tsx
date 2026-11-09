@@ -17,6 +17,8 @@ import { TransferModal } from '~/components/TransferModal'
 import { ClaimTransferModal } from '~/components/ClaimTransferModal'
 import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { withdrawFee, MAX_WITHDRAW_PER_DAY } from '~/lib/withdraw-fee'
+import { registeredFromSameIp, SAME_IP_TRANSFER_ERROR } from '~/lib/linked-accounts.server'
+import { forfeitPromo, restorePromo, senderHasFreshDeposit, transferForfeitKey, TRANSFER_FORFEIT_NOTE, forfeitPromoForWithdraw, getTurnoverStatus, releaseReferralCommissionsAndNotify, turnoverBlockedMessage } from '~/lib/turnover.server'
 import { useT } from '~/lib/use-t'
 
 const HIDDEN = '••••••'
@@ -72,10 +74,17 @@ function toTxCreatedPayload(
 export async function loader({ request }: Route.LoaderArgs) {
   const user = await requireUser(request)
 
+  // Credit (to PROMO) any held referral commission whose referee has now lost the deposit,
+  // BEFORE reading balances so the page shows the released amount.
+  await releaseReferralCommissionsAndNotify(user.id)
+
   // Fetch both wallets in one query — avoids two sequential round trips.
-  const wallets = await prisma.wallet.findMany({
-    where: { userId: user.id, type: { in: ['REAL', 'PROMO'] } },
-  })
+  const [wallets, turnover] = await Promise.all([
+    prisma.wallet.findMany({
+      where: { userId: user.id, type: { in: ['REAL', 'PROMO'] } },
+    }),
+    getTurnoverStatus(user.id),
+  ])
   const wallet = wallets.find(w => w.type === 'REAL')
   if (!wallet) {
     throw new Response('Real wallet not found for this account.', { status: 500 })
@@ -125,7 +134,8 @@ export async function loader({ request }: Route.LoaderArgs) {
       take: PAGE_SIZE,
     }),
     prisma.transaction.findMany({
-      where: { walletId: wallet.id, type: { in: ['SYSTEM_REWARD', 'REFERRAL_BONUS'] } },
+      // By userId: SYSTEM_REWARD lands in REAL, REFERRAL_BONUS now in PROMO.
+      where: { userId: user.id, type: { in: ['SYSTEM_REWARD', 'REFERRAL_BONUS'] } },
       orderBy: { createdAt: 'desc' },
       take: PAGE_SIZE,
     }),
@@ -168,6 +178,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     balance: wallet.balance,
     pendingWithdrawTotal: pendingWithdrawAgg._sum.amount ?? 0,
     promoBalance,
+    turnover,
     totalDeposit: depositAgg._sum.amount ?? 0,
     totalWithdraw: withdrawAgg._sum.amount ?? 0,
     deposits: deposits.map(serialize),
@@ -315,6 +326,10 @@ export async function action({ request }: Route.ActionArgs) {
       if (!wallet) return { op, error: 'Real wallet not found.' }
       if (!bank) return { op, error: 'Add your bank QR code before withdrawing.' }
 
+      // Anti-abuse: deposited money must be played through before it leaves.
+      const turnover = await getTurnoverStatus(user.id)
+      if (turnover.remaining > 0) return { op, error: turnoverBlockedMessage(turnover) }
+
       // Per-day cap: completed + pending withdrawals today + this request ≤ 10,000,000 ₭.
       const withdrawnToday = todayWithdrawAgg._sum.amount ?? 0
       if (withdrawnToday + amount > MAX_WITHDRAW_PER_DAY) {
@@ -344,19 +359,26 @@ export async function action({ request }: Route.ActionArgs) {
       // PENDING — admin debits the balance only on approval. We snapshot the
       // bank QR onto the transaction (slipUrl), so a later QR change leaves
       // older requests pointing at the QR that was current when submitted.
-      const created = await prisma.transaction.create({
-        data: {
-          userId: user.id,
-          walletId: wallet.id,
-          type: 'WITHDRAW',
-          amount,
-          balanceBefore: wallet.balance,
-          balanceAfter: wallet.balance, // unchanged until approved
-          status: 'PENDING',
-          slipUrl: bank.qrUrl,
-          idempotencyKey: crypto.randomUUID(),
-          note: `Withdraw request — awaiting verification (fee ${fee.toLocaleString()} ₭, net ${net.toLocaleString()} ₭)`,
-        },
+      // The request and the PROMO forfeit are written together — requesting a
+      // withdrawal voids any remaining bonus balance (restored by the admin
+      // action if this request is rejected or reversed).
+      const created = await prisma.$transaction(async db => {
+        const row = await db.transaction.create({
+          data: {
+            userId: user.id,
+            walletId: wallet.id,
+            type: 'WITHDRAW',
+            amount,
+            balanceBefore: wallet.balance,
+            balanceAfter: wallet.balance, // unchanged until approved
+            status: 'PENDING',
+            slipUrl: bank.qrUrl,
+            idempotencyKey: crypto.randomUUID(),
+            note: `Withdraw request — awaiting verification (fee ${fee.toLocaleString()} ₭, net ${net.toLocaleString()} ₭)`,
+          },
+        })
+        await forfeitPromoForWithdraw(db, user.id, row.id)
+        return row
       })
       notifyAdmin('transaction:created', toTxCreatedPayload(created, user))
       return { op, ok: true }
@@ -388,10 +410,19 @@ export async function action({ request }: Route.ActionArgs) {
     if (!recipientTel) return { op, error: 'Recipient phone is required.' }
     if (recipientTel === user.tel) return { op, error: "You can't transfer to yourself." }
 
+    // Anti-abuse: same turnover rule as withdraw — otherwise a deposit could
+    // be moved to another account and withdrawn from there. A sender with a
+    // fresh deposit this cycle also forfeits PROMO on BOTH accounts (below).
+    const senderTurnover = await getTurnoverStatus(user.id)
+    if (senderTurnover.remaining > 0) return { op, error: turnoverBlockedMessage(senderTurnover) }
+    const forfeitBothPromos = senderHasFreshDeposit(senderTurnover)
+
     try {
       const recipient = await prisma.user.findUnique({ where: { tel: recipientTel } })
       if (!recipient) return { op, error: 'Recipient not found.' }
       if (recipient.status !== 'ACTIVE') return { op, error: "Recipient's account is not active." }
+      // Anti-abuse: no transfers between accounts registered from the same IP.
+      if (await registeredFromSameIp(user.id, recipient.id)) return { op, error: SAME_IP_TRANSFER_ERROR }
 
       const recvTx = await prisma.$transaction(async db => {
         const senderWallet = await db.wallet.findUnique({
@@ -415,7 +446,7 @@ export async function action({ request }: Route.ActionArgs) {
           where: { id: recvWallet.id },
           data: { balance: recvAfter, version: { increment: 1 } },
         })
-        await db.transaction.create({
+        const outTx = await db.transaction.create({
           data: {
             userId: user.id,
             walletId: senderWallet.id,
@@ -429,6 +460,10 @@ export async function action({ request }: Route.ActionArgs) {
             note: `Transfer to ${recipient.tel}`,
           },
         })
+        if (forfeitBothPromos) {
+          await forfeitPromo(db, user.id, transferForfeitKey(outTx.id, 'sender'), TRANSFER_FORFEIT_NOTE)
+          await forfeitPromo(db, recipient.id, transferForfeitKey(outTx.id, 'recipient'), TRANSFER_FORFEIT_NOTE)
+        }
         return db.transaction.create({
           data: {
             userId: recipient.id,
@@ -477,10 +512,19 @@ export async function action({ request }: Route.ActionArgs) {
     if (recipientTel === user.tel) return { op, error: "You can't transfer to yourself." }
     if (!/^\d{6}$/.test(code)) return { op, error: 'Code must be 6 digits.' }
 
+    // Anti-abuse: same turnover rule as withdraw — otherwise a deposit could
+    // be moved to another account and withdrawn from there. A sender with a
+    // fresh deposit this cycle also forfeits PROMO on BOTH accounts (below).
+    const senderTurnover = await getTurnoverStatus(user.id)
+    if (senderTurnover.remaining > 0) return { op, error: turnoverBlockedMessage(senderTurnover) }
+    const forfeitBothPromos = senderHasFreshDeposit(senderTurnover)
+
     try {
       const recipient = await prisma.user.findUnique({ where: { tel: recipientTel } })
       if (!recipient) return { op, error: 'Recipient not found.' }
       if (recipient.status !== 'ACTIVE') return { op, error: "Recipient's account is not active." }
+      // Anti-abuse: no transfers between accounts registered from the same IP.
+      if (await registeredFromSameIp(user.id, recipient.id)) return { op, error: SAME_IP_TRANSFER_ERROR }
 
       const codeHash = await bcrypt.hash(code, 10)
 
@@ -520,6 +564,10 @@ export async function action({ request }: Route.ActionArgs) {
             note: `Locked transfer #${transfer.id.slice(-6)} to ${recipient.tel}`,
           },
         })
+        // Recipient's PROMO is forfeited when they claim (claimTransfer).
+        if (forfeitBothPromos) {
+          await forfeitPromo(db, user.id, transferForfeitKey(`locked:${transfer.id}`, 'sender'), TRANSFER_FORFEIT_NOTE)
+        }
       })
 
 
@@ -544,6 +592,11 @@ export async function action({ request }: Route.ActionArgs) {
       if (transfer.status === 'COMPLETED') return { op, error: 'Already claimed.' }
       if (transfer.status === 'CANCELLED') return { op, error: 'Sender cancelled this transfer.' }
       if (transfer.status === 'LOCKED') return { op, error: 'Locked after too many wrong attempts. Ask the sender to cancel + resend.' }
+      // Same-IP rule also on claim — covers locked transfers created before it existed.
+      if (await registeredFromSameIp(transfer.senderId, user.id)) return { op, error: SAME_IP_TRANSFER_ERROR }
+      // Deposit → transfer: if the sender still has a fresh deposit this
+      // cycle, claiming voids PROMO on both accounts.
+      const forfeitBothPromos = senderHasFreshDeposit(await getTurnoverStatus(transfer.senderId))
 
       const ok = await bcrypt.compare(code, transfer.codeHash)
       if (!ok) {
@@ -596,6 +649,10 @@ export async function action({ request }: Route.ActionArgs) {
             note: `Locked transfer #${transfer.id.slice(-6)} claimed`,
           },
         })
+        if (forfeitBothPromos) {
+          await forfeitPromo(db, transfer.senderId, transferForfeitKey(`locked:${transfer.id}`, 'sender'), TRANSFER_FORFEIT_NOTE)
+          await forfeitPromo(db, user.id, transferForfeitKey(`locked:${transfer.id}`, 'recipient'), TRANSFER_FORFEIT_NOTE)
+        }
       })
 
       return { op, ok: true }
@@ -646,6 +703,8 @@ export async function action({ request }: Route.ActionArgs) {
             note: `Locked transfer #${transfer.id.slice(-6)} cancelled — refund`,
           },
         })
+        // Never claimed → give back the sender's PROMO forfeited at send time.
+        await restorePromo(db, transferForfeitKey(`locked:${transfer.id}`, 'sender'), 'locked transfer cancelled')
       })
 
       return { op, ok: true }
@@ -765,12 +824,16 @@ export default function WalletPage() {
     setDepositModalOpen(true)
   }
 
+  const turnover = loaderData.turnover
+  const turnoverMsg = `ທ່ານຕ້ອງຫຼິ້ນ (ວາງເດີມພັນ) ຈາກຍອດເງິນຝາກໃຫ້ຄົບກ່ອນ ຈຶ່ງຈະຖອນ ຫຼື ໂອນເງິນໄດ້. ຍັງເຫຼືອອີກ ${turnover.remaining.toLocaleString()} ₭.`
+
   function openWithdraw() {
     playClick()
     const val = parseInt(amount, 10)
     if (!val) return showError(t('wallet.errEnterAmount'))
     if (val < MIN_WITHDRAW) return showError(t('wallet.errMin', { amount: MIN_WITHDRAW.toLocaleString() }))
     if (val > MAX_WITHDRAW) return showError(t('wallet.errMax', { amount: MAX_WITHDRAW.toLocaleString() }))
+    if (loaderData.turnover.remaining > 0) return showError(turnoverMsg)
     const pendingTotal = loaderData.pendingWithdrawTotal
     const effectiveBalance = loaderData.balance - pendingTotal
     if (val > effectiveBalance) {
@@ -790,6 +853,7 @@ export default function WalletPage() {
     if (!val) return showError(t('wallet.errEnterAmount'))
     if (val < MIN_TRANSFER) return showError(t('wallet.errMin', { amount: MIN_TRANSFER.toLocaleString() }))
     if (val > MAX_TRANSFER) return showError(t('wallet.errMax', { amount: MAX_TRANSFER.toLocaleString() }))
+    if (loaderData.turnover.remaining > 0) return showError(turnoverMsg)
     if (val > loaderData.balance) return showError(t('wallet.errExceedsBalance'))
     setPendingTransferAmount(val)
     setTransferModalOpen(true)
@@ -942,6 +1006,34 @@ export default function WalletPage() {
         {/* ─── Withdraw form ────────────────────────────────────────── */}
         {tab === 'withdraw' && (
           <div className="flex flex-col gap-4">
+            {/* Turnover requirement — deposits must be played through before withdraw/transfer. */}
+            {turnover.required > 0 && (
+              <div className="flex flex-col gap-2 rounded-xl px-4 py-3 text-sm"
+                style={turnover.remaining > 0
+                  ? { background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.4)', color: '#b91c1c' }
+                  : { background: 'rgba(5,150,105,0.08)', border: '1px solid rgba(5,150,105,0.4)', color: '#047857' }}>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-bold">{turnover.remaining > 0 ? '🔒 ຍອດຫຼິ້ນທີ່ຕ້ອງການກ່ອນຖອນ' : '✅ ຍອດຫຼິ້ນຄົບແລ້ວ — ຖອນໄດ້'}</span>
+                  <span className="tabular-nums">{Math.min(turnover.wagered, turnover.required).toLocaleString()} / {turnover.required.toLocaleString()} ₭</span>
+                </div>
+                <div className="h-2 w-full overflow-hidden rounded-full" style={{ background: 'rgba(0,0,0,0.08)' }}>
+                  <div className="h-full rounded-full" style={{
+                    width: `${Math.min(100, Math.round((turnover.wagered / turnover.required) * 100))}%`,
+                    background: turnover.remaining > 0 ? '#dc2626' : '#059669',
+                  }} />
+                </div>
+                {turnover.remaining > 0 && (
+                  <span className="text-xs">ຍອດເງິນຝາກຕ້ອງຖືກນຳໄປຫຼິ້ນຢ່າງໜ້ອຍ 1 ເທົ່າ ກ່ອນຈະຖອນ ຫຼື ໂອນໄດ້. ຍັງເຫຼືອອີກ <strong>{turnover.remaining.toLocaleString()} ₭</strong>.</span>
+                )}
+              </div>
+            )}
+            {loaderData.promoBalance > 0 && (
+              <div className="flex items-center gap-2 rounded-xl px-4 py-3 text-xs"
+                style={{ background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.35)', color: '#6d28d9' }}>
+                <span className="text-base">🎁</span>
+                <span>ເມື່ອທ່ານສົ່ງຄຳຮ້ອງຖອນເງິນ, ຍອດ Promo <strong>{loaderData.promoBalance.toLocaleString()} ₭</strong> ທີ່ເຫຼືອຈະຖືກຍົກເລີກ.</span>
+              </div>
+            )}
             <div className="flex items-center gap-2 rounded-xl px-4 py-3 text-sm"
               style={{ background: 'rgba(180,83,9,0.15)', border: '1px solid rgba(252,211,77,0.4)', color: '#b45309' }}>
               <span className="text-base">⚠️</span>
@@ -968,6 +1060,13 @@ export default function WalletPage() {
         {/* ─── Transfer form + pending lists ────────────────────────── */}
         {tab === 'transfer' && (
           <div className="flex flex-col gap-4">
+            {turnover.required > 0 && (
+              <div className="flex items-center gap-2 rounded-xl px-4 py-3 text-xs"
+                style={{ background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.35)', color: '#6d28d9' }}>
+                <span className="text-base">🎁</span>
+                <span>ການໂອນເງິນທີ່ມາຈາກຍອດເງິນຝາກ ຈະເຮັດໃຫ້ຍອດ Promo ທີ່ເຫຼືອ <strong>ທັງບັນຊີຜູ້ໂອນ ແລະ ບັນຊີຜູ້ຮັບ</strong> ຖືກຍົກເລີກ.</span>
+              </div>
+            )}
             <QuickAmounts amounts={TRANSFER_AMOUNTS} value={amount} onSelect={setAmount} />
             <CustomAmountInput value={amount} onChange={setAmount} />
             <button

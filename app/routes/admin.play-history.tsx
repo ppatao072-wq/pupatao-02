@@ -28,6 +28,7 @@ const TYPE_LABEL_KEYS: Record<string, StringKey> = {
   PROMO_BONUS: 'admin.playHistory.txType.promoBonus', REFERRAL_BONUS: 'admin.playHistory.txType.referralBonus',
   WITHDRAW: 'admin.playHistory.txType.withdraw', LOSS: 'admin.playHistory.txType.loss', TRANSFER_OUT: 'admin.playHistory.txType.transferOut',
   DEMO_RESET: 'admin.playHistory.txType.demoReset', ADJUSTMENT: 'admin.playHistory.txType.adjustment',
+  PROMO_FORFEIT: 'admin.playHistory.txType.promoForfeit',
 }
 
 function typeLabel(t: ReturnType<typeof useT>, type: string): string {

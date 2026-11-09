@@ -61,6 +61,7 @@ export const ADMIN_WALLET_STRINGS = {
   "admin.wallet.type.transferIn": { lo: "ໂອນເຂົ້າ", en: "Transfer received" },
   "admin.wallet.type.promoBonus": { lo: "ໂບນັດໂປຣໂມ", en: "Promo bonus" },
   "admin.wallet.type.referralBonus": { lo: "ໂບນັດແນະນຳ", en: "Referral bonus" },
+  "admin.wallet.type.promoForfeit": { lo: "ຍົກເລີກ Promo (ຖອນເງິນ)", en: "Promo forfeited" },
   "admin.wallet.type.withdraw": { lo: "ຖອນເງິນ", en: "Withdraw" },
   "admin.wallet.type.loss": { lo: "ເສຍ (ເດີມພັນແພ້)", en: "Loss (lost bets)" },
   "admin.wallet.type.transferOut": { lo: "ໂອນອອກ", en: "Transfer sent" },

@@ -12,6 +12,8 @@ import { ConfirmDialog } from '~/components/ConfirmDialog'
 import { isValidRejectReason, rejectReasonsFor } from '~/lib/reject-reasons'
 import { withdrawFee } from '~/lib/withdraw-fee'
 import { getReferralConfigFresh } from '~/lib/system-settings.server'
+import { cancelHeldReferralCommission, forfeitPromoForWithdraw, referralKey, restorePromoForWithdraw } from '~/lib/turnover.server'
+import { registeredFromSameIp } from '~/lib/linked-accounts.server'
 import { escapeSearchTerm } from '~/lib/search'
 import { useT, useLocale } from '~/lib/use-t'
 import { t as translate, parseLocaleCookie, type StringKey } from '~/lib/i18n'
@@ -274,8 +276,8 @@ export async function action({ request }: Route.ActionArgs) {
       if (tx.type !== 'DEPOSIT' && tx.type !== 'WITHDRAW') return { error: translate(locale, 'admin.transactions.error.onlyDepositWithdrawRejectable') }
       if (!isValidRejectReason(tx.type, reason)) return { error: translate(locale, 'admin.transactions.error.selectRejectReason') }
 
-      const [updated] = await prisma.$transaction([
-        prisma.transaction.update({
+      const [updated] = await prisma.$transaction(async db => [
+        await db.transaction.update({
           where: { id: tx.id },
           data: {
             status: 'CANCELLED',
@@ -288,7 +290,7 @@ export async function action({ request }: Route.ActionArgs) {
             reviewedAt: new Date(),
           },
         }),
-        prisma.auditLog.create({
+        await db.auditLog.create({
           data: {
             actorId: admin.id,
             action: tx.type === 'DEPOSIT' ? 'deposit.reject' : 'withdraw.reject',
@@ -296,6 +298,8 @@ export async function action({ request }: Route.ActionArgs) {
             metadata: { rejectReasonCode: reason },
           },
         }),
+        // Withdrawal rejected → give back the PROMO balance forfeited when it was requested.
+        tx.type === 'WITHDRAW' ? await restorePromoForWithdraw(db, tx.id) : 0,
       ])
       notifyUser(tx.userId, 'transaction:updated', {
         id: updated.id,
@@ -327,6 +331,10 @@ export async function action({ request }: Route.ActionArgs) {
           where: { id: wallet.id },
           data: { balance: newBalance, version: { increment: 1 } },
         })
+        // Deposit reversed → its still-held referral commission is void.
+        // Withdraw reversed → restore the PROMO forfeited by that request.
+        if (tx.type === 'DEPOSIT') await cancelHeldReferralCommission(db, tx.id)
+        else await restorePromoForWithdraw(db, tx.id)
         const u = await db.transaction.update({
           where: { id: tx.id },
           data: {
@@ -382,6 +390,15 @@ export async function action({ request }: Route.ActionArgs) {
     // is rare/human-paced, so the extra DB round-trip is cheap insurance.
     const referralConfig = tx.type === 'DEPOSIT' ? await getReferralConfigFresh() : { enabled: false, percent: 0 }
 
+    // Anti-abuse: referrer and referee registered from the same IP → no
+    // commission at all (self-referral via a second account). Resolved outside
+    // the transaction — the IP lookup may backfill User.registerIp.
+    let referralSameIp = false
+    if (tx.type === 'DEPOSIT') {
+      const referee = await prisma.user.findUnique({ where: { id: tx.userId }, select: { referredById: true } })
+      if (referee?.referredById) referralSameIp = await registeredFromSameIp(tx.userId, referee.referredById)
+    }
+
     const result = await prisma.$transaction(async db => {
       const wallet = await db.wallet.findUnique({ where: { id: tx.walletId } })
       if (!wallet) throw new Error(translate(locale, 'admin.transactions.error.walletNotFound'))
@@ -424,11 +441,15 @@ export async function action({ request }: Route.ActionArgs) {
         },
       })
 
-      const bonus = { promo: 0, promoNewBalance: 0, referrer: { userId: '', amount: 0, newRealBalance: 0, refereeTel: '' } }
+      const bonus = { promo: 0, promoNewBalance: 0 }
       // Capture pre-deposit balance so the phase reset (run after this
       // transaction) knows whether the wallet was nearly empty.
       const walletBalanceBefore = wallet.balance
       const walletType = wallet.type
+
+      if (tx.type === 'WITHDRAW' && isReapprove) {
+        await forfeitPromoForWithdraw(db, tx.userId, tx.id)
+      }
 
       if (tx.type === 'DEPOSIT') {
         const user = await db.user.findUnique({
@@ -465,20 +486,32 @@ export async function action({ request }: Route.ActionArgs) {
         // Referral commission — while the campaign is enabled, the referrer
         // earns `percent`% of EVERY approved deposit their referee makes (not
         // just the first), for as long as admin leaves the campaign on.
-        if (user?.referredById && referralConfig.enabled && referralConfig.percent > 0) {
+        //
+        // Anti-abuse: the commission is HELD (PENDING, wallet not credited)
+        // until the referee has wagered AND lost this deposit — see
+        // releaseReferralCommissions() in turnover.server.ts. Keyed by the
+        // deposit id so a reverse → re-approve cycle never pays it twice.
+        const existingCommission = user?.referredById
+          ? await db.transaction.findUnique({ where: { idempotencyKey: referralKey(tx.id) }, select: { id: true, status: true } })
+          : null
+        if (existingCommission?.status === 'CANCELLED' && !referralSameIp) {
+          // Deposit was reversed earlier and is now re-approved — re-hold it.
+          await db.transaction.update({ where: { id: existingCommission.id }, data: { status: 'PENDING', reviewedAt: null } })
+        }
+        if (user?.referredById && !existingCommission && !referralSameIp && referralConfig.enabled && referralConfig.percent > 0) {
           const commission = Math.floor(effectiveAmount * referralConfig.percent / 100)
           if (commission > 0) {
-            const refReal = await db.wallet.findUnique({
-              where: { userId_type: { userId: user.referredById, type: 'REAL' } },
+            // Commission is paid into the referrer's PROMO wallet (bonus credit,
+            // only spendable by betting) — never straight to withdrawable REAL.
+            const refPromo = await db.wallet.findUnique({
+              where: { userId_type: { userId: user.referredById, type: 'PROMO' } },
             })
-            if (refReal) {
-              const refNew = refReal.balance + commission
-              await db.wallet.update({ where: { id: refReal.id }, data: { balance: refNew, version: { increment: 1 } } })
+            if (refPromo) {
               await db.transaction.create({
                 data: {
-                  userId: user.referredById, walletId: refReal.id, type: 'REFERRAL_BONUS',
-                  amount: commission, balanceBefore: refReal.balance, balanceAfter: refNew,
-                  status: 'COMPLETED', targetUserId: tx.userId, idempotencyKey: crypto.randomUUID(),
+                  userId: user.referredById, walletId: refPromo.id, type: 'REFERRAL_BONUS',
+                  amount: commission, balanceBefore: refPromo.balance, balanceAfter: refPromo.balance,
+                  status: 'PENDING', targetUserId: tx.userId, idempotencyKey: referralKey(tx.id),
                   // Customer-facing (Reward tab) — Lao, matching the default
                   // customer locale, with the referee's phone number so the
                   // referrer knows exactly who earned them this commission.
@@ -489,7 +522,6 @@ export async function action({ request }: Route.ActionArgs) {
                   note: `ຄອມມິຊັນແນະນຳ ${referralConfig.percent}% — ${user.tel}`,
                 },
               })
-              bonus.referrer = { userId: user.referredById, amount: commission, newRealBalance: refNew, refereeTel: user.tel }
             }
           }
         }
@@ -529,13 +561,6 @@ export async function action({ request }: Route.ActionArgs) {
         id: `promo-bonus:${updated.id}`, status: 'COMPLETED', type: 'DEPOSIT',
         amount: bonus.promo, balanceAfter: bonus.promoNewBalance,
         note: `First-topup bonus +${bonus.promo.toLocaleString()} ₭ to promo wallet`,
-      })
-    }
-    if (bonus.referrer.userId) {
-      notifyUser(bonus.referrer.userId, 'transaction:updated', {
-        id: `referral-bonus:${updated.id}`, status: 'COMPLETED', type: 'DEPOSIT',
-        amount: bonus.referrer.amount, balanceAfter: bonus.referrer.newRealBalance,
-        note: `ຄອມມິຊັນ +${bonus.referrer.amount.toLocaleString()} ₭ — ${bonus.referrer.refereeTel} ຝາກເງິນສຳເລັດ`,
       })
     }
     return { ok: true }

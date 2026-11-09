@@ -5,6 +5,7 @@ import { prisma } from '~/lib/prisma.server'
 import { createUserSession, getCurrentUser, hashPassword } from '~/lib/auth.server'
 import { notifyAdmin } from '~/lib/pusher.server'
 import { generateUniqueReferralCode, resolveReferralCode } from '~/lib/referral.server'
+import { getClientIp } from '~/lib/linked-accounts.server'
 import { LoginModal } from '~/components/LoginModal'
 import { RegisterModal } from '~/components/RegisterModal'
 
@@ -46,6 +47,7 @@ export async function action({ request }: Route.ActionArgs) {
         passwordHash,
         referralCode,
         referredById,
+        registerIp: getClientIp(request),
         wallets: {
           create: [
             { type: 'DEMO', balance: 1_000_000 },

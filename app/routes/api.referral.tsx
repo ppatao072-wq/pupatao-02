@@ -1,5 +1,6 @@
 import type { Route } from './+types/api.referral'
 import { prisma } from '~/lib/prisma.server'
+import { releaseReferralCommissionsAndNotify } from '~/lib/turnover.server'
 import { buildReferralShareUrl, generateUniqueReferralCode } from '~/lib/referral.server'
 import { getReferralConfig } from '~/lib/system-settings.server'
 
@@ -23,6 +24,8 @@ export async function loader({ request }: Route.LoaderArgs) {
       await prisma.user.update({ where: { id: user.id }, data: { referralCode: code } }).catch(() => { /* best effort */ })
     }
     const shareUrl = buildReferralShareUrl(request, code)
+    // Credit held commission whose referee has met turnover before totalling.
+    await releaseReferralCommissionsAndNotify(user.id)
     const [referrals, commissionAgg, campaign] = await Promise.all([
       prisma.user.findMany({
         where: { referredById: user.id },
@@ -34,7 +37,7 @@ export async function loader({ request }: Route.LoaderArgs) {
       // single paid/pending badge no longer tells the whole story.
       prisma.transaction.groupBy({
         by: ['targetUserId'],
-        where: { type: 'REFERRAL_BONUS', userId: user.id },
+        where: { type: 'REFERRAL_BONUS', status: 'COMPLETED', userId: user.id },
         _sum: { amount: true },
       }),
       getReferralConfig(),
