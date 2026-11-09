@@ -32,6 +32,8 @@ export interface TurnoverStatus {
   required: number
   wagered: number
   remaining: number
+  /** Settled REAL bets placed since the cycle start (any size). */
+  settledBets: number
 }
 
 /** Credits that arrived at/after `since` — by approval time, falling back to creation. */
@@ -90,11 +92,11 @@ export async function getTurnoverStatus(userId: string, db: Db = prisma): Promis
       select: { createdAt: true },
     }),
   ])
-  if (!realWallet) return { required: 0, wagered: 0, remaining: 0 }
+  if (!realWallet) return { required: 0, wagered: 0, remaining: 0, settledBets: 0 }
   const lastAt = lastWithdraw?.createdAt ?? null
   const since = !lastAt || lastAt < TURNOVER_START ? TURNOVER_START : lastAt
 
-  const [credits, wagered] = await Promise.all([
+  const [credits, wagered, settledBets] = await Promise.all([
     db.transaction.aggregate({
       where: {
         walletId: realWallet.id,
@@ -105,14 +107,29 @@ export async function getTurnoverStatus(userId: string, db: Db = prisma): Promis
       _sum: { amount: true },
     }),
     wageredSince(db, userId, realWallet.id, since),
+    db.bet.count({ where: { userId, walletId: realWallet.id, result: { in: ['WIN', 'LOSS'] }, createdAt: { gt: since } } }),
   ])
   const required = (credits._sum.amount ?? 0) * TURNOVER_MULTIPLIER
-  return { required, wagered, remaining: Math.max(0, required - wagered) }
+  return { required, wagered, remaining: Math.max(0, required - wagered), settledBets }
 }
 
-/** Lao message shown when a withdraw / transfer is blocked by turnover. */
+/**
+ * WITHDRAW rule (looser than transfer): after a deposit, the user only needs
+ * to have placed at least ONE settled REAL bet. The PROMO forfeit on
+ * withdrawal and the held referral commission cover the bonus side.
+ * TRANSFERS still require full turnover (`remaining === 0`).
+ */
+export function withdrawBlocked(s: TurnoverStatus): boolean {
+  return s.required > 0 && s.settledBets === 0
+}
+
+/** Lao message shown when a withdraw is blocked (no bet since deposit). */
+export const WITHDRAW_NEEDS_BET_MESSAGE =
+  'ທ່ານຕ້ອງຫຼິ້ນ (ວາງເດີມພັນ) ດ້ວຍຍອດເງິນຈິງຢ່າງໜ້ອຍ 1 ຄັ້ງ ຫຼັງຈາກຝາກເງິນ ຈຶ່ງຈະຖອນໄດ້.'
+
+/** Lao message shown when a transfer is blocked by turnover. */
 export function turnoverBlockedMessage(s: TurnoverStatus): string {
-  return `ທ່ານຕ້ອງຫຼິ້ນ (ວາງເດີມພັນ) ຈາກຍອດເງິນຝາກໃຫ້ຄົບກ່ອນ ຈຶ່ງຈະຖອນ ຫຼື ໂອນເງິນໄດ້. ຍັງເຫຼືອອີກ ${s.remaining.toLocaleString()} ₭ (ຫຼິ້ນແລ້ວ ${s.wagered.toLocaleString()} / ${s.required.toLocaleString()} ₭).`
+  return `ທ່ານຕ້ອງຫຼິ້ນ (ວາງເດີມພັນ) ຈາກຍອດເງິນຝາກໃຫ້ຄົບກ່ອນ ຈຶ່ງຈະໂອນເງິນໄດ້. ຍັງເຫຼືອອີກ ${s.remaining.toLocaleString()} ₭ (ຫຼິ້ນແລ້ວ ${s.wagered.toLocaleString()} / ${s.required.toLocaleString()} ₭).`
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
