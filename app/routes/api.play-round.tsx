@@ -1,5 +1,5 @@
 import type { Route } from './+types/api.play-round'
-import type { DiceSymbol, RangeKey, BetResult } from '@prisma/client'
+import type { DiceSymbol, RangeKey, BetResult, Prisma } from '@prisma/client'
 import { prisma } from '~/lib/prisma.server'
 import { notifyAdmin, notifyAdminBatch, notifyUser } from '~/lib/pusher.server'
 import type { BetPlacedPayload } from '~/lib/pusher-channels'
@@ -9,8 +9,40 @@ import {
   payoutForSymbol, payoutForRange, payoutForPair, payoutForSum,
   pickAdversarialDice, getPayoutConfig, type PayoutConfig,
 } from '~/lib/game-logic.server'
+import { SELF_PLAY_ENABLED } from '~/lib/features'
 
 const MAX_BET_PER_ROUND = 10_000_000
+
+// Thrown inside a transaction when the atomic stake debit finds the wallet
+// short. Caught by the action and returned as a 400 (not a 500).
+class InsufficientBalanceError extends Error {}
+
+// Atomically debit `amount` from a wallet ONLY if it still holds at least that
+// much. A conditional update (balance >= amount) is evaluated by MongoDB on the
+// document itself, so two concurrent bets can never both spend the same money —
+// unlike "read balance → check → write absolute balance", where parallel
+// requests all pass the check against the same stale value.
+// Returns the balance before and after the debit.
+async function debitStakeOrThrow(
+  db: Prisma.TransactionClient,
+  walletId: string,
+  amount: number,
+  walletKey: WalletKey,
+): Promise<{ before: number; after: number }> {
+  const res = await db.wallet.updateMany({
+    where: { id: walletId, balance: { gte: amount } },
+    data: { balance: { decrement: amount }, version: { increment: 1 } },
+  })
+  if (res.count === 0) {
+    const w = await db.wallet.findUnique({ where: { id: walletId }, select: { balance: true } })
+    throw new InsufficientBalanceError(
+      `Insufficient ${walletKey} balance: ${(w?.balance ?? 0).toLocaleString()} ₭ available, ${amount.toLocaleString()} ₭ requested.`,
+    )
+  }
+  const w = await db.wallet.findUnique({ where: { id: walletId }, select: { balance: true } })
+  const after = w?.balance ?? 0
+  return { before: after + amount, after }
+}
 
 // LIVE per-betting-target caps (per round). A "target" is a single symbol,
 // range, exact-sum number, or pair combo. One user may stake at most
@@ -119,6 +151,13 @@ export async function action({ request }: Route.ActionArgs) {
   if ('error' in parsed) return Response.json(parsed, { status: 400 })
   const { mode, wallet: walletKey, bets } = parsed
 
+  // Self-play is switched off globally. The UI hides it, but this endpoint must
+  // refuse it too — otherwise a hand-crafted request could still play RANDOM
+  // rounds (bypassing sleep mode, competition locks and the feature flag).
+  if (mode === 'RANDOM' && !SELF_PLAY_ENABLED) {
+    return Response.json({ error: 'Self-play is currently disabled.' }, { status: 403 })
+  }
+
   const symbolBets = bets.symbol ?? []
   const rangeBets = bets.range ?? []
   const pairBets = bets.pair ?? []
@@ -201,6 +240,9 @@ export async function action({ request }: Route.ActionArgs) {
       symbolBets, rangeBets, pairBets,
     })
   } catch (err) {
+    if (err instanceof InsufficientBalanceError) {
+      return Response.json({ error: err.message }, { status: 400 })
+    }
     console.error('[api/play-round]', err)
     const isConn =
       err instanceof Error &&
@@ -259,13 +301,16 @@ async function handleRandomRound(args: {
     })
   }
   const netDelta = totalPayout - totalStake
-  // newBalance is the source-wallet's resulting balance — for PROMO that's
-  // (start − totalStake + promoStakeReturn); for DEMO/REAL it's start + netDelta.
-  const newBalance = isPromo
-    ? wallet.balance - totalStake + promoStakeReturn
-    : wallet.balance + netDelta
+  // What goes back into the SOURCE wallet: for PROMO only the winning stakes
+  // (profit is credited to REAL); for DEMO/REAL the full gross payout.
+  const sourceCredit = isPromo ? promoStakeReturn : totalPayout
 
   const result = await prisma.$transaction(async db => {
+    // Debit FIRST, atomically — fails the whole round if the wallet is short.
+    const { before: balanceBefore, after: balanceAfterStake } =
+      await debitStakeOrThrow(db, wallet.id, totalStake, walletKey)
+    const newBalance = balanceAfterStake + sourceCredit
+
     const round = await db.gameRound.create({
       data: {
         mode: 'RANDOM',
@@ -313,17 +358,19 @@ async function handleRandomRound(args: {
     })
     await Promise.all(betWrites)
 
-    // Source wallet (DEMO/REAL/PROMO) — debit/credit per the rule above.
-    await db.wallet.update({
-      where: { id: wallet.id },
-      data: { balance: newBalance, version: { increment: 1 } },
-    })
+    // Source wallet (DEMO/REAL/PROMO) — credit back per the rule above, as an
+    // increment on top of the already-debited balance (never an absolute write).
+    if (sourceCredit > 0) {
+      await db.wallet.update({
+        where: { id: wallet.id },
+        data: { balance: { increment: sourceCredit }, version: { increment: 1 } },
+      })
+    }
 
-    const balanceAfterStake = wallet.balance - totalStake
     await db.transaction.create({
       data: {
         userId: user.id, walletId: wallet.id, type: 'LOSS',
-        amount: totalStake, balanceBefore: wallet.balance, balanceAfter: balanceAfterStake,
+        amount: totalStake, balanceBefore, balanceAfter: balanceAfterStake,
         status: 'COMPLETED', roundId: round.id, idempotencyKey: crypto.randomUUID(),
         note: 'Self-play round stake',
       },
@@ -346,15 +393,15 @@ async function handleRandomRound(args: {
           where: { userId_type: { userId: user.id, type: 'REAL' } },
         })
         if (realWallet) {
-          const newRealBalance = realWallet.balance + realProfit
-          await db.wallet.update({
+          const updatedReal = await db.wallet.update({
             where: { id: realWallet.id },
-            data: { balance: newRealBalance, version: { increment: 1 } },
+            data: { balance: { increment: realProfit }, version: { increment: 1 } },
+            select: { balance: true },
           })
           await db.transaction.create({
             data: {
               userId: user.id, walletId: realWallet.id, type: 'WIN',
-              amount: realProfit, balanceBefore: realWallet.balance, balanceAfter: newRealBalance,
+              amount: realProfit, balanceBefore: updatedReal.balance - realProfit, balanceAfter: updatedReal.balance,
               status: 'COMPLETED', roundId: round.id, idempotencyKey: crypto.randomUUID(),
               note: 'Self-play round — PROMO profit credited to REAL',
             },
@@ -372,7 +419,7 @@ async function handleRandomRound(args: {
       })
     }
 
-    return { roundId: round.id }
+    return { roundId: round.id, newBalance }
   })
 
   // RANDOM rounds resolve immediately — emit one round:resolved event (not the
@@ -394,7 +441,7 @@ async function handleRandomRound(args: {
     stake: totalStake,
     payout: totalPayout,
     net: netDelta,
-    balance: newBalance,
+    balance: result.newBalance,
     placedAt,
   })
 }
@@ -475,11 +522,8 @@ async function handleLiveBets(args: {
   const placedAtIso = placedAt.toISOString()
   const userName = [user.firstName, user.lastName].filter(Boolean).join(' ') || null
 
-  // Build the realtime payloads from the validated INPUT (not from the DB) so we
-  // can broadcast them to the admin IN PARALLEL with the DB write below. The
-  // admin then sees the bet within one Pusher round-trip instead of waiting for
-  // the (slower) MongoDB transaction to commit — critical for last-second bets
-  // the admin must see before settling the round.
+  // Realtime payloads for the admin Live board, built from the validated input.
+  // Sent only AFTER the DB transaction below commits (see there for why).
   const betShapes: Array<{ kind: 'SYMBOL' | 'RANGE' | 'PAIR' | 'SUM'; amount: number; symbol: DiceSymbol | null; range: RangeKey | null; pairA: DiceSymbol | null; pairB: DiceSymbol | null; exactSum: number | null }> = [
     ...symbolBets.map(b => ({ kind: 'SYMBOL' as const, amount: b.amount, symbol: b.symbol, range: null, pairA: null, pairB: null, exactSum: null })),
     ...rangeBets.map(b => ({ kind: 'RANGE' as const, amount: b.amount, symbol: null, range: b.range, pairA: null, pairB: null, exactSum: null })),
@@ -498,55 +542,47 @@ async function handleLiveBets(args: {
     } satisfies BetPlacedPayload,
   }))
 
-  // Persist (source of truth) and broadcast (best-effort) concurrently. The
-  // broadcast is wrapped in .catch so a Pusher hiccup never fails the bet.
-  const [result] = await Promise.all([
-    prisma.$transaction(async db => {
-      // Re-read wallet inside the tx to guard against double-spend if the user
-      // submits two bet payloads in quick succession.
-      const fresh = await db.wallet.findUnique({ where: { id: wallet.id } })
-      if (!fresh) throw new Error('Wallet not found.')
-      if (fresh.balance < totalStake) {
-        throw new Error(`Insufficient ${args.walletKey} balance: ${fresh.balance.toLocaleString()} ₭ available, ${totalStake.toLocaleString()} ₭ requested.`)
-      }
+  // Persist FIRST, then broadcast. The admin Live page must only ever show bets
+  // that actually exist: broadcasting in parallel with the write meant a bet
+  // the DB rejected (insufficient balance, write conflict) still popped up on
+  // the admin board, looking like a zero-balance customer had bet.
+  const result = await prisma.$transaction(async db => {
+    // Atomic conditional debit — the stake leaves the wallet only if the wallet
+    // still holds it, so parallel submissions can't overspend.
+    const { before, after: newBalance } = await debitStakeOrThrow(db, wallet.id, totalStake, args.walletKey)
 
-      const newBalance = fresh.balance - totalStake
+    // Create all bets in parallel — reduces DB round trips from N sequential to 1 parallel batch.
+    await Promise.all([
+      ...symbolBets.map(b => db.bet.create({
+        data: { roundId: openRound.id, userId: user.id, walletId: wallet.id, walletType: args.walletKey, kind: 'SYMBOL', amount: b.amount, symbol: b.symbol, cell: b.cell },
+      })),
+      ...rangeBets.map(b => db.bet.create({
+        data: { roundId: openRound.id, userId: user.id, walletId: wallet.id, walletType: args.walletKey, kind: 'RANGE', amount: b.amount, range: b.range },
+      })),
+      ...pairBets.map(b => db.bet.create({
+        data: { roundId: openRound.id, userId: user.id, walletId: wallet.id, walletType: args.walletKey, kind: 'PAIR', amount: b.amount, pairA: b.symbolA, pairB: b.symbolB, cellA: b.cellA, cellB: b.cellB },
+      })),
+      ...sumBets.map(b => db.bet.create({
+        data: { roundId: openRound.id, userId: user.id, walletId: wallet.id, walletType: args.walletKey, kind: 'SUM', amount: b.amount, exactSum: b.sum },
+      })),
+    ])
 
-      // Create all bets in parallel — reduces DB round trips from N sequential to 1 parallel batch.
-      await Promise.all([
-        ...symbolBets.map(b => db.bet.create({
-          data: { roundId: openRound.id, userId: user.id, walletId: wallet.id, walletType: args.walletKey, kind: 'SYMBOL', amount: b.amount, symbol: b.symbol, cell: b.cell },
-        })),
-        ...rangeBets.map(b => db.bet.create({
-          data: { roundId: openRound.id, userId: user.id, walletId: wallet.id, walletType: args.walletKey, kind: 'RANGE', amount: b.amount, range: b.range },
-        })),
-        ...pairBets.map(b => db.bet.create({
-          data: { roundId: openRound.id, userId: user.id, walletId: wallet.id, walletType: args.walletKey, kind: 'PAIR', amount: b.amount, pairA: b.symbolA, pairB: b.symbolB, cellA: b.cellA, cellB: b.cellB },
-        })),
-        ...sumBets.map(b => db.bet.create({
-          data: { roundId: openRound.id, userId: user.id, walletId: wallet.id, walletType: args.walletKey, kind: 'SUM', amount: b.amount, exactSum: b.sum },
-        })),
-      ])
+    await db.transaction.create({
+      data: {
+        userId: user.id, walletId: wallet.id, type: 'LOSS',
+        amount: totalStake, balanceBefore: before, balanceAfter: newBalance,
+        status: 'COMPLETED', roundId: openRound.id, idempotencyKey: crypto.randomUUID(),
+        note: 'Live round stake',
+      },
+    })
 
-      await db.wallet.update({
-        where: { id: wallet.id },
-        data: { balance: newBalance, version: { increment: 1 } },
-      })
-      await db.transaction.create({
-        data: {
-          userId: user.id, walletId: wallet.id, type: 'LOSS',
-          amount: totalStake, balanceBefore: fresh.balance, balanceAfter: newBalance,
-          status: 'COMPLETED', roundId: openRound.id, idempotencyKey: crypto.randomUUID(),
-          note: 'Live round stake',
-        },
-      })
+    return { roundId: openRound.id, newBalance }
+  })
 
-      return { roundId: openRound.id, newBalance }
-    }),
-    betEvents.length > 0
-      ? notifyAdminBatch(betEvents).catch(err => { console.error('[live-bet] realtime broadcast failed', err) })
-      : Promise.resolve(),
-  ])
+  // Best-effort realtime — only after commit. A Pusher hiccup never fails the bet.
+  if (betEvents.length > 0) {
+    await notifyAdminBatch(betEvents).catch(err => { console.error('[live-bet] realtime broadcast failed', err) })
+  }
 
   return Response.json({
     ok: true,

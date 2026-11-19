@@ -2602,9 +2602,9 @@ export default function FishPrawnCrabGame() {
     setPendingCell(null)
     setLastBetTotal(betTotal)
     soundEnabled && playClick()
-    toast.success(t('live.betsPlacedTitle'), {
-      description: t('live.betsPlacedDesc', { amount: betTotal.toLocaleString() }),
-    })
+    // The "bets placed" toast is shown only once the server confirms (see the
+    // playRoundFetcher effect below) — never optimistically, so a rejected bet
+    // (e.g. insufficient balance) doesn't first flash as a success.
   }, [mode, livePhase, authUser, hasAnyBet, currentBets, currentRangeBets, currentPairBets, currentSumBets, user.activeWallet, playRoundFetcher, soundEnabled, t])
 
   // RANDOM mode: apply the result once animation is done.
@@ -2656,15 +2656,25 @@ export default function FishPrawnCrabGame() {
     }
   }, [rollAnimationDone, playRoundFetcher.state, playRoundFetcher.data, applyResult, revalidator, stopRollSound])
 
-  // LIVE mode only: show server errors (insufficient balance, no open round, betting closed).
+  // LIVE mode only: confirm placed bets / show server errors (insufficient
+  // balance, no open round, betting closed). Each response is handled once.
+  const handledPlayRoundData = useRef<unknown>(null)
   useEffect(() => {
     if (playRoundFetcher.state !== 'idle') return
     const data = playRoundFetcher.data
-    if (!data) return
+    if (!data || handledPlayRoundData.current === data) return
+    handledPlayRoundData.current = data
     if (mode === 'live') {
       if (data.error) {
         toast.error(t('live.betNotPlaced'), { description: data.error })
+        // Staged chips already lowered the local balance — re-sync it with the
+        // server, since the stake was NOT taken.
+        revalidator.revalidate()
       } else if (data.ok) {
+        const stake = (data as { stake?: number }).stake ?? 0
+        toast.success(t('live.betsPlacedTitle'), {
+          description: t('live.betsPlacedDesc', { amount: stake.toLocaleString() }),
+        })
         revalidator.revalidate()
       }
     }

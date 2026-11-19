@@ -13,6 +13,9 @@ import {
 } from '~/lib/game-logic.server'
 import { verifyRoundToken } from '~/lib/round-token.server'
 import { SELF_PLAY_ENABLED } from '~/lib/features'
+import { createHash } from 'node:crypto'
+
+class InsufficientBalanceError extends Error {}
 
 type WalletKey = 'DEMO' | 'REAL' | 'PROMO'
 
@@ -78,6 +81,11 @@ export async function action({ request }: { request: Request }) {
     rangePayouts.reduce((a, b) => a + b, 0) +
     pairPayouts.reduce((a, b) => a + b, 0)
 
+  // One token = one round. The stake ledger row is keyed by a hash of the
+  // token, and idempotencyKey is @unique, so replaying the same token (to
+  // collect a winning result twice) fails inside the transaction.
+  const tokenKey = 'selfplay:' + createHash('sha256').update((raw as { token: string }).token).digest('hex')
+
   try {
     const wallet = await prisma.wallet.findUnique({
       where: { userId_type: { userId: user.id, type: walletKey } },
@@ -95,11 +103,24 @@ export async function action({ request }: { request: Request }) {
       pairBets.forEach((b, i)   => { if (pairPayouts[i] > 0)   { promoStakeReturn += b.amount; realProfit += pairPayouts[i] - b.amount } })
     }
     const netDelta  = totalPayout - totalStake
-    const newBalance = isPromo
-      ? wallet.balance - totalStake + promoStakeReturn
-      : wallet.balance + netDelta
+    // Back into the SOURCE wallet: winning stakes only for PROMO (profit → REAL),
+    // full gross payout for DEMO/REAL.
+    const sourceCredit = isPromo ? promoStakeReturn : totalPayout
 
     const result = await prisma.$transaction(async db => {
+      // Atomic conditional debit: only succeeds if the wallet still holds the
+      // stake, so concurrent saves can't overspend (the check above is just a
+      // fast pre-filter; this is the real guard).
+      const debit = await db.wallet.updateMany({
+        where: { id: wallet.id, balance: { gte: totalStake } },
+        data: { balance: { decrement: totalStake }, version: { increment: 1 } },
+      })
+      if (debit.count === 0) throw new InsufficientBalanceError('Insufficient balance.')
+      const afterDebit = await db.wallet.findUnique({ where: { id: wallet.id }, select: { balance: true } })
+      const balanceAfterStake = afterDebit?.balance ?? 0
+      const balanceBefore = balanceAfterStake + totalStake
+      const newBalance = balanceAfterStake + sourceCredit
+
       const round = await db.gameRound.create({
         data: {
           mode: 'RANDOM', status: 'RESOLVED',
@@ -134,16 +155,17 @@ export async function action({ request }: { request: Request }) {
       })
       await Promise.all(writes)
 
-      await db.wallet.update({
-        where: { id: wallet.id },
-        data: { balance: newBalance, version: { increment: 1 } },
-      })
+      if (sourceCredit > 0) {
+        await db.wallet.update({
+          where: { id: wallet.id },
+          data: { balance: { increment: sourceCredit }, version: { increment: 1 } },
+        })
+      }
 
-      const balanceAfterStake = wallet.balance - totalStake
       await db.transaction.create({ data: {
         userId: user!.id, walletId: wallet.id, type: 'LOSS',
-        amount: totalStake, balanceBefore: wallet.balance, balanceAfter: balanceAfterStake,
-        status: 'COMPLETED', roundId: round.id, idempotencyKey: crypto.randomUUID(),
+        amount: totalStake, balanceBefore, balanceAfter: balanceAfterStake,
+        status: 'COMPLETED', roundId: round.id, idempotencyKey: tokenKey,
         note: 'Self-play round stake',
       }})
 
@@ -159,11 +181,14 @@ export async function action({ request }: { request: Request }) {
         if (realProfit > 0) {
           const realWallet = await db.wallet.findUnique({ where: { userId_type: { userId: user!.id, type: 'REAL' } } })
           if (realWallet) {
-            const newReal = realWallet.balance + realProfit
-            await db.wallet.update({ where: { id: realWallet.id }, data: { balance: newReal, version: { increment: 1 } } })
+            const updatedReal = await db.wallet.update({
+              where: { id: realWallet.id },
+              data: { balance: { increment: realProfit }, version: { increment: 1 } },
+              select: { balance: true },
+            })
             await db.transaction.create({ data: {
               userId: user!.id, walletId: realWallet.id, type: 'WIN',
-              amount: realProfit, balanceBefore: realWallet.balance, balanceAfter: newReal,
+              amount: realProfit, balanceBefore: updatedReal.balance - realProfit, balanceAfter: updatedReal.balance,
               status: 'COMPLETED', roundId: round.id, idempotencyKey: crypto.randomUUID(),
               note: 'Self-play round — PROMO profit to REAL',
             }})
@@ -178,7 +203,7 @@ export async function action({ request }: { request: Request }) {
         }})
       }
 
-      return { roundId: round.id }
+      return { roundId: round.id, newBalance }
     })
 
     notifyAdmin('round:resolved', { roundId: result.roundId, mode: 'RANDOM', dice: dice as string[], diceSum })
@@ -186,11 +211,18 @@ export async function action({ request }: { request: Request }) {
     // Broadcast ranking update for demo wallet bets so all open competition
     // pages re-fetch and animate the position change in real-time.
     if (walletKey === 'DEMO') {
-      notifyCompetition('ranking:updated', { userId: user.id, newDemoBalance: newBalance })
+      notifyCompetition('ranking:updated', { userId: user.id, newDemoBalance: result.newBalance })
     }
 
-    return Response.json({ ok: true, balance: newBalance, payout: totalPayout, net: netDelta })
+    return Response.json({ ok: true, balance: result.newBalance, payout: totalPayout, net: netDelta })
   } catch (err) {
+    if (err instanceof InsufficientBalanceError) {
+      return Response.json({ error: err.message }, { status: 400 })
+    }
+    // P2002 on idempotencyKey = this token was already saved (replay).
+    if ((err as { code?: string })?.code === 'P2002') {
+      return Response.json({ error: 'Round already saved.' }, { status: 409 })
+    }
     console.error('[api/save-round]', err)
     return Response.json({ error: 'Failed to save round.' }, { status: 500 })
   }
