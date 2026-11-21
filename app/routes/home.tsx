@@ -1620,11 +1620,6 @@ export default function FishPrawnCrabGame() {
   const startRollRef = useRef<(() => void) | null>(null)
   const hasAnyBetRef = useRef(false)
   const hasWarmed = useRef(false)
-  // Pre-computed adversarial dice — filled in the background when bets change,
-  // consumed at roll time so the user never waits for the pick-dice response.
-  const [precomputedRound, setPrecomputedRound] = useState<{ dice: string[]; token: string; betsKey: string } | null>(null)
-  const pendingDiceRef = useRef<{ dice: string[]; token: string } | null>(null)
-  const precomputeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   // Yellow winner-highlight on the board (cells + range buttons) only stays
   // up for ~5s after a roll resolves — long enough for the player to clock
   // which bets won, short enough that the next set of chips doesn't sit
@@ -2037,42 +2032,9 @@ export default function FishPrawnCrabGame() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authUser?.id])
 
-  // Pre-compute adversarial dice in the background whenever the bet layout
-  // changes so the result is ready the instant the player clicks Roll.
-  // Uses a 350 ms debounce to avoid hammering the server on rapid chip taps.
   useEffect(() => {
     hasAnyBetRef.current = hasAnyBet
-    if (!hasAnyBet || !authUser || mode !== 'random' || isRolling || !isRoundOpen) return
-
-    const wallet = user.activeWallet === 'real' ? 'REAL' : user.activeWallet === 'promo' ? 'PROMO' : 'DEMO'
-    const betsPayload = {
-      wallet,
-      bets: {
-        symbol: currentBets.map(b => ({ symbol: b.symbol.toUpperCase(), cell: b.cell, amount: b.amount })),
-        range: currentRangeBets.map(b => ({ range: b.range.toUpperCase(), amount: b.amount })),
-        pair: currentPairBets.map(b => ({ symbolA: b.a.toUpperCase(), symbolB: b.b.toUpperCase(), cellA: b.cellA, cellB: b.cellB, amount: b.amount })),
-      },
-    }
-    const betsKey = JSON.stringify(betsPayload)
-    if (precomputedRound?.betsKey === betsKey) return // already fresh
-
-    if (precomputeTimerRef.current) clearTimeout(precomputeTimerRef.current)
-    precomputeTimerRef.current = setTimeout(() => {
-      fetch('/api/pick-dice', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(betsPayload),
-      })
-        .then(r => r.json())
-        .then(data => {
-          if (data.ok && data.dice && data.token) {
-            setPrecomputedRound({ dice: data.dice, token: data.token, betsKey })
-          }
-        })
-        .catch(() => { })
-    }, 350)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentBets, currentRangeBets, currentPairBets, hasAnyBet, authUser, mode, isRolling, isRoundOpen, user.activeWallet])
+  }, [hasAnyBet])
 
   const placeRangeBet = useCallback((range: RangeKey) => {
     ensureBgMusic()
@@ -2379,7 +2341,6 @@ export default function FishPrawnCrabGame() {
     setIsRoundOpen(false)
     setBetCountdown(15)
     setWinnerHighlight(true)
-    setPrecomputedRound(null) // force fresh dice for next round
     if (win > 0) {
       setMessage(t('game.youWin', { amount: formatAmount(win) }))
       soundEnabled && playWin()
@@ -2418,8 +2379,8 @@ export default function FishPrawnCrabGame() {
   }, [currentBets, currentRangeBets, currentPairBets, balance, soundEnabled, playWin, playLose, stopRollSound])
 
   // ── startRoll: 8-second processing animation, fires automatically when the
-  //    30s betting window closes. Dice may already be pre-computed; if not,
-  //    pick-dice is called now (function is warm from the keep-alive ping).
+  //    30s betting window closes. /api/self-play-roll is called now and
+  //    settles the round server-side while the animation plays.
   const startRoll = useCallback(() => {
     if (!hasAnyBetRef.current) {
       // No bets placed — just reopen for another round.
@@ -2433,9 +2394,9 @@ export default function FishPrawnCrabGame() {
     setMessage(t('game.rolling'))
     soundEnabled && startRollSound()
 
-    // Always call pick-dice fresh at roll time so the server can apply the
-    // latest phase (e.g. admin lock applied between precompute and roll).
-    // The 8-second animation gives pick-dice plenty of time to respond.
+    // One atomic server call at roll time: picks the dice with the latest phase
+    // (admin lock, sleep mode…) AND settles the money. The 8-second animation
+    // hides the round-trip.
     if (authUser) {
       const wallet = user.activeWallet === 'real' ? 'REAL' : user.activeWallet === 'promo' ? 'PROMO' : 'DEMO'
       const betsPayload = {
@@ -2446,9 +2407,7 @@ export default function FishPrawnCrabGame() {
           pair: currentPairBets.map(b => ({ symbolA: b.a.toUpperCase(), symbolB: b.b.toUpperCase(), cellA: b.cellA, cellB: b.cellB, amount: b.amount })),
         },
       }
-      pendingDiceRef.current = null
-      setPrecomputedRound(null)
-      playRoundFetcher.submit(betsPayload, { method: 'post', action: '/api/pick-dice', encType: 'application/json' })
+      playRoundFetcher.submit(betsPayload, { method: 'post', action: '/api/self-play-roll', encType: 'application/json' })
     }
 
     const rollInterval = setInterval(() => {
@@ -2484,7 +2443,7 @@ export default function FishPrawnCrabGame() {
     }, 8000)
   }, [soundEnabled, startRollSound, stopRollSound, applyResult, authUser,
     currentBets, currentRangeBets, currentPairBets, user.activeWallet,
-    playRoundFetcher, precomputedRound])
+    playRoundFetcher])
 
   // Keep a stable ref so the countdown interval can call startRoll without
   // stale-closure issues.
@@ -2607,52 +2566,26 @@ export default function FishPrawnCrabGame() {
     // (e.g. insufficient balance) doesn't first flash as a success.
   }, [mode, livePhase, authUser, hasAnyBet, currentBets, currentRangeBets, currentPairBets, currentSumBets, user.activeWallet, playRoundFetcher, soundEnabled, t])
 
-  // RANDOM mode: apply the result once animation is done.
-  // Fast path  → pendingDiceRef has pre-computed dice (zero server wait).
-  // Slow path  → wait for the real-time /api/pick-dice fetcher response.
-  // Either way, /api/save-round is fired in the background so the user never
-  // waits for the DB write.
+  // RANDOM mode: apply the result once the roll animation is done. The dice
+  // come from /api/self-play-roll, which has ALREADY settled the round (stake
+  // debited, payout credited) before returning them — so there is nothing left
+  // to save; we just show the result and re-sync balances.
   useEffect(() => {
     if (!rollAnimationDone) return
-
-    // ── Fast path ──────────────────────────────────────────────────────────
-    if (pendingDiceRef.current) {
-      const { dice, token } = pendingDiceRef.current
-      pendingDiceRef.current = null
-      setRollAnimationDone(false)
-      applyResult(dice.map(d => d.toLowerCase() as SymbolKey))
-      fetch('/api/save-round', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token }),
-      })
-        .then(() => revalidator.revalidate())
-        .catch(() => revalidator.revalidate())
-      return
-    }
-
-    // ── Slow path ──────────────────────────────────────────────────────────
     if (playRoundFetcher.state !== 'idle') return
-    const data = playRoundFetcher.data as { ok?: boolean; dice?: string[]; token?: string; error?: string } | undefined
+    const data = playRoundFetcher.data as { ok?: boolean; dice?: string[]; error?: string } | undefined
     if (!data) return
     setRollAnimationDone(false)
     if (data.error) {
       stopRollSound()
       setIsRolling(false)
       setMessage(data.error)
+      revalidator.revalidate() // stake was NOT taken — re-sync the local balance
       return
     }
     if (data.ok && data.dice) {
       applyResult(data.dice.map(d => d.toLowerCase() as SymbolKey))
-      if (data.token) {
-        fetch('/api/save-round', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token: data.token }),
-        })
-          .then(() => revalidator.revalidate())
-          .catch(() => revalidator.revalidate())
-      }
+      revalidator.revalidate()
     }
   }, [rollAnimationDone, playRoundFetcher.state, playRoundFetcher.data, applyResult, revalidator, stopRollSound])
 

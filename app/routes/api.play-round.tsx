@@ -9,7 +9,6 @@ import {
   payoutForSymbol, payoutForRange, payoutForPair, payoutForSum,
   pickAdversarialDice, getPayoutConfig, type PayoutConfig,
 } from '~/lib/game-logic.server'
-import { SELF_PLAY_ENABLED } from '~/lib/features'
 
 const MAX_BET_PER_ROUND = 10_000_000
 
@@ -151,11 +150,12 @@ export async function action({ request }: Route.ActionArgs) {
   if ('error' in parsed) return Response.json(parsed, { status: 400 })
   const { mode, wallet: walletKey, bets } = parsed
 
-  // Self-play is switched off globally. The UI hides it, but this endpoint must
-  // refuse it too — otherwise a hand-crafted request could still play RANDOM
-  // rounds (bypassing sleep mode, competition locks and the feature flag).
-  if (mode === 'RANDOM' && !SELF_PLAY_ENABLED) {
-    return Response.json({ error: 'Self-play is currently disabled.' }, { status: 403 })
+  // Self-play never goes through this endpoint — the client uses the atomic
+  // /api/self-play-roll, which also applies sleep mode, admin lock and the
+  // competition restrictions. This RANDOM path lacks those checks, so it's
+  // refused outright to stop hand-crafted requests from bypassing them.
+  if (mode === 'RANDOM') {
+    return Response.json({ error: 'Self-play uses /api/self-play-roll.' }, { status: 403 })
   }
 
   const symbolBets = bets.symbol ?? []

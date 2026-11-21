@@ -6,4 +6,4 @@
 // When false the game is LIVE-ONLY: the self-play UI is hidden AND the roll
 // endpoints reject requests, so no self-play load can reach the DB even from a
 // stale browser tab. Flip to true to restore self-play.
-export const SELF_PLAY_ENABLED = false
+export const SELF_PLAY_ENABLED = true

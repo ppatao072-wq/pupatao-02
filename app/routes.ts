@@ -15,6 +15,7 @@ export default [
   route("api/play-round", "routes/api.play-round.tsx"),
   route("api/pick-dice", "routes/api.pick-dice.tsx"),
   route("api/save-round", "routes/api.save-round.tsx"),
+  route("api/self-play-roll", "routes/api.self-play-roll.tsx"),
   route("api/warm", "routes/api.warm.tsx"),
   route("api/bank-qr", "routes/api.bank-qr.tsx"),
   route("api/locale", "routes/api.locale.tsx"),
